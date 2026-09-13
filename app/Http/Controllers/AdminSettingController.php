@@ -51,6 +51,7 @@ class AdminSettingController extends Controller
 
         $settings = SiteSetting::getSettings();
         $settings->update($validated);
+        SiteSetting::clearCache();
 
         return back()->with('success', 'Konfigurasi situs berhasil disimpan dan diperbarui!');
     }
@@ -70,6 +71,7 @@ class AdminSettingController extends Controller
 
             $settings = SiteSetting::getSettings();
             $settings->update(['favicon_url' => $url]);
+            SiteSetting::clearCache();
 
             return response()->json([
                 'success' => true,
@@ -96,6 +98,7 @@ class AdminSettingController extends Controller
 
             $settings = SiteSetting::getSettings();
             $settings->update(['og_image_url' => $url]);
+            SiteSetting::clearCache();
 
             return response()->json([
                 'success' => true,
@@ -125,6 +128,7 @@ class AdminSettingController extends Controller
             'seo_keywords' => 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir, open trip dieng, sewa jeep dieng, travel dieng',
             'og_image_url' => 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop',
         ]);
+        SiteSetting::clearCache();
 
         return back()->with('success', 'Konfigurasi telah dikembalikan ke pengaturan standar bawaan.');
     }

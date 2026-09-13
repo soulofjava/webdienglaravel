@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
         // 2. Pengaturan Default Situs
         SiteSetting::getSettings();
 
+        // 3. Paket Wisata & Itinerary Tour Dieng
+        $this->call(TourPackageSeeder::class);
+
         // 3. Statistik Pengunjung Awal
         $today = Carbon::today()->toDateString();
         VisitorStat::updateOrCreate(

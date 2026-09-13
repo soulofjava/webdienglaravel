@@ -31,34 +31,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN dengan Custom Theme -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        serif: ['"Playfair Display"', 'serif'],
-                        cinzel: ['"Cinzel"', 'serif'],
-                    },
-                    colors: {
-                        dieng: {
-                            dark: '#07090e',
-                            card: '#0c111d',
-                            border: 'rgba(255, 255, 255, 0.08)',
-                            gold: '#fbbf24',
-                            emerald: '#10b981',
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Production Compiled Vite Assets (Super Fast, No Runtime Compiler) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -77,6 +51,39 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        /* Custom Flatpickr Dieng Dark Theme */
+        .flatpickr-calendar {
+            background: #0d1322 !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+            border-radius: 1.25rem !important;
+            padding: 8px !important;
+        }
+        .flatpickr-calendar .flatpickr-month {
+            background: transparent !important;
+            color: #f8fafc !important;
+            fill: #f59e0b !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        .flatpickr-current-month input.cur-year {
+            color: #fbbf24 !important;
+            font-weight: 700 !important;
+        }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: #f59e0b !important;
+            border-color: #f59e0b !important;
+            color: #090d16 !important;
+            font-weight: 800 !important;
+            border-radius: 0.75rem !important;
+        }
+        .flatpickr-day:hover {
+            background: rgba(245, 158, 11, 0.25) !important;
+            border-radius: 0.75rem !important;
+        }
+        .flatpickr-day.today {
+            border-color: #f59e0b !important;
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -91,6 +98,10 @@
             background: #d97706;
         }
     </style>
+
+    <!-- Flatpickr CSS (Dark theme) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
 </head>
 <body class="antialiased selection:bg-amber-500/30 selection:text-amber-200">
     @if (isset($slot))
@@ -106,6 +117,11 @@
             }
         });
     </script>
+
+    <!-- Flatpickr JS & Locale Indonesia -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+
     @stack('scripts')
 </body>
 </html>

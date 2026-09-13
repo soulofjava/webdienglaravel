@@ -12,8 +12,22 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
+                serif: ['"Playfair Display"', 'serif'],
+                cinzel: ['"Cinzel"', 'serif'],
             },
+            colors: {
+                dieng: {
+                    dark: '#07090e',
+                    card: '#0c111d',
+                    border: 'rgba(255, 255, 255, 0.08)',
+                    gold: '#fbbf24',
+                    emerald: '#10b981',
+                }
+            },
+            animation: {
+                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            }
         },
     },
 

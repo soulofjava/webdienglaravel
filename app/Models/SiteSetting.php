@@ -30,23 +30,36 @@ class SiteSetting extends Model
 
     public static function getSettings(): self
     {
-        return self::firstOrCreate(
-            ['id' => 'default'],
-            [
-                'site_name' => 'TIKETDIENG.COM',
-                'site_tagline' => 'Biro Wisata Dataran Tinggi Dieng',
-                'whatsapp_number' => '62816675404',
-                'phone_number' => '+62 816-675-404',
-                'email' => 'halo@tiketdieng.com',
-                'address' => 'Jl. Dieng Km. 03, Tieng, Kejajar, Wonosobo, Jawa Tengah 56354',
-                'legal_nib' => 'NIB: 1294801928472',
-                'hpi_badge' => 'Anggota Resmi HPI Dieng',
-                'favicon_url' => '/favicon.ico',
-                'seo_title' => 'TiketDieng.com — Paket Wisata Dieng & Biro Perjalanan Resmi',
-                'seo_description' => 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Offroad Safari dengan kenyamanan armada eksekutif.',
-                'seo_keywords' => 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir, open trip dieng, sewa jeep dieng, travel dieng',
-                'og_image_url' => 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop',
-            ]
-        );
+        $attributes = \Illuminate\Support\Facades\Cache::rememberForever('site_settings_attributes', function () {
+            $model = self::firstOrCreate(
+                ['id' => 'default'],
+                [
+                    'site_name' => 'TIKETDIENG.COM',
+                    'site_tagline' => 'Biro Wisata Dataran Tinggi Dieng',
+                    'whatsapp_number' => '62816675404',
+                    'phone_number' => '+62 816-675-404',
+                    'email' => 'halo@tiketdieng.com',
+                    'address' => 'Jl. Dieng Km. 03, Tieng, Kejajar, Wonosobo, Jawa Tengah 56354',
+                    'legal_nib' => 'NIB: 1294801928472',
+                    'hpi_badge' => 'Anggota Resmi HPI Dieng',
+                    'favicon_url' => '/favicon.ico',
+                    'seo_title' => 'TiketDieng.com — Paket Wisata Dieng & Biro Perjalanan Resmi',
+                    'seo_description' => 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Offroad Safari dengan kenyamanan armada eksekutif.',
+                    'seo_keywords' => 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir, open trip dieng, sewa jeep dieng, travel dieng',
+                    'og_image_url' => 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop',
+                ]
+            );
+            return $model->getAttributes();
+        });
+
+        $instance = new self();
+        $instance->setRawAttributes($attributes, true);
+        $instance->exists = true;
+        return $instance;
+    }
+
+    public static function clearCache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('site_settings_attributes');
     }
 }

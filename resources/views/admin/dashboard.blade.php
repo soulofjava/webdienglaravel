@@ -35,6 +35,14 @@
                 </div>
 
                 <a
+                    href="{{ route('admin.packages.index') }}"
+                    class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-300 hover:text-amber-200 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 transition-colors"
+                >
+                    <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                    <span>Kelola Paket Wisata</span>
+                </a>
+
+                <a
                     href="{{ route('home') }}"
                     target="_blank"
                     class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"

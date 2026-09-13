@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteSetting;
+use App\Models\TourPackage;
 use App\Models\VisitorLog;
 use App\Models\VisitorStat;
 use Carbon\Carbon;
@@ -17,7 +18,27 @@ class HomeController extends Controller
         $this->recordVisitor($request);
         $visitorStats = $this->getStats();
 
-        return view('home', compact('settings', 'visitorStats'));
+        // Mengambil seluruh paket aktif menggunakan composite index (idx_active_sort_id)
+        $packages = TourPackage::where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+
+        return view('home', compact('settings', 'visitorStats', 'packages'));
+    }
+
+    public function showPackage(Request $request, $slug)
+    {
+        $settings = SiteSetting::getSettings();
+        $this->recordVisitor($request);
+
+        $package = TourPackage::where('slug', $slug)->firstOrFail();
+        $otherPackages = TourPackage::where('is_active', true)
+            ->where('id', '!=', $package->id)
+            ->take(3)
+            ->get();
+
+        return view('package-detail', compact('settings', 'package', 'otherPackages'));
     }
 
     public function apiVisitorStats(Request $request): JsonResponse
@@ -63,25 +84,27 @@ class HomeController extends Controller
 
     private function getStats(): array
     {
-        $today = Carbon::today()->toDateString();
-        $yesterday = Carbon::yesterday()->toDateString();
-        $sevenDaysAgo = Carbon::today()->subDays(6)->toDateString();
-        $startOfMonth = Carbon::today()->startOfMonth()->toDateString();
+        return \Illuminate\Support\Facades\Cache::remember('visitor_stats_summary', 60, function () {
+            $today = Carbon::today()->toDateString();
+            $yesterday = Carbon::yesterday()->toDateString();
+            $sevenDaysAgo = Carbon::today()->subDays(6)->toDateString();
+            $startOfMonth = Carbon::today()->startOfMonth()->toDateString();
 
-        $todayStat = VisitorStat::where('date', $today)->first();
-        $yesterdayStat = VisitorStat::where('date', $yesterday)->first();
+            $todayStat = VisitorStat::where('date', $today)->first();
+            $yesterdayStat = VisitorStat::where('date', $yesterday)->first();
 
-        $weekUnique = VisitorStat::whereBetween('date', [$sevenDaysAgo, $today])->sum('unique_visitors');
-        $monthUnique = VisitorStat::whereBetween('date', [$startOfMonth, $today])->sum('unique_visitors');
-        $grandTotal = VisitorStat::sum('total_visits');
+            $weekUnique = VisitorStat::whereBetween('date', [$sevenDaysAgo, $today])->sum('unique_visitors');
+            $monthUnique = VisitorStat::whereBetween('date', [$startOfMonth, $today])->sum('unique_visitors');
+            $grandTotal = VisitorStat::sum('total_visits');
 
-        return [
-            'today' => (int) ($todayStat->unique_visitors ?? 1),
-            'yesterday' => (int) ($yesterdayStat->unique_visitors ?? 0),
-            'this_week' => (int) ($weekUnique ?: 1),
-            'this_month' => (int) ($monthUnique ?: 1),
-            'total' => (int) ($grandTotal ?: 1),
-            'online' => rand(4, 9),
-        ];
+            return [
+                'today' => (int) ($todayStat->unique_visitors ?? 1),
+                'yesterday' => (int) ($yesterdayStat->unique_visitors ?? 0),
+                'this_week' => (int) ($weekUnique ?: 1),
+                'this_month' => (int) ($monthUnique ?: 1),
+                'total' => (int) ($grandTotal ?: 1),
+                'online' => rand(4, 9),
+            ];
+        });
     }
 }

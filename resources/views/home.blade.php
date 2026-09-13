@@ -202,14 +202,14 @@
                     </ul>
                 </div>
                 <div class="lg:col-span-6 rounded-2xl overflow-hidden h-72 sm:h-96 relative border border-white/10">
-                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Sikunir Sunrise" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=75" alt="Sikunir Sunrise" loading="lazy" decoding="async" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
             </div>
 
             <!-- Babak 2: Kawah Sikidang -->
             <div id="sikidang" class="glass-panel rounded-3xl overflow-hidden border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-10 items-center">
                 <div class="lg:col-span-6 rounded-2xl overflow-hidden h-72 sm:h-96 relative border border-white/10 order-2 lg:order-1">
-                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80" alt="Kawah Sikidang" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=75" alt="Kawah Sikidang" loading="lazy" decoding="async" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
                 <div class="lg:col-span-6 space-y-5 order-1 lg:order-2">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-yellow-500/10 border border-yellow-500/30 text-yellow-300">
@@ -248,14 +248,14 @@
                     </ul>
                 </div>
                 <div class="lg:col-span-6 rounded-2xl overflow-hidden h-72 sm:h-96 relative border border-white/10">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Telaga Warna" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=75" alt="Telaga Warna" loading="lazy" decoding="async" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
             </div>
 
             <!-- Babak 4: Kompleks Candi Arjuna -->
             <div id="candi-arjuna" class="glass-panel rounded-3xl overflow-hidden border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-10 items-center">
                 <div class="lg:col-span-6 rounded-2xl overflow-hidden h-72 sm:h-96 relative border border-white/10 order-2 lg:order-1">
-                    <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80" alt="Candi Arjuna" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=75" alt="Candi Arjuna" loading="lazy" decoding="async" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
                 <div class="lg:col-span-6 space-y-5 order-1 lg:order-2">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/10 border border-purple-500/30 text-purple-300">
@@ -294,7 +294,7 @@
                     </ul>
                 </div>
                 <div class="lg:col-span-6 rounded-2xl overflow-hidden h-72 sm:h-96 relative border border-white/10">
-                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80" alt="Safari Jip 4x4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=75" alt="Safari Jip 4x4" loading="lazy" decoding="async" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
             </div>
         </div>
@@ -305,108 +305,102 @@
         <div class="text-center max-w-3xl mx-auto mb-16">
             <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Pilihan Paket Wisata Resmi</span>
             <h2 class="font-serif text-3xl sm:text-4xl font-black text-white mt-2 mb-4">Paket All-Inclusive Tanpa Beban Tersembunyi</h2>
-            <p class="text-xs sm:text-sm text-slate-400">Semua paket sudah termasuk mobil pariwisata ber-AC, tiket terusan VIP tanpa antre, makan, penginapan (paket inap), dan dokumentasi.</p>
+            <p class="text-xs sm:text-sm text-slate-400">Seluruh program terintegrasi mencakup armada transportasi ber-AC, pemandu lokal ramah, tiket masuk VIP objek wisata, dan kuliner khas Wonosobo-Dieng.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Paket 1D -->
-            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col justify-between hover:border-amber-500/40 transition-all duration-300">
-                <div>
-                    <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">1 HARI PENUH</span>
-                    <h3 class="font-bold text-lg text-white mt-1">One Day Express</h3>
-                    <p class="text-xs text-slate-400 mt-1">Eksplorasi destinasi inti Dieng tanpa menginap</p>
-                    <div class="my-5">
-                        <span class="text-xs text-slate-400">Mulai dari</span>
-                        <div class="text-2xl font-extrabold text-amber-400">Rp 325.000<span class="text-xs text-slate-400 font-normal">/orang</span></div>
-                        <span class="text-[11px] text-slate-500">Minimal 4 orang peserta</span>
-                    </div>
-                    <ul class="space-y-2 text-xs text-slate-300 mb-6">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Kawah Sikidang Vulkanik</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Telaga Warna & Pengilon</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Kompleks Candi Arjuna</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Makan Siang Mie Ongklok Sate Sapi</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Mobil AC + Driver + BBM & Parkir</li>
-                    </ul>
-                </div>
-                <a href="#kalkulator" class="w-full py-2.5 rounded-xl text-xs font-bold text-center text-white bg-white/10 hover:bg-amber-400 hover:text-black transition-colors block">
-                    Hitung Biaya
-                </a>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse ($packages as $pkg)
+                <div class="glass-panel p-6 rounded-3xl border {{ $pkg->is_popular ? 'border-2 border-amber-400/80 shadow-2xl shadow-amber-500/10' : 'border-white/10' }} flex flex-col justify-between hover:border-amber-400/60 transition-all duration-300 relative group">
+                    @if ($pkg->is_popular || $pkg->badge)
+                        <div class="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full text-[10px] font-black uppercase {{ $pkg->is_popular ? 'bg-amber-400 text-slate-950' : 'bg-emerald-400 text-slate-950' }} shadow-md">
+                            {{ $pkg->badge ?: 'PALING DIMINATI ★' }}
+                        </div>
+                    @endif
 
-            <!-- Paket 2D1N (Best Seller) -->
-            <div class="glass-panel p-6 rounded-3xl border-2 border-amber-400/80 relative flex flex-col justify-between shadow-2xl shadow-amber-500/10 hover:border-amber-400 transition-all duration-300">
-                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black uppercase bg-gradient-to-r from-amber-400 to-amber-500 text-black shadow-md">
-                    PALING DIMINATI ★
-                </div>
-                <div>
-                    <span class="text-[10px] font-bold text-amber-400 tracking-wider uppercase mt-2 block">2 HARI 1 MALAM</span>
-                    <h3 class="font-bold text-lg text-white mt-1">Golden Sunrise 2D1N</h3>
-                    <p class="text-xs text-slate-400 mt-1">Menyaksikan fajar keemasan Sikunir & pesona lengkap</p>
-                    <div class="my-5">
-                        <span class="text-xs text-slate-400">Mulai dari</span>
-                        <div class="text-2xl font-extrabold text-amber-400">Rp 695.000<span class="text-xs text-slate-400 font-normal">/orang</span></div>
-                        <span class="text-[11px] text-slate-500">Minimal 4 orang peserta</span>
-                    </div>
-                    <ul class="space-y-2 text-xs text-slate-300 mb-6">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Golden Sunrise Puncak Sikunir</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Batu Pandang Ratapan Angin</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Villa/Hotel dengan Air Hangat VIP</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Makan 4 Kali Lengkap</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Dokumentasi Foto & Video Drone</li>
-                    </ul>
-                </div>
-                <a href="#kalkulator" class="w-full py-2.5 rounded-xl text-xs font-bold text-center text-black bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-400 transition-all block">
-                    Pilih Paket Ini
-                </a>
-            </div>
+                    <div>
+                        <!-- Thumbnail Cover -->
+                        <div class="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4 border border-white/5">
+                            <img
+                                src="{{ $pkg->image_url }}"
+                                alt="{{ $pkg->title }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                            <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] text-amber-300 font-semibold border border-white/10">
+                                {{ $pkg->duration }}
+                            </div>
+                        </div>
 
-            <!-- Paket 3D2N -->
-            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col justify-between hover:border-amber-500/40 transition-all duration-300">
-                <div>
-                    <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">3 HARI 2 MALAM</span>
-                    <h3 class="font-bold text-lg text-white mt-1">Ultimate Cultural 3D2N</h3>
-                    <p class="text-xs text-slate-400 mt-1">Penjelajahan mendalam seluruh pelosok Kahyangan</p>
-                    <div class="my-5">
-                        <span class="text-xs text-slate-400">Mulai dari</span>
-                        <div class="text-2xl font-extrabold text-amber-400">Rp 1.150.000<span class="text-xs text-slate-400 font-normal">/orang</span></div>
-                        <span class="text-[11px] text-slate-500">Minimal 4 orang peserta</span>
-                    </div>
-                    <ul class="space-y-2 text-xs text-slate-300 mb-6">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Seluruh Rute 2D1N Lengkap</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Telaga Dringo & Kebun Teh Tambi</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Hotel/Resort Dieng 2 Malam</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Makan 7 Kali Prasmanan</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Sesi Barbeque Jagung Bakar Malam</li>
-                    </ul>
-                </div>
-                <a href="#kalkulator" class="w-full py-2.5 rounded-xl text-xs font-bold text-center text-white bg-white/10 hover:bg-amber-400 hover:text-black transition-colors block">
-                    Hitung Biaya
-                </a>
-            </div>
+                        <span class="text-[10px] font-bold text-amber-400 tracking-wider uppercase block">
+                            {{ $pkg->category }}
+                        </span>
+                        <h3 class="font-bold text-lg text-white mt-1 group-hover:text-amber-300 transition-colors line-clamp-1">
+                            <a href="{{ route('package.detail', $pkg->slug) }}">
+                                {{ $pkg->title }}
+                            </a>
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                            {{ $pkg->summary }}
+                        </p>
 
-            <!-- Paket Jeep -->
-            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col justify-between hover:border-amber-500/40 transition-all duration-300">
-                <div>
-                    <span class="text-[10px] font-bold text-rose-400 tracking-wider uppercase">UNIT 4X4 KHUSUS</span>
-                    <h3 class="font-bold text-lg text-white mt-1">Jeep 4x4 Offroad Safari</h3>
-                    <p class="text-xs text-slate-400 mt-1">Petualangan tanah, kebun teh, & danau tersembunyi</p>
-                    <div class="my-5">
-                        <span class="text-xs text-slate-400">Tarif per unit</span>
-                        <div class="text-2xl font-extrabold text-amber-400">Rp 850.000<span class="text-xs text-slate-400 font-normal">/jip</span></div>
-                        <span class="text-[11px] text-slate-500">Maksimal 4 orang per unit Jeep</span>
+                        <!-- Estimasi Tarif -->
+                        <div class="my-4 pt-3 border-t border-white/10">
+                            <span class="text-[11px] text-slate-400 block">Estimasi Tarif</span>
+                            <div class="text-2xl font-extrabold text-amber-400">
+                                {{ $pkg->formatted_price }}
+                                <span class="text-xs text-slate-400 font-normal">/ pax</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400 block mt-0.5">{{ $pkg->price_note }}</span>
+                        </div>
+
+                        <!-- Highlight Destinasi / Rute -->
+                        @if (!empty($pkg->itinerary_options) && count($pkg->itinerary_options) > 0)
+                            <div class="space-y-1.5 text-xs text-slate-300 mb-6 bg-white/[0.02] p-3 rounded-xl border border-white/5">
+                                <div class="text-[10px] font-semibold text-slate-400 uppercase">Pilihan Rute & Destinasi:</div>
+                                @foreach (array_slice($pkg->itinerary_options, 0, 2) as $opt)
+                                    <div class="flex items-start gap-1.5 text-[11px] text-slate-300">
+                                        <i data-lucide="check" class="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0"></i>
+                                        <span class="line-clamp-1 font-medium">{{ $opt['name'] }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @elseif (!empty($pkg->inclusions) && count($pkg->inclusions) > 0)
+                            <ul class="space-y-1.5 text-xs text-slate-300 mb-6 bg-white/[0.02] p-3 rounded-xl border border-white/5">
+                                @foreach (array_slice($pkg->inclusions, 0, 3) as $inc)
+                                    <li class="flex items-center gap-1.5 text-[11px]">
+                                        <i data-lucide="check" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
+                                        <span class="line-clamp-1">{{ $inc }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
-                    <ul class="space-y-2 text-xs text-slate-300 mb-6">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Rute Offroad Kebun Teh Bedakah</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Telaga Dringo & Kawah Candradimuka</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Driver Offroad Lokal Terlatih</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> BBM & Retribusi Jalur</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i> Spot Foto Eksotis Puncak Scooter</li>
-                    </ul>
+
+                    <!-- Tombol Aksi -->
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <a
+                            href="{{ route('package.detail', $pkg->slug) }}"
+                            class="py-2.5 px-3 rounded-xl text-xs font-bold text-center text-white bg-white/10 hover:bg-white/20 border border-white/10 transition-colors flex items-center justify-center gap-1"
+                        >
+                            <span>Detail Rute</span>
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        </a>
+
+                        <a
+                            href="#kalkulator"
+                            onclick="selectPackageInCalculator('{{ $pkg->slug }}')"
+                            class="py-2.5 px-3 rounded-xl text-xs font-bold text-center text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-400 transition-all flex items-center justify-center gap-1"
+                        >
+                            <span>Pesan Sekarang</span>
+                        </a>
+                    </div>
                 </div>
-                <a href="#kalkulator" class="w-full py-2.5 rounded-xl text-xs font-bold text-center text-white bg-white/10 hover:bg-amber-400 hover:text-black transition-colors block">
-                    Hitung Biaya
-                </a>
-            </div>
+            @empty
+                <div class="col-span-3 text-center py-12 glass-panel rounded-3xl border border-white/10 text-slate-400 text-sm">
+                    Belum ada paket wisata aktif. Silakan tambahkan melalui panel pengelola admin.
+                </div>
+            @endforelse
         </div>
     </section>
 
@@ -492,10 +486,17 @@
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">1. Pilih Paket Wisata</label>
                         <select id="calcPkg" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
-                            <option value="1d" data-price="325000" data-jeep="0" data-duration="1 Hari">Dieng One Day Express — Rp 325.000 / orang</option>
-                            <option value="2d1n" data-price="695000" data-jeep="0" data-duration="2 Hari 1 Malam" selected>Golden Sunrise 2D1N (Best Seller) — Rp 695.000 / orang</option>
-                            <option value="3d2n" data-price="1150000" data-jeep="0" data-duration="3 Hari 2 Malam">Ultimate Cultural Odyssey 3D2N — Rp 1.150.000 / orang</option>
-                            <option value="jeep" data-price="850000" data-jeep="1" data-duration="1 Hari (Maks 4 Orang/Jeep)">Jeep 4x4 Offroad Safari — Rp 850.000 / unit Jeep</option>
+                            @foreach ($packages as $pkg)
+                                <option
+                                    value="{{ $pkg->slug }}"
+                                    data-price="{{ $pkg->price }}"
+                                    data-jeep="{{ str_contains(strtolower($pkg->category . ' ' . $pkg->title), 'jeep') ? '1' : '0' }}"
+                                    data-duration="{{ $pkg->duration }}"
+                                    {{ $pkg->is_popular ? 'selected' : '' }}
+                                >
+                                    {{ $pkg->title }} — {{ $pkg->formatted_price }} ({{ $pkg->duration }})
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -505,8 +506,8 @@
                             <label class="text-xs font-bold uppercase tracking-wider text-slate-300">2. Jumlah Peserta</label>
                             <span id="paxDisplay" class="text-xs font-bold text-amber-400">4 Orang</span>
                         </div>
-                        <input id="calcPax" type="range" min="1" max="25" value="4" class="w-full accent-amber-400 cursor-pointer">
-                        <div class="flex justify-between text-[11px] text-slate-500 mt-1">
+                        <input id="calcPax" type="range" min="1" max="25" value="4" aria-label="Jumlah Peserta Wisata" class="w-full accent-amber-400 cursor-pointer">
+                        <div class="flex justify-between text-[11px] text-slate-400 mt-1">
                             <span>1 Orang</span>
                             <span>10 Orang (Diskon 10%)</span>
                             <span>25 Orang (Rombongan)</span>
@@ -528,7 +529,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Tanggal Perjalanan</label>
-                            <input id="calcDate" type="date" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
+                            <div class="relative">
+                                <input id="calcDate" type="text" placeholder="Pilih tanggal keberangkatan..." readonly class="w-full p-3 pl-3.5 pr-10 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none cursor-pointer placeholder:text-slate-500">
+                                <i data-lucide="calendar" class="w-4 h-4 text-amber-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Nama Pemesan</label>
@@ -603,7 +607,7 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3 pt-4 border-t border-white/10">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Dr. Amanda" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=75" alt="Dr. Amanda" width="44" height="44" loading="lazy" decoding="async" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
                     <div>
                         <h4 class="font-bold text-xs sm:text-sm text-white">Dr. Amanda Saraswati</h4>
                         <p class="text-[11px] text-slate-400">Jakarta Selatan • <span class="text-amber-300">Paket 2D1N</span></p>
@@ -626,7 +630,7 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3 pt-4 border-t border-white/10">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Rizky Ramadhan" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=75" alt="Rizky Ramadhan" width="44" height="44" loading="lazy" decoding="async" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
                     <div>
                         <h4 class="font-bold text-xs sm:text-sm text-white">Rizky Ramadhan & Rekan</h4>
                         <p class="text-[11px] text-slate-400">Surabaya • <span class="text-amber-300">Safari Jip 4x4</span></p>
@@ -649,7 +653,7 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3 pt-4 border-t border-white/10">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" alt="Clara & Michael" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=75" alt="Clara & Michael" width="44" height="44" loading="lazy" decoding="async" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
                     <div>
                         <h4 class="font-bold text-xs sm:text-sm text-white">Clara & Michael</h4>
                         <p class="text-[11px] text-slate-400">Melbourne, Australia • <span class="text-amber-300">Paket 3D2N</span></p>
@@ -884,6 +888,18 @@
     const summaryDiscount = document.getElementById('summaryDiscount');
     const btnSendWa = document.getElementById('btnSendWa');
 
+    // Inisialisasi Flatpickr (Tanggal Perjalanan)
+    if (window.flatpickr && calcDate) {
+        flatpickr(calcDate, {
+            locale: "id",
+            minDate: "today",
+            dateFormat: "d F Y",
+            altInput: false,
+            defaultDate: new Date(Date.now() + 86400000), // Default keberangkatan besok
+            disableMobile: "true", // Memaksa tema gelap Dieng tampil di semua perangkat
+        });
+    }
+
     function calculatePrice() {
         const selectedOption = calcPkg.options[calcPkg.selectedIndex];
         const basePrice = parseInt(selectedOption.getAttribute('data-price')) || 0;
@@ -927,8 +943,14 @@
     calcPkg.addEventListener('change', calculatePrice);
     calcPax.addEventListener('input', calculatePrice);
     calcMeeting.addEventListener('change', calculatePrice);
-
     calculatePrice();
+
+    window.selectPackageInCalculator = function(slug) {
+        if (calcPkg) {
+            calcPkg.value = slug;
+            calculatePrice();
+        }
+    };
 
     // 4. Send WhatsApp Handler
     btnSendWa.addEventListener('click', () => {
