@@ -429,12 +429,18 @@
 
     <!-- Footer -->
     <footer class="mt-auto border-t border-white/10 bg-[#090d16] py-10 pb-24 lg:pb-10 px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
-        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
             <div>
-                <span class="font-serif font-bold text-white text-sm">{{ $settings->site_name }}</span> — {{ $settings->site_tagline }}
+                <span class="font-serif font-bold text-white text-xs">{{ $settings->site_name }}</span> — {{ $settings->site_tagline }}
             </div>
-            <div>
-                © {{ date('Y') }} {{ $settings->site_name }}. Hak Cipta Dilindungi Undang-Undang.
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <span>© {{ date('Y') }} Hak Cipta Dilindungi Undang-Undang</span>
+                <span>•</span>
+                <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
+                <span>•</span>
+                <span>Didukung Laravel 13 & MySQL</span>
+                <span>•</span>
+                <a href="{{ route('admin.login') }}" class="text-amber-400/80 hover:text-amber-300">Akses Pengelola</a>
             </div>
         </div>
     </footer>

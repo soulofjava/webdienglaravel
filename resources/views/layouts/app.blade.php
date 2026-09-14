@@ -14,7 +14,8 @@
     <!-- Meta SEO Dasar -->
     <meta name="description" content="@yield('meta_description', ($siteSettings->seo_description ?: 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Safari.'))">
     <meta name="keywords" content="{{ $siteSettings->seo_keywords ?: 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir' }}">
-    <meta name="author" content="{{ $siteSettings->site_name }}">
+    <meta name="author" content="Isa Maulana — {{ $siteSettings->site_name }}">
+    <link rel="author" href="https://soulofjava.github.io/myportofolio/">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="@yield('canonical', url()->current())">
 

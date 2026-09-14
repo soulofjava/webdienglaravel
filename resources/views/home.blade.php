@@ -907,11 +907,13 @@
             <!-- Bottom credit -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
                 <p>© {{ date('Y') }} {{ $settings->site_name }}. Hak cipta dilindungi undang-undang.</p>
-                <p class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px]">
+                    <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
+                    <span>•</span>
                     <span>Didukung Laravel 13 & MySQL</span>
                     <span>•</span>
                     <a href="{{ route('admin.login') }}" class="text-amber-400/80 hover:text-amber-300">Akses Pengelola</a>
-                </p>
+                </div>
             </div>
         </div>
     </footer>
