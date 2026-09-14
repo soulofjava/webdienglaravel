@@ -59,14 +59,6 @@
                 <!-- Brand Logo -->
                 <a href="#" class="flex items-center gap-3 group">
                     <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-8 sm:h-9 w-auto object-contain brightness-110 drop-shadow">
-                    <div class="hidden sm:block border-l border-white/10 pl-3">
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                {{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}
-                            </span>
-                        </div>
-                        <p class="text-[10px] text-slate-400 tracking-wider">Akomodasi & Transportasi Wisata Dieng</p>
-                    </div>
                 </a>
 
                 <!-- Desktop Nav Links -->
@@ -185,11 +177,18 @@
 
         <!-- Editorial Hero Content -->
         <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-            <!-- Top Badges: HPI License & Live Dieng Atmosphere -->
+            <!-- Top Badges: Badan Usaha Resmi, HPI License & Live Dieng Atmosphere -->
             <div class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mb-6">
+                <!-- Badge Badan Usaha Resmi PT. GOTRIP ASIA TRAVELINDO -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-semibold tracking-wider uppercase shadow-lg shadow-amber-500/10">
+                    <i data-lucide="building-2" class="w-4 h-4 text-amber-400"></i>
+                    <span>{{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}</span>
+                    <span class="text-[10px] text-slate-400 border-l border-white/15 pl-2 font-normal hidden sm:inline capitalize">Akomodasi & Transportasi Wisata</span>
+                </div>
+
                 <!-- Badge Resmi HPI -->
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wider uppercase shadow-lg shadow-amber-500/10">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-semibold tracking-wider uppercase shadow-lg shadow-emerald-500/10">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
                     <span>{{ $settings->hpi_badge ?? 'Biro Wisata Resmi Berizin HPI' }}</span>
                 </div>
 

@@ -52,14 +52,6 @@
             <!-- Brand Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                 <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-8 w-auto object-contain brightness-110">
-                <div class="hidden sm:block border-l border-white/10 pl-3">
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                            {{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}
-                        </span>
-                    </div>
-                    <p class="text-[10px] text-slate-400 tracking-wider">Akomodasi & Transportasi Wisata</p>
-                </div>
             </a>
 
             <!-- Desktop Links & WhatsApp CTA -->
