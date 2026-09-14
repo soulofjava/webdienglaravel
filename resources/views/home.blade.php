@@ -58,7 +58,7 @@
             <div class="flex items-center justify-between">
                 <!-- Brand Logo -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}" alt="{{ $settings->site_name }}" class="h-8 sm:h-9 w-auto object-contain brightness-110 drop-shadow">
+                    <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-8 sm:h-9 w-auto object-contain brightness-110 drop-shadow">
                     <div class="hidden sm:block border-l border-white/10 pl-3">
                         <div class="flex items-center gap-1.5">
                             <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
@@ -810,7 +810,7 @@
                 <!-- Col 1: Brand & Legalitas -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}" alt="{{ $settings->site_name }}" class="h-9 w-auto object-contain brightness-110">
+                        <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-9 w-auto object-contain brightness-110">
                     </div>
                     <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
                         {{ $settings->site_tagline }}. Bagian resmi dari <strong class="text-white">{{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}</strong>. Menghadirkan kemudahan reservasi akomodasi, sewa jeep, shuttle, dokumentasi sinematik, dan outbound profesional di Dieng.
