@@ -86,7 +86,6 @@
                             <i data-lucide="eye" id="eyeIcon" class="w-4 h-4"></i>
                         </button>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">Default instalasi awal: <code class="text-amber-300 font-mono">admin123</code></p>
                 </div>
 
                 <div class="flex items-center justify-between text-xs text-slate-400">
