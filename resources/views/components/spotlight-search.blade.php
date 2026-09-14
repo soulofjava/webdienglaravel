@@ -56,6 +56,26 @@
 
             <!-- Results Container -->
             <div id="spotlightResultsWrapper" class="max-h-96 overflow-y-auto p-2 sm:p-4">
+                <!-- Shimmering Skeleton Loader Cards -->
+                <div id="spotlightSkeleton" class="hidden space-y-2 py-1">
+                    @for ($i = 0; $i < 3; $i++)
+                        <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3 skeleton-shimmer">
+                            <div class="flex items-center gap-3.5 flex-1">
+                                <div class="w-14 h-14 rounded-xl bg-white/10 flex-shrink-0 animate-pulse"></div>
+                                <div class="space-y-2 flex-1">
+                                    <div class="h-4 bg-white/10 rounded w-2/3 animate-pulse"></div>
+                                    <div class="h-3 bg-white/5 rounded w-1/3 animate-pulse"></div>
+                                    <div class="h-3 bg-white/5 rounded w-1/2 animate-pulse"></div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
+                                <div class="h-4 w-20 bg-amber-400/20 rounded animate-pulse"></div>
+                                <div class="h-3 w-12 bg-white/5 rounded animate-pulse"></div>
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+
                 <div id="spotlightResultsList" class="space-y-1.5" role="listbox">
                     <!-- Populated dynamically via JS -->
                 </div>
@@ -223,18 +243,28 @@
         });
     });
 
+    const skeleton = document.getElementById('spotlightSkeleton');
+
     // Fetch API Search
     function performSearch(query) {
         spinner?.classList.remove('hidden');
+        skeleton?.classList.remove('hidden');
+        resultsList.classList.add('hidden');
+        emptyState.classList.add('hidden');
+
         fetch(`/api/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(data => {
                 spinner?.classList.add('hidden');
+                skeleton?.classList.add('hidden');
+                resultsList.classList.remove('hidden');
                 currentResults = data.data || [];
                 renderResults(currentResults, data.is_default);
             })
             .catch(err => {
                 spinner?.classList.add('hidden');
+                skeleton?.classList.add('hidden');
+                resultsList.classList.remove('hidden');
                 console.error('Search error:', err);
             });
     }

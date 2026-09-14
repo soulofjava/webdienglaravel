@@ -139,12 +139,13 @@
                         {{ $package->title }}
                     </h1>
 
-                    <!-- Hero Media Box -->
-                    <div class="relative rounded-3xl overflow-hidden aspect-[16/9] border border-white/10 shadow-2xl group">
+                    <!-- Hero Media Box with Skeleton Loader -->
+                    <div class="relative rounded-3xl overflow-hidden aspect-[16/9] border border-white/10 shadow-2xl group bg-slate-900 skeleton-shimmer">
                         <img
                             src="{{ $package->image_url }}"
                             alt="{{ $package->title }}"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 opacity-0"
+                            onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-slate-300">
@@ -395,8 +396,14 @@
                 @foreach ($otherPackages as $other)
                     <div class="glass-panel p-5 rounded-3xl border border-white/10 flex flex-col justify-between hover:border-amber-400/40 transition-all duration-300 group">
                         <div>
-                            <div class="relative rounded-2xl overflow-hidden aspect-video mb-4">
-                                <img src="{{ $other->image_url }}" alt="{{ $other->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="relative rounded-2xl overflow-hidden aspect-video mb-4 border border-white/5 bg-slate-900 skeleton-shimmer">
+                                <img
+                                    src="{{ $other->image_url }}"
+                                    alt="{{ $other->title }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500 opacity-0"
+                                    loading="lazy"
+                                    onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');"
+                                >
                                 @if ($other->badge)
                                     <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950">
                                         {{ $other->badge }}

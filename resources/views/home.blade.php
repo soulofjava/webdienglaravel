@@ -385,14 +385,15 @@
                     @endif
 
                     <div>
-                        <!-- Thumbnail Cover -->
-                        <div class="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4 border border-white/5">
+                        <!-- Thumbnail Cover with Skeleton Loader -->
+                        <div class="relative rounded-2xl overflow-hidden aspect-[16/10] mb-4 border border-white/5 bg-slate-900 skeleton-shimmer">
                             <img
                                 src="{{ $pkg->image_url }}"
                                 alt="{{ $pkg->title }}"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500 opacity-0"
                                 loading="lazy"
                                 decoding="async"
+                                onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('skeleton-shimmer');"
                             />
                             <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] text-amber-300 font-semibold border border-white/10">
                                 {{ $pkg->duration }}

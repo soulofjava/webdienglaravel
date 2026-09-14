@@ -67,6 +67,24 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        /* Shimmering Skeleton Loader Animations */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-shimmer {
+            animation: shimmer 1.6s infinite linear;
+        }
+        .skeleton-shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.02) 75%);
+            background-size: 200% 100%;
+            animation: shimmerPulse 1.8s infinite ease-in-out;
+        }
+        @keyframes shimmerPulse {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
         /* Custom Flatpickr Dieng Dark Theme */
         .flatpickr-calendar {
             background: #0d1322 !important;
