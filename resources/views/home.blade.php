@@ -35,7 +35,6 @@
                     <a href="#destinasi" class="hover:text-amber-400 transition-colors">Destinasi</a>
                     <a href="#paket" class="hover:text-amber-400 transition-colors">Paket Wisata</a>
                     <a href="#kalkulator" class="hover:text-amber-400 transition-colors">Kalkulator Biaya</a>
-                    <a href="{{ route('admin.login') }}" class="text-xs text-slate-500 hover:text-amber-400/80 transition-colors">Akses Admin</a>
                 </nav>
 
                 <!-- Right Section: Live Weather & CTA -->
@@ -66,7 +65,6 @@
                 <a href="#scrollytelling" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Jelajah Cerita Dieng</a>
                 <a href="#paket" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Paket Wisata All-Inclusive</a>
                 <a href="#kalkulator" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Kalkulator Reservasi</a>
-                <a href="{{ route('admin.login') }}" class="text-xs py-1.5 text-slate-500">Panel Pengelola Admin</a>
                 <div class="pt-2">
                     <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings->whatsapp_number) }}" target="_blank" class="w-full text-center block px-4 py-2.5 rounded-xl text-xs font-bold text-black bg-amber-400">
                         Chat WhatsApp Resmi
