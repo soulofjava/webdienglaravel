@@ -302,8 +302,10 @@
     <section id="paket" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/5">
         <div class="text-center max-w-3xl mx-auto mb-16">
             <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Pilihan Paket Wisata Resmi</span>
-            <h2 class="font-serif text-3xl sm:text-4xl font-black text-white mt-2 mb-4">Paket All-Inclusive Tanpa Beban Tersembunyi</h2>
-            <p class="text-xs sm:text-sm text-slate-400">Seluruh program terintegrasi mencakup armada transportasi ber-AC, pemandu lokal ramah, tiket masuk VIP objek wisata, dan kuliner khas Wonosobo-Dieng.</p>
+            <h2 class="font-serif text-3xl sm:text-4xl font-black text-white mt-2 mb-4">Pilihan Paket Wisata Dieng</h2>
+            <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Seluruh program bersifat fleksibel (private tour). Tarif tertera adalah estimasi dasar <span class="text-amber-400 font-medium">mulai dari</span>; ketersediaan kamar homestay, tanggal keberangkatan, dan penyesuaian rute dilayani langsung oleh tim kami via WhatsApp.
+            </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -342,14 +344,14 @@
                             {{ $pkg->summary }}
                         </p>
 
-                        <!-- Estimasi Tarif -->
+                        <!-- Estimasi Tarif Mulai Dari -->
                         <div class="my-4 pt-3 border-t border-white/10">
-                            <span class="text-[11px] text-slate-400 block">Estimasi Tarif</span>
+                            <span class="text-[11px] text-amber-400 font-semibold uppercase tracking-wider block">Mulai Dari</span>
                             <div class="text-2xl font-extrabold text-amber-400">
                                 {{ $pkg->formatted_price }}
                                 <span class="text-xs text-slate-400 font-normal">/ pax</span>
                             </div>
-                            <span class="text-[11px] text-slate-400 block mt-0.5">{{ $pkg->price_note }}</span>
+                            <span class="text-[11px] text-slate-400 block mt-0.5">{{ $pkg->price_note }} • Konfirmasi homestay via WA</span>
                         </div>
 
                         <!-- Highlight Destinasi / Rute -->
@@ -390,7 +392,7 @@
                             onclick="selectPackageInCalculator('{{ $pkg->slug }}')"
                             class="py-2.5 px-3 rounded-xl text-xs font-bold text-center text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-400 transition-all flex items-center justify-center gap-1"
                         >
-                            <span>Pesan Sekarang</span>
+                            <span>Hitung / Tanya WA</span>
                         </a>
                     </div>
                 </div>
@@ -471,10 +473,10 @@
             <div class="text-center max-w-2xl mx-auto mb-12">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-3">
                     <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
-                    <span>Simulator Reservasi Cepat</span>
+                    <span>SIMULATOR ESTIMASI AWAL</span>
                 </div>
-                <h2 class="font-serif text-3xl sm:text-4xl font-black text-white">Kalkulator Estimasi Biaya Wisata</h2>
-                <p class="text-xs sm:text-sm text-slate-400 mt-2">Transparan tanpa biaya terselubung. Hitung estimasi seketika dan lanjutkan pemesanan via WhatsApp Resmi.</p>
+                <h2 class="font-serif text-3xl sm:text-4xl font-black text-white">Simulator Estimasi Biaya Wisata</h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-2">Dapatkan perkiraan awal anggaran perjalanan Anda. Tarif resmi final dan ketersediaan kamar homestay/armada akan dikonfirmasi langsung oleh tim admin kami via WhatsApp.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -482,7 +484,7 @@
                 <div class="lg:col-span-7 space-y-6">
                     <!-- Pilihan Paket -->
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">1. Pilih Paket Wisata</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">1. Pilih Paket Wisata (Estimasi Dasar)</label>
                         <select id="calcPkg" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
                             @foreach ($packages as $pkg)
                                 <option
@@ -492,7 +494,7 @@
                                     data-duration="{{ $pkg->duration }}"
                                     {{ $pkg->is_popular ? 'selected' : '' }}
                                 >
-                                    {{ $pkg->title }} — {{ $pkg->formatted_price }} ({{ $pkg->duration }})
+                                    {{ $pkg->title }} — Mulai {{ $pkg->formatted_price }} ({{ $pkg->duration }})
                                 </option>
                             @endforeach
                         </select>
@@ -540,16 +542,16 @@
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Catatan Tambahan (Opsional)</label>
-                        <input id="calcNotes" type="text" placeholder="Permintaan menu khusus, upgrade kamar, dsb." class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
+                        <input id="calcNotes" type="text" placeholder="Permintaan tipe kamar homestay, menu khusus, dsb." class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
                     </div>
                 </div>
 
                 <!-- Rincian Hasil & Tombol WA -->
                 <div class="lg:col-span-5 p-6 rounded-2xl bg-black/40 border border-white/10 space-y-6">
                     <div class="border-b border-white/10 pb-4">
-                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ringkasan Estimasi Biaya</span>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Estimasi Awal Mulai Dari</span>
                         <div id="totalPriceDisplay" class="text-3xl sm:text-4xl font-black text-amber-400 mt-2 font-mono">Rp 2.780.000</div>
-                        <p id="calcNoteText" class="text-xs text-slate-400 mt-1">Estimasi untuk 4 orang peserta</p>
+                        <p id="calcNoteText" class="text-xs text-slate-400 mt-1">Perkiraan awal untuk 4 orang peserta</p>
                     </div>
 
                     <div class="space-y-3 text-xs text-slate-300">
@@ -571,11 +573,17 @@
                         </div>
                     </div>
 
+                    <!-- Disclaimer Homestay & Seasonality -->
+                    <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-[11px] text-slate-300 leading-relaxed flex items-start gap-2">
+                        <i data-lucide="info" class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5"></i>
+                        <span>Biaya akhir dapat menyesuaikan ketersediaan tipe kamar homestay (standar/VIP), musim liburan, dan kustomisasi rute Anda.</span>
+                    </div>
+
                     <button id="btnSendWa" class="w-full py-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider text-black bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 transition-all duration-300 shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer">
                         <i data-lucide="message-circle" class="w-4 h-4"></i>
-                        <span>Pesan via WhatsApp Resmi</span>
+                        <span>Konsultasi & Cek Homestay via WA</span>
                     </button>
-                    <p class="text-[11px] text-center text-slate-500">Pemesanan langsung terhubung ke Customer Service resmi {{ $settings->site_name }}.</p>
+                    <p class="text-[11px] text-center text-slate-400">Terhubung langsung dengan Admin Resmi {{ $settings->site_name }} untuk pengecekan slot kamar & tanggal.</p>
                 </div>
             </div>
         </div>
@@ -966,17 +974,16 @@
 
         const waTarget = "{{ preg_replace('/\D/', '', $settings->whatsapp_number) }}";
 
-        const text = `*HALO CS {{ $settings->site_name }} - RESERVASI PERJALANAN*
+        const text = `*HALO ADMIN {{ $settings->site_name }} - KONSULTASI PAKET DIENG*
 ----------------------------------------
-👤 *Nama Pemesan:* ${nameVal}
-📦 *Pilihan Paket:* ${pkgTitle} (${duration})
-👥 *Jumlah Peserta:* ${pax} Orang ${isJeep ? `(${unitsNeeded} Unit Jeep)` : ""}
-📍 *Titik Kumpul (Meeting Point):* ${meeting}
+👤 *Nama:* ${nameVal}
+📦 *Paket:* ${pkgTitle} (${duration})
+👥 *Peserta:* ${pax} Orang ${isJeep ? `(${unitsNeeded} Unit Jeep)` : ""}
+📍 *Titik Jemput:* ${meeting}
 📅 *Rencana Tanggal:* ${dateVal}
-💰 *Estimasi Total Biaya:* ${total}
-${notesVal ? `📝 *Catatan Khusus:* ${notesVal}` : ""}
-----------------------------------------
-Mohon konfirmasi ketersediaan jadwal dan panduan pembayaran resminya. Terima kasih! 🙏`;
+💰 *Estimasi di Web:* Mulai dari ${total}
+${notesVal ? `📝 *Catatan / Homestay:* ${notesVal}\n` : ""}----------------------------------------
+Saya ingin menanyakan ketersediaan slot armada dan kamar homestay untuk tanggal tersebut. Mohon dibantu informasinya, terima kasih! 🙏`;
 
         window.open(`https://wa.me/${waTarget}?text=${encodeURIComponent(text)}`, '_blank');
     });

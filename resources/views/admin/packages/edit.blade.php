@@ -135,7 +135,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Estimasi Tarif / Orang (Rp) <span class="text-amber-400">*</span>
+                            Tarif Mulai Dari (Rp) <span class="text-amber-400">*</span>
                         </label>
                         <input
                             type="number"
@@ -150,12 +150,13 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Catatan Skema Tarif <span class="text-amber-400">*</span>
+                            Catatan Skema Tarif & Homestay <span class="text-amber-400">*</span>
                         </label>
                         <input
                             type="text"
                             name="price_note"
                             value="{{ old('price_note', $package->price_note) }}"
+                            placeholder="Contoh: / orang (Min. 4 Pax • Konfirmasi via WA)"
                             required
                             class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
                         />

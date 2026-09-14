@@ -34,7 +34,7 @@
 
                 @php
                     $cleanWa = preg_replace('/\D/', '', $settings->whatsapp_number);
-                    $waText = urlencode("Halo Admin {$settings->site_name}, saya ingin konsultasi & reservasi {$package->title} untuk rencana perjalanan saya. Mohon informasi ketersediaan slot.");
+                    $waText = urlencode("Halo Admin {$settings->site_name}, saya melihat paket '{$package->title}' di website. Saya ingin menanyakan ketersediaan kamar homestay, slot armada, dan estimasi tarifnya untuk rencana perjalanan kami. Mohon informasinya, terima kasih! 🙏");
                     $waUrl = "https://wa.me/{$cleanWa}?text={$waText}";
                 @endphp
 
@@ -245,9 +245,9 @@
                 <!-- Kolom Kanan: Kartu Booking & Reservasi Langsung -->
                 <div class="lg:col-span-4 sticky top-24 space-y-6">
                     <div class="glass-panel p-6 sm:p-7 rounded-3xl border-2 border-amber-500/40 shadow-2xl shadow-amber-500/10 space-y-6 bg-gradient-to-b from-[#0e1526] to-[#090d16]">
-                        <!-- Label Harga -->
+                        <!-- Label Harga Mulai Dari -->
                         <div>
-                            <span class="text-xs font-semibold text-slate-400 block mb-1">Estimasi Tarif Program</span>
+                            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block mb-1">Tarif Mulai Dari</span>
                             <div class="flex items-baseline gap-1.5">
                                 <span class="font-serif text-3xl sm:text-4xl font-extrabold text-amber-400">
                                     {{ $package->formatted_price }}
@@ -258,8 +258,16 @@
                             </span>
                         </div>
 
+                        <!-- Info Konfirmasi Homestay & Tanggal -->
+                        <div class="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 text-xs text-slate-300 leading-relaxed flex items-start gap-2.5">
+                            <i data-lucide="info" class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5"></i>
+                            <span class="text-[11px]">
+                                <strong>Ketersediaan Homestay:</strong> Tarif tertera adalah estimasi awal. Ketersediaan kamar homestay/villa dan armada pada tanggal kunjungan Anda akan dikonfirmasi langsung oleh admin kami via WhatsApp.
+                            </span>
+                        </div>
+
                         <!-- Benefit Singkat -->
-                        <div class="space-y-2.5 py-4 border-y border-white/10 text-xs text-slate-300">
+                        <div class="space-y-2.5 py-3 border-y border-white/10 text-xs text-slate-300">
                             <div class="flex items-center gap-2">
                                 <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
                                 <span>Biro Perjalanan Berizin Resmi & Bergaransi</span>
@@ -283,10 +291,10 @@
                             <a
                                 href="{{ $waUrl }}"
                                 target="_blank"
-                                class="w-full py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
+                                class="w-full py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 text-center"
                             >
                                 <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                <span>Reservasi via WhatsApp Resmi</span>
+                                <span>Konsultasi & Cek Homestay via WA</span>
                             </a>
 
                             <a
@@ -294,7 +302,7 @@
                                 class="w-full py-3 px-4 rounded-2xl font-semibold text-xs text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center justify-center gap-2"
                             >
                                 <i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-400"></i>
-                                <span>Hitung Rincian di Kalkulator</span>
+                                <span>Simulator Estimasi Anggaran</span>
                             </a>
                         </div>
 
