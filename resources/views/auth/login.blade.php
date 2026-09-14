@@ -19,7 +19,7 @@
                 </div>
                 <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-2 flex items-center gap-1.5">
                     <i data-lucide="lock" class="w-3 h-3"></i>
-                    Akses Terbatas Pengelola (Laravel Breeze)
+                    Akses Terbatas Pengelola
                 </span>
                 <h1 class="font-serif text-2xl font-bold text-white tracking-wide">
                     Portal Administrator
