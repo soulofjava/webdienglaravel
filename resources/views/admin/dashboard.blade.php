@@ -185,12 +185,87 @@
                 </div>
             </div>
 
-            <!-- Kartu 2: Kontak & Pemesanan -->
+            <!-- Kartu 2: Profil Perusahaan, Visi & Misi (Resmi Klien) -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
+                <div class="flex items-center gap-2.5 border-b border-white/10 pb-4">
+                    <i data-lucide="compass" class="w-5 h-5 text-amber-400"></i>
+                    <div>
+                        <h2 class="font-bold text-base text-white">2. Profil Perusahaan, Visi & Misi</h2>
+                        <p class="text-xs text-slate-400">
+                            Narasi resmi biro wisata, sejarah berdiri, tujuan jangka panjang, serta komitmen pelayanan ke wisatawan
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400"></i>
+                                <span>Tentang Kami (Profil Singkat)</span>
+                            </span>
+                            <span class="text-[11px] font-normal text-slate-400">Tampil di beranda & profil biro</span>
+                        </label>
+                        <textarea
+                            name="about_us"
+                            rows="3"
+                            placeholder="Tiket Wisata Dieng adalah salah satu vendor lokal dan operator resmi wisata Dieng..."
+                            class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors leading-relaxed"
+                        >{{ old('about_us', $settings->about_us) }}</textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="history" class="w-3.5 h-3.5 text-purple-400"></i>
+                                <span>Sejarah Singkat & Tahun Berdiri</span>
+                            </span>
+                            <span class="text-[11px] font-normal text-slate-400">Didirikan 2022 di bawah PT. GOtrip Asia</span>
+                        </label>
+                        <textarea
+                            name="company_history"
+                            rows="3"
+                            placeholder="Tiket Wisata Dieng berdiri sejak tahun 2022 di bawah naungan resmi induk PT. GOtrip Asia Travelindo..."
+                            class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-purple-400 focus:outline-none transition-colors leading-relaxed"
+                        >{{ old('company_history', $settings->company_history) }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
+                                <i data-lucide="eye" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span>Visi Perusahaan (Tujuan Jangka Panjang)</span>
+                            </label>
+                            <textarea
+                                name="company_vision"
+                                rows="3"
+                                placeholder="Mempermudah pemesanan akomodasi dan transportasi wisata Dieng dengan aman..."
+                                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-emerald-400 focus:outline-none transition-colors leading-relaxed"
+                            >{{ old('company_vision', $settings->company_vision) }}</textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
+                                <i data-lucide="target" class="w-3.5 h-3.5 text-sky-400"></i>
+                                <span>Misi Perusahaan & Komitmen Layanan</span>
+                            </label>
+                            <textarea
+                                name="company_mission"
+                                rows="3"
+                                placeholder="Dengan pembagian tim profesional dari manajemen PT. GOtrip Asia Travelindo..."
+                                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-sky-400 focus:outline-none transition-colors leading-relaxed"
+                            >{{ old('company_mission', $settings->company_mission) }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu 3: Kontak & Pemesanan -->
             <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
                 <div class="flex items-center gap-2.5 border-b border-white/10 pb-4">
                     <i data-lucide="sliders-horizontal" class="w-5 h-5 text-emerald-400"></i>
                     <div>
-                        <h2 class="font-bold text-base text-white">2. Saluran Komunikasi & Reservasi</h2>
+                        <h2 class="font-bold text-base text-white">3. Saluran Komunikasi & Reservasi</h2>
                         <p class="text-xs text-slate-400">
                             Nomor WhatsApp dan telepon untuk kalkulator reservasi otomatis
                         </p>
@@ -248,12 +323,12 @@
                 </div>
             </div>
 
-            <!-- Kartu 3: Alamat & Legalitas -->
+            <!-- Kartu 4: Alamat & Legalitas -->
             <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
                 <div class="flex items-center gap-2.5 border-b border-white/10 pb-4">
                     <i data-lucide="map-pin" class="w-5 h-5 text-rose-400"></i>
                     <div>
-                        <h2 class="font-bold text-base text-white">3. Alamat Kantor & Legalitas Usaha</h2>
+                        <h2 class="font-bold text-base text-white">4. Alamat Kantor & Legalitas Usaha</h2>
                         <p class="text-xs text-slate-400">
                             Informasi terpercaya yang membangun kredibilitas bagi calon wisatawan
                         </p>
@@ -386,13 +461,13 @@
                 </div>
             </div>
 
-            <!-- Kartu 4: Optimasi SEO & Social Media Share -->
+            <!-- Kartu 5: Optimasi SEO & Social Media Share -->
             <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
                 <div class="flex items-center gap-2.5 border-b border-white/10 pb-4">
                     <i data-lucide="search" class="w-5 h-5 text-sky-400"></i>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h2 class="font-bold text-base text-white">4. Optimasi Mesin Pencari & Sosial Media (SEO)</h2>
+                            <h2 class="font-bold text-base text-white">5. Optimasi Mesin Pencari & Sosial Media (SEO)</h2>
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
                                 GOOGLE & MEDSOS
                             </span>
