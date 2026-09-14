@@ -51,21 +51,14 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <!-- Brand Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-600 to-emerald-700 flex items-center justify-center p-0.5 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-                    <div class="w-full h-full bg-[#090d16] rounded-[10px] flex items-center justify-center">
-                        <i data-lucide="compass" class="w-5 h-5 text-amber-400 group-hover:rotate-45 transition-transform duration-500"></i>
-                    </div>
-                </div>
-                <div>
+                <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}" alt="{{ $settings->site_name }}" class="h-8 w-auto object-contain brightness-110">
+                <div class="hidden sm:block border-l border-white/10 pl-3">
                     <div class="flex items-center gap-1.5">
-                        <span class="font-serif tracking-wider text-lg font-bold bg-gradient-to-r from-amber-200 via-white to-amber-300 bg-clip-text text-transparent">
-                            {{ $settings->site_name }}
-                        </span>
                         <span class="text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                            RESMI
+                            {{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}
                         </span>
                     </div>
-                    <p class="text-[10px] text-slate-400 tracking-wider hidden sm:block">{{ $settings->site_tagline }}</p>
+                    <p class="text-[10px] text-slate-400 tracking-wider">Akomodasi & Transportasi Wisata</p>
                 </div>
             </a>
 

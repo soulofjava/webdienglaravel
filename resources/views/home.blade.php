@@ -58,21 +58,14 @@
             <div class="flex items-center justify-between">
                 <!-- Brand Logo -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-600 to-emerald-700 flex items-center justify-center p-0.5 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-                        <div class="w-full h-full bg-[#090d16] rounded-[10px] flex items-center justify-center">
-                            <i data-lucide="compass" class="w-5 h-5 text-amber-400 group-hover:rotate-45 transition-transform duration-500"></i>
-                        </div>
-                    </div>
-                    <div>
+                    <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}" alt="{{ $settings->site_name }}" class="h-8 sm:h-9 w-auto object-contain brightness-110 drop-shadow">
+                    <div class="hidden sm:block border-l border-white/10 pl-3">
                         <div class="flex items-center gap-1.5">
-                            <span class="font-serif tracking-wider text-xl font-bold bg-gradient-to-r from-amber-200 via-white to-amber-300 bg-clip-text text-transparent">
-                                {{ $settings->site_name }}
-                            </span>
                             <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                RESMI
+                                {{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}
                             </span>
                         </div>
-                        <p class="text-[10px] text-slate-400 tracking-wider hidden sm:block">{{ $settings->site_tagline }}</p>
+                        <p class="text-[10px] text-slate-400 tracking-wider">Akomodasi & Transportasi Wisata Dieng</p>
                     </div>
                 </a>
 
@@ -487,52 +480,64 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5 text-amber-400">
-                    <i data-lucide="compass" class="w-6 h-6"></i>
-                </div>
-                <h3 class="font-bold text-base text-white mb-2">Putra Daerah Asli Dieng</h3>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Seluruh pemandu kami lahir dan besar di dataran tinggi Dieng. Sangat memahami rahasia cuaca, sudut foto terbaik, dan kearifan sejarah lokal.</p>
-            </div>
-
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-2xl bg-sky-500/10 flex items-center justify-center mb-5 text-sky-400">
+            <!-- 1. LIVE VIDEO CALL INSPECTION (FITUR UNGGULAN KLIEN) -->
+            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-amber-500/30 bg-amber-500/5 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-5 text-amber-400">
                     <i data-lucide="video" class="w-6 h-6"></i>
                 </div>
-                <h3 class="font-bold text-base text-white mb-2">Dokumentasi Drone & Kamera Gratis</h3>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Dapatkan rekaman sinematik berkualitas 4K tanpa biaya ekstra. Siap dibagikan langsung di media sosial Instagram & TikTok pribadi Anda.</p>
+                <div class="inline-block px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold uppercase tracking-wider mb-2">Transparansi 100%</div>
+                <h3 class="font-bold text-base text-white mb-2">Cek Penginapan via Video Call</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Satu-satunya biro wisata yang memberikan fasilitas pemilihan transportasi dan akomodasi langsung via Live Video Call ke lokasi sebelum Anda memutuskan booking.</p>
             </div>
 
+            <!-- 2. LEGALITAS RESMI PT GOTRIP ASIA -->
             <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
                 <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 text-emerald-400">
                     <i data-lucide="shield-check" class="w-6 h-6"></i>
                 </div>
-                <h3 class="font-bold text-base text-white mb-2">Garansi Tiket VIP Bebas Antre</h3>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Seluruh tiket masuk destinasi telah kami siapkan di muka. Tidak perlu membuang waktu mengantre di loket wisata yang ramai.</p>
+                <div class="inline-block px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider mb-2">Legalitas Hukum NIB</div>
+                <h3 class="font-bold text-base text-white mb-2">PT. GOTRIP ASIA TRAVELINDO</h3>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Berbadan hukum resmi terdaftar dengan izin NIB dan rekening operasional perusahaan BNI Cabang Wonosobo. Bebas dari penipuan travel bodong.</p>
             </div>
 
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-5 text-orange-400">
-                    <i data-lucide="coffee" class="w-6 h-6"></i>
-                </div>
-                <h3 class="font-bold text-base text-white mb-2">Kuliner Autentik Khas Dieng</h3>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Nikmati Mie Ongklok legendaris Wonosobo, tempe kemul hangat gurih, seduhan purwaceng penghangat tubuh, dan manisan carica segar.</p>
-            </div>
-
+            <!-- 3. CREW ASLI LOKAL BERLISENSI HPI -->
             <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
                 <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-5 text-purple-400">
-                    <i data-lucide="heart-handshake" class="w-6 h-6"></i>
-                </div>
-                <h3 class="font-bold text-base text-white mb-2">Layanan Eksekutif Ramah</h3>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Armada kendaraan bersih ber-AC terawat, fasilitas selimut di mobil, air mineral tanpa batas, serta keramahan masyarakat pegunungan.</p>
-            </div>
-
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-5 text-rose-400">
                     <i data-lucide="award" class="w-6 h-6"></i>
                 </div>
-                <h3 class="font-bold text-base text-white mb-2">Legalitas Biro Wisata Resmi</h3>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Operasional berizin NIB resmi dengan lisensi Himpunan Pramuwisata Indonesia (HPI) untuk memastikan keselamatan setiap tamu.</p>
+                <div class="inline-block px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px] font-bold uppercase tracking-wider mb-2">Lisensi Resmi HPI</div>
+                <h3 class="font-bold text-base text-white mb-2">Pemandu Lokal Berpengalaman</h3>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Seluruh tim adalah putra daerah Dieng berlisensi resmi HPI yang ramah, memahami sudut foto terbaik, serta menguasai sejarah geologi purba candi Dieng.</p>
+            </div>
+
+            <!-- 4. VENDOR ARMADA RESMI (JEEP & SHUTTLE) -->
+            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 rounded-2xl bg-sky-500/10 flex items-center justify-center mb-5 text-sky-400">
+                    <i data-lucide="car" class="w-6 h-6"></i>
+                </div>
+                <div class="inline-block px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[10px] font-bold uppercase tracking-wider mb-2">Vendor Langsung</div>
+                <h3 class="font-bold text-base text-white mb-2">Armada Jeep & Shuttle 15 Seat</h3>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Vendor langsung unit Jeep 4x4 (Feroza/Katana) dan Shuttle Bis Wisata kapasitas 15 penumpang ber-AC. Tanpa perantara calo dengan tarif resmi 2026.</p>
+            </div>
+
+            <!-- 5. KONSULTASI ITINERARY BEBAS SAMPAI JADI -->
+            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-5 text-orange-400">
+                    <i data-lucide="map" class="w-6 h-6"></i>
+                </div>
+                <div class="inline-block px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 text-[10px] font-bold uppercase tracking-wider mb-2">Custom Itinerary</div>
+                <h3 class="font-bold text-base text-white mb-2">Penyusunan Rute Fleksibel</h3>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Layanan konsultasi gratis untuk menyusun jadwal perjalanan, menghitung simulasi anggaran rombongan, dan memilih destinasi terbaik sesuai minat Anda.</p>
+            </div>
+
+            <!-- 6. DOKUMENTASI PRO & DRONE 4K -->
+            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-5 text-rose-400">
+                    <i data-lucide="camera" class="w-6 h-6"></i>
+                </div>
+                <div class="inline-block px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold uppercase tracking-wider mb-2">Dokumentasi Estetik</div>
+                <h3 class="font-bold text-base text-white mb-2">Kamera Mirrorless & Drone 4K</h3>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">Tersedia layanan fotografer dan pilot drone profesional. Hasil foto yang di-grading estetik dan video cinematic reels yang siap posting di media sosial.</p>
             </div>
         </div>
     </section>
@@ -801,22 +806,15 @@
     <footer class="bg-[#04060a] border-t border-white/10 text-slate-400 text-xs pt-16 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
-                <!-- Col 1: Brand & Tagline -->
+                <!-- Col 1: Brand & Legalitas -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center p-0.5 shadow-md shadow-amber-500/20">
-                            <div class="w-full h-full bg-[#090d16] rounded-[10px] flex items-center justify-center">
-                                <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
-                            </div>
-                        </div>
-                        <span class="font-serif tracking-wider text-xl font-bold text-white">
-                            {{ $settings->site_name }}
-                        </span>
+                        <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}" alt="{{ $settings->site_name }}" class="h-9 w-auto object-contain brightness-110">
                     </div>
                     <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
-                        {{ $settings->site_tagline }}. Kami menghadirkan standar liburan eksekutif berbalut narasi magis alam dan kebudayaan para dewa.
+                        {{ $settings->site_tagline }}. Bagian resmi dari <strong class="text-white">{{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}</strong>. Menghadirkan kemudahan reservasi akomodasi, sewa jeep, shuttle, dokumentasi sinematik, dan outbound profesional di Dieng.
                     </p>
-                    <div class="flex items-center gap-3 pt-2">
+                    <div class="flex flex-wrap items-center gap-2 pt-2">
                         <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] text-amber-300 font-semibold">
                             {{ $settings->legal_nib }}
                         </span>
@@ -824,29 +822,59 @@
                             {{ $settings->hpi_badge }}
                         </span>
                     </div>
+
+                    <!-- Rekening Resmi Perusahaan -->
+                    <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 space-y-1 mt-3">
+                        <div class="text-[10px] uppercase font-bold tracking-wider text-amber-400 flex items-center gap-1.5">
+                            <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+                            <span>Rekening Resmi Pembayaran:</span>
+                        </div>
+                        <p class="text-xs font-mono font-bold text-white tracking-wider">BNI: 8166754042</p>
+                        <p class="text-[11px] text-slate-400">a.n. PT. GOTRIP ASIA TRAVELINDO (Cab. Wonosobo)</p>
+                    </div>
+
+                    <!-- Social Media Links -->
+                    <div class="flex items-center gap-3 pt-2 text-slate-400">
+                        <a href="https://www.instagram.com/tiketwisatadieng?stkn=MWpxamRlbjkxd3I1Yg==" target="_blank" class="hover:text-pink-400 transition-colors flex items-center gap-1.5 text-xs">
+                            <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+                            <span>@tiketwisatadieng</span>
+                        </a>
+                        <span>•</span>
+                        <a href="https://tiktok.com/@tiketdieng.com" target="_blank" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 text-xs">
+                            <i data-lucide="video" class="w-4 h-4 text-cyan-400"></i>
+                            <span>TikTok</span>
+                        </a>
+                        <span>•</span>
+                        <a href="https://www.facebook.com/share/1Hj4SzNUzH/" target="_blank" class="hover:text-blue-400 transition-colors flex items-center gap-1.5 text-xs">
+                            <i data-lucide="facebook" class="w-4 h-4 text-blue-400"></i>
+                            <span>Facebook</span>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Col 2: Destinasi Ikonik -->
                 <div>
-                    <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-4">Destinasi Ikonik</h4>
+                    <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-4">Destinasi Populer</h4>
                     <ul class="space-y-2.5">
                         <li><a href="#sikunir" class="hover:text-amber-400 transition-colors">Golden Sunrise Sikunir</a></li>
                         <li><a href="#sikidang" class="hover:text-amber-400 transition-colors">Kawah Sikidang Purba</a></li>
                         <li><a href="#telagawarna" class="hover:text-amber-400 transition-colors">Telaga Warna & Pengilon</a></li>
                         <li><a href="#candi-arjuna" class="hover:text-amber-400 transition-colors">Kompleks Candi Arjuna</a></li>
-                        <li><a href="#jeep" class="hover:text-amber-400 transition-colors">Safari Jip Telaga Dringo</a></li>
+                        <li><a href="#jeep" class="hover:text-amber-400 transition-colors">Safari Jeep Telaga Dringo</a></li>
+                        <li><a href="#menjer" class="hover:text-amber-400 transition-colors">Telaga Menjer & Kahyangan</a></li>
                     </ul>
                 </div>
 
-                <!-- Col 3: Titik Penjemputan -->
+                <!-- Col 3: Layanan & Produk -->
                 <div>
-                    <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-4">Titik Penjemputan</h4>
+                    <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-4">Layanan Vendor</h4>
                     <ul class="space-y-2.5">
-                        <li>Stasiun Purwokerto (PWT)</li>
-                        <li>Bandara / Stasiun Tugu Yogyakarta</li>
-                        <li>Stasiun Tawang Semarang</li>
-                        <li>Terminal Mendolo Wonosobo</li>
-                        <li>Alun-Alun Wonosobo</li>
+                        <li>Jeep Wisata Dieng 4x4</li>
+                        <li>Shuttle Bus Wisata 15 Seat</li>
+                        <li>Reservasi Villa & Homestay</li>
+                        <li>Paket Outbound & Gathering</li>
+                        <li>Jasa Dokumentasi & Drone 4K</li>
+                        <li>Pemandu Wisata Resmi HPI</li>
                     </ul>
                 </div>
 
@@ -856,21 +884,21 @@
                     <ul class="space-y-3">
                         <li class="flex items-start gap-2.5">
                             <i data-lucide="map-pin" class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                            <span>{{ $settings->address }}</span>
+                            <span>{{ $settings->address ?? 'Jl. Masjid Baitul Nikmah B1, Wonosobo 56351' }}</span>
                         </li>
                         <li class="flex items-center gap-2.5">
                             <i data-lucide="phone" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-                            <span class="text-white font-medium">{{ $settings->phone_number }}</span>
+                            <span class="text-white font-medium">{{ $settings->phone_number ?? '0816675404' }}</span>
                         </li>
                         <li class="flex items-center gap-2.5">
                             <i data-lucide="message-circle" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
                             <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings->whatsapp_number) }}" target="_blank" class="hover:text-amber-400 transition-colors">
-                                WhatsApp Layanan 24 Jam
+                                WhatsApp: {{ $settings->whatsapp_number }}
                             </a>
                         </li>
                         <li class="flex items-center gap-2.5">
                             <i data-lucide="mail" class="w-4 h-4 text-sky-400 flex-shrink-0"></i>
-                            <span>{{ $settings->email }}</span>
+                            <span>{{ $settings->email ?? 'tiket.wisatadieng@gmail.com' }}</span>
                         </li>
                     </ul>
                 </div>

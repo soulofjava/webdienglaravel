@@ -36,10 +36,14 @@ class AdminSettingController extends Controller
         $validated = $request->validate([
             'site_name' => 'required|string|max:100',
             'site_tagline' => 'required|string|max:200',
+            'company_name' => 'nullable|string|max:150',
             'whatsapp_number' => 'required|string|max:30',
             'phone_number' => 'required|string|max:30',
             'email' => 'required|email|max:100',
             'address' => 'required|string|max:500',
+            'bank_name' => 'nullable|string|max:100',
+            'bank_account_number' => 'nullable|string|max:50',
+            'bank_account_name' => 'nullable|string|max:100',
             'legal_nib' => 'nullable|string|max:100',
             'hpi_badge' => 'nullable|string|max:100',
             'favicon_url' => 'nullable|string|max:255',
@@ -47,6 +51,9 @@ class AdminSettingController extends Controller
             'seo_description' => 'nullable|string|max:500',
             'seo_keywords' => 'nullable|string|max:500',
             'og_image_url' => 'nullable|string|max:255',
+            'instagram_url' => 'nullable|string|max:255',
+            'tiktok_url' => 'nullable|string|max:255',
+            'facebook_url' => 'nullable|string|max:255',
         ]);
 
         $settings = SiteSetting::getSettings();

@@ -169,6 +169,19 @@
                     </div>
 
                     <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Nama Perusahaan / Badan Hukum Resmi
+                        </label>
+                        <input
+                            type="text"
+                            name="company_name"
+                            value="{{ old('company_name', $settings->company_name) }}"
+                            placeholder="PT. GOTRIP ASIA TRAVELINDO"
+                            class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors"
+                        />
+                    </div>
+
+                    <div class="sm:col-span-2">
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
                             <span class="flex items-center gap-1.5">
                                 <i data-lucide="upload-cloud" class="w-3.5 h-3.5 text-amber-400"></i>
@@ -346,6 +359,86 @@
                                 placeholder="Contoh: Anggota Resmi HPI Dieng"
                                 class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-emerald-400 focus:outline-none transition-colors"
                             />
+                        </div>
+                    </div>
+
+                    <!-- Informasi Rekening Bank Perusahaan -->
+                    <div class="pt-4 border-t border-white/10">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="credit-card" class="w-4 h-4"></i>
+                            <span>Rekening Resmi Pembayaran / Reservasi</span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Nama Bank & Cabang</label>
+                                <input
+                                    type="text"
+                                    name="bank_name"
+                                    value="{{ old('bank_name', $settings->bank_name) }}"
+                                    placeholder="BNI Cabang Wonosobo"
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Nomor Rekening</label>
+                                <input
+                                    type="text"
+                                    name="bank_account_number"
+                                    value="{{ old('bank_account_number', $settings->bank_account_number) }}"
+                                    placeholder="8166754042"
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-mono focus:border-amber-400 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Atas Nama Rekening</label>
+                                <input
+                                    type="text"
+                                    name="bank_account_name"
+                                    value="{{ old('bank_account_name', $settings->bank_account_name) }}"
+                                    placeholder="PT. GOTRIP ASIA TRAVELINDO"
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tautan Media Sosial Resmi -->
+                    <div class="pt-4 border-t border-white/10">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="share-2" class="w-4 h-4"></i>
+                            <span>Akun Media Sosial Resmi</span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Instagram URL</label>
+                                <input
+                                    type="text"
+                                    name="instagram_url"
+                                    value="{{ old('instagram_url', $settings->instagram_url) }}"
+                                    placeholder="https://www.instagram.com/..."
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-sky-400 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">TikTok URL</label>
+                                <input
+                                    type="text"
+                                    name="tiktok_url"
+                                    value="{{ old('tiktok_url', $settings->tiktok_url) }}"
+                                    placeholder="https://tiktok.com/@..."
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-sky-400 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Facebook URL</label>
+                                <input
+                                    type="text"
+                                    name="facebook_url"
+                                    value="{{ old('facebook_url', $settings->facebook_url) }}"
+                                    placeholder="https://www.facebook.com/..."
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-sky-400 focus:outline-none"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
