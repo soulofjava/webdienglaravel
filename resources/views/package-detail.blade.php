@@ -444,10 +444,6 @@
                 <span>© {{ date('Y') }} Hak Cipta Dilindungi Undang-Undang</span>
                 <span>•</span>
                 <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
-                <span>•</span>
-                <span>Didukung Laravel 13 & MySQL</span>
-                <span>•</span>
-                <a href="{{ route('admin.login') }}" class="text-amber-400/80 hover:text-amber-300">Akses Pengelola</a>
             </div>
         </div>
     </footer>

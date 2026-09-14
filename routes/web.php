@@ -64,6 +64,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'update' => 'admin.packages.update',
         'destroy' => 'admin.packages.destroy',
     ]);
+
+    // CRUD Master Data Comcodes (Dropdown Lookup)
+    Route::resource('comcodes', \App\Http\Controllers\AdminComcodeController::class)->names([
+        'index' => 'admin.comcodes.index',
+        'create' => 'admin.comcodes.create',
+        'store' => 'admin.comcodes.store',
+        'show' => 'admin.comcodes.show',
+        'edit' => 'admin.comcodes.edit',
+        'update' => 'admin.comcodes.update',
+        'destroy' => 'admin.comcodes.destroy',
+    ]);
 });
 
 // Profil Bawaan Breeze

@@ -95,42 +95,72 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Kategori Tour <span class="text-amber-400">*</span>
-                        </label>
-                        <input
-                            type="text"
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-semibold text-slate-300">
+                                Kategori Tour <span class="text-amber-400">*</span>
+                            </label>
+                            <a href="{{ route('admin.comcodes.index', ['group' => 'package_category']) }}" target="_blank" class="text-[10px] text-sky-400 hover:text-sky-300 flex items-center gap-1">
+                                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+                                <span>Kelola Kategori</span>
+                            </a>
+                        </div>
+                        <select
                             name="category"
-                            value="{{ old('category', $package->category) }}"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
-                        />
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#090d16] border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none cursor-pointer"
+                        >
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->code_value }}" {{ old('category', $package->category) == $cat->code_value ? 'selected' : '' }}>
+                                    {{ $cat->code_name }} ({{ $cat->code_value }})
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Durasi Program <span class="text-amber-400">*</span>
-                        </label>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-semibold text-slate-300">
+                                Durasi Program <span class="text-amber-400">*</span>
+                            </label>
+                            <span class="text-[10px] text-slate-400">Pilih atau ketik kustom</span>
+                        </div>
                         <input
+                            list="duration_list"
                             type="text"
                             name="duration"
                             value="{{ old('duration', $package->duration) }}"
+                            placeholder="Pilih dari daftar atau ketik durasi kustom"
                             required
                             class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
                         />
+                        <datalist id="duration_list">
+                            @foreach($durations as $dur)
+                                <option value="{{ $dur->code_value }}">{{ $dur->code_name }}</option>
+                            @endforeach
+                        </datalist>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Titik Penjemputan <span class="text-amber-400">*</span>
-                        </label>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-semibold text-slate-300">
+                                Titik Penjemputan <span class="text-amber-400">*</span>
+                            </label>
+                            <span class="text-[10px] text-slate-400">Pilih atau ketik kustom</span>
+                        </div>
                         <input
+                            list="pickup_list"
                             type="text"
                             name="pickup_location"
                             value="{{ old('pickup_location', $package->pickup_location) }}"
+                            placeholder="Pilih dari daftar atau ketik titik penjemputan"
                             required
                             class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
                         />
+                        <datalist id="pickup_list">
+                            @foreach($pickupLocations as $loc)
+                                <option value="{{ $loc->code_value }}">{{ $loc->code_name }}</option>
+                            @endforeach
+                        </datalist>
                     </div>
 
                     <div>
@@ -163,16 +193,26 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Badge Label (Opsional)
-                        </label>
-                        <input
-                            type="text"
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-semibold text-slate-300">
+                                Badge Label (Opsional)
+                            </label>
+                            <a href="{{ route('admin.comcodes.index', ['group' => 'package_badge']) }}" target="_blank" class="text-[10px] text-sky-400 hover:text-sky-300 flex items-center gap-1">
+                                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+                                <span>Kelola Badge</span>
+                            </a>
+                        </div>
+                        <select
                             name="badge"
-                            value="{{ old('badge', $package->badge) }}"
-                            placeholder="Contoh: Best Seller, Favorit, Hemat"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
-                        />
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#090d16] border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none cursor-pointer"
+                        >
+                            <option value="">-- Tanpa Badge Label --</option>
+                            @foreach($badges as $b)
+                                <option value="{{ $b->code_value }}" {{ old('badge', $package->badge) == $b->code_value ? 'selected' : '' }}>
+                                    {{ $b->code_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div>

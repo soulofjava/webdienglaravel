@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comcode;
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
 use Illuminate\Http\Request;
@@ -30,7 +31,11 @@ class AdminPackageController extends Controller
         }
 
         $packages = $query->paginate(10)->withQueryString();
-        $categories = TourPackage::select('category')->distinct()->pluck('category');
+        
+        $categories = Comcode::getCategories()->pluck('code_value');
+        if ($categories->isEmpty()) {
+            $categories = TourPackage::select('category')->distinct()->pluck('category');
+        }
 
         return view('admin.packages.index', compact('packages', 'settings', 'categories'));
     }
@@ -38,7 +43,12 @@ class AdminPackageController extends Controller
     public function create()
     {
         $settings = SiteSetting::getSettings();
-        return view('admin.packages.create', compact('settings'));
+        $categories = Comcode::getCategories();
+        $badges = Comcode::getBadges();
+        $durations = Comcode::getDurations();
+        $pickupLocations = Comcode::getPickupLocations();
+
+        return view('admin.packages.create', compact('settings', 'categories', 'badges', 'durations', 'pickupLocations'));
     }
 
     public function store(Request $request)
@@ -123,7 +133,12 @@ class AdminPackageController extends Controller
     public function edit(TourPackage $package)
     {
         $settings = SiteSetting::getSettings();
-        return view('admin.packages.edit', compact('package', 'settings'));
+        $categories = Comcode::getCategories();
+        $badges = Comcode::getBadges();
+        $durations = Comcode::getDurations();
+        $pickupLocations = Comcode::getPickupLocations();
+
+        return view('admin.packages.edit', compact('package', 'settings', 'categories', 'badges', 'durations', 'pickupLocations'));
     }
 
     public function update(Request $request, TourPackage $package)

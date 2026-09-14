@@ -78,26 +78,18 @@
                     <a href="#kalkulator" class="hover:text-amber-400 transition-colors">Kalkulator Biaya</a>
                 </nav>
 
-                <!-- Right Section: Live Weather, Search & CTA -->
-                <div class="hidden lg:flex items-center gap-3">
-                    <!-- Live Weather Dieng HUD (Open-Meteo Real-Time) -->
-                    <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300">
-                        <i data-lucide="cloud-fog" class="w-4 h-4 text-sky-400 animate-pulse"></i>
-                        <span id="diengWeatherText">
-                            Dieng: <strong class="text-white font-semibold" id="diengTemp">11°C</strong> • <span id="diengCondition">Kabut Sejuk</span>
-                        </span>
-                    </div>
-
+                <!-- Right Section: Search & CTA -->
+                <div class="hidden md:flex items-center gap-3">
                     <!-- Tombol Spotlight Search Desktop -->
                     <button 
                         type="button"
                         onclick="window.openSpotlightSearch()"
-                        class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-500/40 text-xs text-slate-300 hover:text-white transition-all group"
+                        class="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-500/40 text-xs text-slate-300 hover:text-white transition-all group cursor-pointer"
                         title="Pencarian Cepat Paket Wisata (Ctrl+K)"
                     >
                         <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400 transition-colors"></i>
-                        <span class="hidden xl:inline text-[11px] text-slate-400 group-hover:text-slate-200">Cari paket...</span>
-                        <kbd class="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-white/5 rounded border border-white/10">⌘K</kbd>
+                        <span class="text-[11px] text-slate-400 group-hover:text-slate-200">Cari paket...</span>
+                        <kbd class="inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-white/5 rounded border border-white/10">⌘K</kbd>
                     </button>
 
                     <!-- CTA Button -->
@@ -183,10 +175,26 @@
 
         <!-- Editorial Hero Content -->
         <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-            <!-- Badge Resmi -->
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wider uppercase mb-6 shadow-lg shadow-amber-500/10">
-                <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
-                <span>{{ $settings->hpi_badge ?? 'Biro Wisata Resmi Berizin HPI' }}</span>
+            <!-- Top Badges: HPI License & Live Dieng Atmosphere -->
+            <div class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mb-6">
+                <!-- Badge Resmi HPI -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wider uppercase shadow-lg shadow-amber-500/10">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+                    <span>{{ $settings->hpi_badge ?? 'Biro Wisata Resmi Berizin HPI' }}</span>
+                </div>
+
+                <!-- Live Weather Dieng Atmospheric Pill -->
+                <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass-panel border border-sky-400/25 bg-sky-950/20 text-slate-200 text-xs shadow-lg shadow-sky-500/5 backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <i data-lucide="cloud-sun" class="w-4 h-4 text-sky-400"></i>
+                    <span class="text-slate-300">
+                        Live Dieng: <strong class="text-white font-bold tracking-tight" id="diengTemp">18°C</strong> • <span id="diengCondition" class="text-sky-300 font-medium">Cerah Sejuk</span>
+                    </span>
+                    <span class="hidden sm:inline text-[10px] text-slate-400 border-l border-white/10 pl-2">2.093 mdpl</span>
+                </div>
             </div>
 
             <!-- Title Sinematik -->
@@ -910,10 +918,6 @@
                 <p>© {{ date('Y') }} {{ $settings->site_name }}. Hak cipta dilindungi undang-undang.</p>
                 <div class="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px]">
                     <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
-                    <span>•</span>
-                    <span>Didukung Laravel 13 & MySQL</span>
-                    <span>•</span>
-                    <a href="{{ route('admin.login') }}" class="text-amber-400/80 hover:text-amber-300">Akses Pengelola</a>
                 </div>
             </div>
         </div>
@@ -948,20 +952,24 @@
         const cacheTimeKey = 'dieng_weather_time';
         const cacheDuration = 15 * 60 * 1000;
 
+        const tempEl = document.getElementById('diengTemp');
+        const condEl = document.getElementById('diengCondition');
+        if (!tempEl || !condEl) return;
+
         try {
             const cached = sessionStorage.getItem(cacheKey);
             const cachedTime = sessionStorage.getItem(cacheTimeKey);
             if (cached && cachedTime && (Date.now() - parseInt(cachedTime)) < cacheDuration) {
                 const w = JSON.parse(cached);
-                document.getElementById('diengTemp').innerText = w.temp + '°C';
-                document.getElementById('diengCondition').innerText = w.condition;
+                tempEl.innerText = w.temp + '°C';
+                condEl.innerText = w.condition;
                 return;
             }
 
             const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-7.2062&longitude=109.9015&current=temperature_2m,relative_humidity_2m,weather_code&timezone=Asia%2FJakarta');
             if (res.ok) {
                 const data = await res.json();
-                const temp = Math.round(data.current?.temperature_2m ?? 11);
+                const temp = Math.round(data.current?.temperature_2m ?? 18);
                 const code = data.current?.weather_code ?? 0;
                 let condition = "Sejuk Berawan";
                 if (code === 0) condition = "Cerah Sejuk";
@@ -970,8 +978,8 @@
                 else if (code <= 48) condition = "Kabut Dingin";
                 else if (code <= 65) condition = "Hujan Dingin";
 
-                document.getElementById('diengTemp').innerText = temp + '°C';
-                document.getElementById('diengCondition').innerText = condition;
+                tempEl.innerText = temp + '°C';
+                condEl.innerText = condition;
 
                 sessionStorage.setItem(cacheKey, JSON.stringify({ temp, condition }));
                 sessionStorage.setItem(cacheTimeKey, Date.now().toString());

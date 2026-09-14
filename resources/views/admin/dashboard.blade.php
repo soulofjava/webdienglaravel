@@ -4,69 +4,11 @@
 
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">
-    <!-- Header Panel Pengelola -->
-    <header class="border-b border-white/10 bg-[#090d16]/90 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-                        <i data-lucide="compass" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-serif text-base sm:text-lg font-bold text-white tracking-wide">
-                                Panel Pengelola {{ $settings->site_name }}
-                            </h1>
-                        </div>
-                        <p class="text-xs text-slate-400 hidden sm:block">
-                            Pengelolaan identitas biro wisata, kontak, legalitas usaha, dan optimasi SEO
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Status Pengelola & Aksi -->
-            <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-slate-400 text-[11px]">Admin:</span>
-                    <span class="font-semibold text-white">{{ Auth::user()->email }}</span>
-                </div>
-
-                <a
-                    href="{{ route('admin.packages.index') }}"
-                    class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-300 hover:text-amber-200 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 transition-colors"
-                >
-                    <i data-lucide="compass" class="w-3.5 h-3.5"></i>
-                    <span>Kelola Paket Wisata</span>
-                </a>
-
-                <a
-                    href="{{ route('home') }}"
-                    target="_blank"
-                    class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
-                >
-                    <span>Lihat Situs Web</span>
-                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                </a>
-
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button
-                        type="submit"
-                        class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-red-300 hover:text-red-200 bg-red-500/10 hover:bg-red-500/20 border border-red-500/25 transition-colors cursor-pointer"
-                        title="Keluar dari sesi pengelola"
-                    >
-                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-                        <span>Keluar</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </header>
+    <!-- Header Navigasi Terpadu -->
+    <x-admin-nav :settings="$settings" subtitle="Pengaturan Identitas Biro, Kontak, Legalitas & SEO" />
 
     <!-- Konten Utama Panel -->
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-8 py-8 space-y-8">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <!-- Notifikasi Sukses / Error -->
         @if (session('success'))
             <div class="p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs sm:text-sm flex items-center gap-3">
@@ -658,7 +600,7 @@
 
         <!-- Form Reset Default Terpisah -->
         <div class="pt-4 border-t border-white/10 flex justify-end">
-            <form action="{{ route('admin.settings.reset') }}" method="POST" onsubmit="return confirm('Kembalikan seluruh pengaturan situs ke konfigurasi awal bawaan?');">
+            <form action="{{ route('admin.settings.reset') }}" method="POST" onsubmit="return window.confirmDelete ? window.confirmDelete(event, 'Pengaturan Situs', 'Seluruh konfigurasi kontak, nama perusahaan, dan legalitas akan dikembalikan ke data awal bawaan.') : confirm('Kembalikan ke pengaturan awal bawaan?');">
                 @csrf
                 <button
                     type="submit"
