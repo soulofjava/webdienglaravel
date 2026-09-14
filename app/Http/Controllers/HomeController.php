@@ -18,13 +18,20 @@ class HomeController extends Controller
         $this->recordVisitor($request);
         $visitorStats = $this->getStats();
 
-        // Mengambil seluruh paket aktif menggunakan composite index (idx_active_sort_id)
+        // Mengambil paket tour wisata aktif
         $packages = TourPackage::where('is_active', true)
+            ->where('category', '!=', 'Dokumentasi')
             ->orderBy('sort_order', 'asc')
             ->orderBy('id', 'asc')
             ->get();
 
-        return view('home', compact('settings', 'visitorStats', 'packages'));
+        // Mengambil paket dokumentasi foto & drone resmi Lotus Creative
+        $docPackages = TourPackage::where('is_active', true)
+            ->where('category', 'Dokumentasi')
+            ->orderBy('sort_order', 'asc')
+            ->get();
+
+        return view('home', compact('settings', 'visitorStats', 'packages', 'docPackages'));
     }
 
     public function showPackage(Request $request, $slug)
