@@ -1,5 +1,54 @@
 @extends('layouts.app')
 
+@section('schema_json')
+@php
+    $homeSchemaData = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            [
+                '@type' => 'WebSite',
+                '@id' => url('/') . '/#website',
+                'url' => url('/'),
+                'name' => $settings->site_name,
+                'description' => $settings->site_tagline,
+                'inLanguage' => 'id-ID',
+            ],
+            [
+                '@type' => 'TravelAgency',
+                '@id' => url('/') . '/#agency',
+                'name' => $settings->site_name,
+                'url' => url('/'),
+                'logo' => $settings->favicon_url ?: asset('favicon.ico'),
+                'image' => $settings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop',
+                'description' => $settings->seo_description ?: $settings->site_tagline,
+                'telephone' => $settings->phone_number,
+                'priceRange' => 'Rp 325.000 - Rp 1.500.000',
+                'address' => [
+                    '@type' => 'PostalAddress',
+                    'streetAddress' => $settings->address,
+                    'addressLocality' => 'Wonosobo',
+                    'addressRegion' => 'Jawa Tengah',
+                    'postalCode' => '56354',
+                    'addressCountry' => 'ID',
+                ],
+                'geo' => [
+                    '@type' => 'GeoCoordinates',
+                    'latitude' => -7.2056,
+                    'longitude' => 109.9078,
+                ],
+                'areaServed' => [
+                    '@type' => 'AdministrativeArea',
+                    'name' => 'Dataran Tinggi Dieng',
+                ],
+            ],
+        ],
+    ];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($homeSchemaData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
+
 @section('content')
 <main class="relative min-h-screen bg-[#07090e] text-slate-100 overflow-hidden">
 
@@ -23,7 +72,7 @@
                                 RESMI
                             </span>
                         </div>
-                        <p class="text-[10px] text-slate-400 tracking-wider">{{ $settings->site_tagline }}</p>
+                        <p class="text-[10px] text-slate-400 tracking-wider hidden sm:block">{{ $settings->site_tagline }}</p>
                     </div>
                 </a>
 
@@ -32,13 +81,12 @@
                     <a href="#scrollytelling" class="hover:text-amber-400 transition-colors flex items-center gap-1">
                         <span>Jelajah Cerita</span>
                     </a>
-                    <a href="#destinasi" class="hover:text-amber-400 transition-colors">Destinasi</a>
                     <a href="#paket" class="hover:text-amber-400 transition-colors">Paket Wisata</a>
                     <a href="#kalkulator" class="hover:text-amber-400 transition-colors">Kalkulator Biaya</a>
                 </nav>
 
-                <!-- Right Section: Live Weather & CTA -->
-                <div class="hidden lg:flex items-center gap-4">
+                <!-- Right Section: Live Weather, Search & CTA -->
+                <div class="hidden lg:flex items-center gap-3">
                     <!-- Live Weather Dieng HUD (Open-Meteo Real-Time) -->
                     <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300">
                         <i data-lucide="cloud-fog" class="w-4 h-4 text-sky-400 animate-pulse"></i>
@@ -47,6 +95,18 @@
                         </span>
                     </div>
 
+                    <!-- Tombol Spotlight Search Desktop -->
+                    <button 
+                        type="button"
+                        onclick="window.openSpotlightSearch()"
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-500/40 text-xs text-slate-300 hover:text-white transition-all group"
+                        title="Pencarian Cepat Paket Wisata (Ctrl+K)"
+                    >
+                        <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400 transition-colors"></i>
+                        <span class="hidden xl:inline text-[11px] text-slate-400 group-hover:text-slate-200">Cari paket...</span>
+                        <kbd class="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-white/5 rounded border border-white/10">⌘K</kbd>
+                    </button>
+
                     <!-- CTA Button -->
                     <a href="#kalkulator" class="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide text-black bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 transition-all duration-300 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5">
                         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
@@ -54,14 +114,28 @@
                     </a>
                 </div>
 
-                <!-- Mobile Hamburger Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10 transition-colors" aria-label="Buka Menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                <!-- Mobile Actions (Search & Hamburger) -->
+                <div class="flex items-center gap-2 md:hidden">
+                    <button 
+                        type="button" 
+                        onclick="window.openSpotlightSearch()"
+                        class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-200 hover:text-amber-400 hover:bg-white/10 transition-colors"
+                        aria-label="Cari Paket"
+                    >
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    <button id="mobileMenuBtn" class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10 transition-colors" aria-label="Buka Menu">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Mobile Drawer -->
             <div id="mobileMenu" class="hidden md:hidden pt-4 pb-2 border-t border-white/10 mt-3 flex flex-col gap-3">
+                <button type="button" onclick="window.openSpotlightSearch(); document.getElementById('mobileMenu').classList.add('hidden');" class="flex items-center gap-2 text-sm py-1.5 text-slate-300 hover:text-amber-400 text-left">
+                    <i data-lucide="search" class="w-4 h-4 text-amber-400"></i>
+                    <span>Cari Paket & Destinasi (Pencarian Cepat)</span>
+                </button>
                 <a href="#scrollytelling" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Jelajah Cerita Dieng</a>
                 <a href="#paket" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Paket Wisata All-Inclusive</a>
                 <a href="#kalkulator" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Kalkulator Reservasi</a>

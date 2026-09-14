@@ -9,19 +9,34 @@
         $siteSettings = \App\Models\SiteSetting::getSettings();
     @endphp
 
-    <title>{{ $siteSettings->seo_title ?? ($siteSettings->site_name . ' — Biro Wisata Dataran Tinggi Dieng') }}</title>
+    <title>@yield('title', ($siteSettings->seo_title ?: ($siteSettings->site_name . ' — ' . ($siteSettings->site_tagline ?: 'Biro Wisata Dataran Tinggi Dieng'))))</title>
     
-    <!-- Meta SEO -->
-    <meta name="description" content="{{ $siteSettings->seo_description ?? 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Safari.' }}">
-    <meta name="keywords" content="{{ $siteSettings->seo_keywords ?? 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir' }}">
+    <!-- Meta SEO Dasar -->
+    <meta name="description" content="@yield('meta_description', ($siteSettings->seo_description ?: 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Safari.'))">
+    <meta name="keywords" content="{{ $siteSettings->seo_keywords ?: 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir' }}">
     <meta name="author" content="{{ $siteSettings->site_name }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
 
-    <!-- Open Graph / WhatsApp / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ $siteSettings->seo_title ?? $siteSettings->site_name }}">
-    <meta property="og:description" content="{{ $siteSettings->seo_description ?? $siteSettings->site_tagline }}">
-    <meta property="og:image" content="{{ $siteSettings->og_image_url ?? 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop' }}">
-    <meta property="og:url" content="{{ url()->current() }}">
+    <!-- Open Graph (Facebook, WhatsApp, Telegram, LinkedIn) -->
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:site_name" content="{{ $siteSettings->site_name }}">
+    <meta property="og:title" content="@yield('title', ($siteSettings->seo_title ?: $siteSettings->site_name))">
+    <meta property="og:description" content="@yield('meta_description', ($siteSettings->seo_description ?: $siteSettings->site_tagline))">
+    <meta property="og:url" content="@yield('canonical', url()->current())">
+    <meta property="og:image" content="@yield('og_image', ($siteSettings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop'))">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', ($siteSettings->seo_title ?: $siteSettings->site_name))">
+    <meta name="twitter:description" content="@yield('meta_description', ($siteSettings->seo_description ?: $siteSettings->site_tagline))">
+    <meta name="twitter:image" content="@yield('og_image', ($siteSettings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop'))">
+
+    <!-- Schema.org JSON-LD Structured Data Slot -->
+    @yield('schema_json')
 
     <!-- Favicon Dinamis -->
     <link rel="icon" href="{{ $siteSettings->favicon_url ?: asset('favicon.ico') }}">
@@ -109,6 +124,9 @@
     @else
         @yield('content')
     @endif
+
+    <!-- Global Spotlight Search Modal -->
+    @include('components.spotlight-search')
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

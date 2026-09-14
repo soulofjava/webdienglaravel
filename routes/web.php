@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,37 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/paket/{slug}', [HomeController::class, 'showPackage'])->name('package.detail');
 Route::get('/api/visitor-stats', [HomeController::class, 'apiVisitorStats'])->name('api.visitor.stats');
+Route::get('/api/search', [SearchController::class, 'search'])->name('api.search');
+
+// SEO XML Sitemap Dinamis untuk Googlebot
+Route::get('/sitemap.xml', function () {
+    $packages = \App\Models\TourPackage::where('is_active', true)->orderBy('updated_at', 'desc')->get();
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+    // Beranda Utama
+    $xml .= '<url>';
+    $xml .= '<loc>' . url('/') . '</loc>';
+    $xml .= '<lastmod>' . now()->toAtomString() . '</lastmod>';
+    $xml .= '<changefreq>daily</changefreq>';
+    $xml .= '<priority>1.0</priority>';
+    $xml .= '</url>';
+
+    // Setiap Halaman Paket Wisata Aktif
+    foreach ($packages as $pkg) {
+        $xml .= '<url>';
+        $xml .= '<loc>' . route('package.detail', $pkg->slug) . '</loc>';
+        $xml .= '<lastmod>' . ($pkg->updated_at ? $pkg->updated_at->toAtomString() : now()->toAtomString()) . '</lastmod>';
+        $xml .= '<changefreq>weekly</changefreq>';
+        $xml .= '<priority>0.8</priority>';
+        $xml .= '</url>';
+    }
+
+    $xml .= '</urlset>';
+
+    return response($xml, 200)->header('Content-Type', 'application/xml');
+})->name('sitemap');
 
 // Redirect helper untuk Admin & Dashboard
 Route::get('/admin/login', fn () => redirect()->route('login'))->name('admin.login');

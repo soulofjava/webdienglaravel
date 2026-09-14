@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Panel Pengelola — ' . $settings->site_name)
+
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">
     <!-- Header Panel Pengelola -->
@@ -15,9 +17,6 @@
                             <h1 class="font-serif text-base sm:text-lg font-bold text-white tracking-wide">
                                 Panel Pengelola {{ $settings->site_name }}
                             </h1>
-                            <span class="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                LARAVEL 13 + MYSQL
-                            </span>
                         </div>
                         <p class="text-xs text-slate-400 hidden sm:block">
                             Pengelolaan identitas biro wisata, kontak, legalitas usaha, dan optimasi SEO
@@ -375,7 +374,7 @@
                         <div class="flex items-center justify-between mb-2">
                             <label class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                                 <i data-lucide="sparkles" class="w-3.5 h-3.5 text-sky-400"></i>
-                                <span>Judul Penelusuran Google (Meta Title)</span>
+                                <span>Judul Penelusuran Google & Tab Browser (Meta Title)</span>
                             </label>
                             <span id="seoTitleCount" class="text-[11px] text-slate-400">
                                 {{ strlen($settings->seo_title ?? '') }}/60 karakter ideal
@@ -386,11 +385,11 @@
                             name="seo_title"
                             id="inputSeoTitle"
                             value="{{ old('seo_title', $settings->seo_title) }}"
-                            placeholder="TiketDieng.com — Paket Wisata Dieng & Biro Perjalanan Resmi"
+                            placeholder="Otomatis mengikuti: {{ $settings->site_name }} — {{ $settings->site_tagline }}"
                             class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-sky-400 focus:outline-none transition-colors"
                         />
-                        <p class="text-[11px] text-slate-500 mt-1">
-                            Judul utama yang muncul sebagai tautan biru besar di hasil pencarian Google.
+                        <p class="text-[11px] text-slate-400 mt-1">
+                            Judul utama pada tab peramban dan pencarian Google. <span class="text-amber-400/90 font-medium">Kosongkan jika ingin selalu otomatis mengikuti Nama Situs & Slogan.</span>
                         </p>
                     </div>
 
@@ -599,8 +598,14 @@
     const previewWaImage = document.getElementById('previewWaImage');
     const ogPreview = document.getElementById('ogPreview');
 
+    const inputTagline = document.querySelector('input[name="site_tagline"]');
+
     function syncLivePreviews() {
-        const title = inputSeoTitle.value.trim() || inputSiteName.value.trim() || 'TiketDieng.com — Paket Wisata Dieng Resmi';
+        const activeSiteName = inputSiteName.value.trim() || 'TIKETDIENG.COM';
+        const activeTagline = inputTagline?.value.trim() || 'Biro Wisata Dataran Tinggi Dieng';
+        inputSeoTitle.placeholder = `Otomatis mengikuti: ${activeSiteName} — ${activeTagline}`;
+
+        const title = inputSeoTitle.value.trim() || `${activeSiteName} — ${activeTagline}`;
         const desc = inputSeoDesc.value.trim() || 'Biro perjalanan wisata resmi Dataran Tinggi Dieng dengan layanan VIP...';
         const ogUrl = inputOgUrl.value.trim() || 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop';
 
@@ -616,6 +621,7 @@
     }
 
     inputSiteName?.addEventListener('input', syncLivePreviews);
+    inputTagline?.addEventListener('input', syncLivePreviews);
     inputSeoTitle?.addEventListener('input', syncLivePreviews);
     inputSeoDesc?.addEventListener('input', syncLivePreviews);
     inputOgUrl?.addEventListener('input', syncLivePreviews);

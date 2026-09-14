@@ -1,5 +1,49 @@
 @extends('layouts.app')
 
+@section('title', $package->title . ' — ' . $settings->site_name)
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($package->summary), 160))
+@section('og_image', $package->image_url)
+@section('og_type', 'article')
+
+@section('schema_json')
+@php
+    $touristTripSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'TouristTrip',
+        'name' => $package->title,
+        'description' => strip_tags($package->summary),
+        'image' => $package->image_url,
+        'touristType' => ['Families', 'Couples', 'Adventure Seekers', 'Photographers'],
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => (string) $package->price,
+            'priceCurrency' => 'IDR',
+            'availability' => 'https://schema.org/InStock',
+            'url' => url()->current(),
+            'validFrom' => '2026-01-01',
+            'description' => 'Tarif mulai dari per pax (penyesuaian homestay via WhatsApp)',
+        ],
+        'provider' => [
+            '@type' => 'TravelAgency',
+            'name' => $settings->site_name,
+            'url' => url('/'),
+            'telephone' => $settings->phone_number,
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => $settings->address,
+                'addressLocality' => 'Wonosobo',
+                'addressRegion' => 'Jawa Tengah',
+                'postalCode' => '56354',
+                'addressCountry' => 'ID',
+            ],
+        ],
+    ];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($touristTripSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
+
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans">
     <!-- 1. Floating Atmospheric Navigation -->
@@ -21,12 +65,24 @@
                             RESMI
                         </span>
                     </div>
-                    <p class="text-[10px] text-slate-400 tracking-wider">{{ $settings->site_tagline }}</p>
+                    <p class="text-[10px] text-slate-400 tracking-wider hidden sm:block">{{ $settings->site_tagline }}</p>
                 </div>
             </a>
 
             <!-- Desktop Links & WhatsApp CTA -->
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 sm:gap-4">
+                <!-- Tombol Spotlight Search -->
+                <button 
+                    type="button"
+                    onclick="window.openSpotlightSearch()"
+                    class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-500/40 text-xs text-slate-300 hover:text-white transition-all group"
+                    title="Pencarian Cepat Paket Wisata (Ctrl+K)"
+                >
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400 transition-colors"></i>
+                    <span class="hidden md:inline text-[11px] text-slate-400 group-hover:text-slate-200">Cari paket...</span>
+                    <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-white/5 rounded border border-white/10">⌘K</kbd>
+                </button>
+
                 <a href="{{ route('home') }}#paket" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     <span>Lihat Semua Paket</span>
@@ -379,7 +435,7 @@
     @endif
 
     <!-- Footer -->
-    <footer class="mt-auto border-t border-white/10 bg-[#090d16] py-10 px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+    <footer class="mt-auto border-t border-white/10 bg-[#090d16] py-10 pb-24 lg:pb-10 px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
                 <span class="font-serif font-bold text-white text-sm">{{ $settings->site_name }}</span> — {{ $settings->site_tagline }}
@@ -389,5 +445,23 @@
             </div>
         </div>
     </footer>
+
+    <!-- Sticky Bottom Booking Bar Khusus Layar Mobile (lg:hidden) -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#090d16]/95 backdrop-blur-xl border-t border-white/15 p-3 px-4 shadow-2xl shadow-black flex items-center justify-between gap-3">
+        <div>
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Mulai Dari</span>
+            <div class="font-serif text-base font-bold text-amber-400 leading-tight">
+                {{ $package->formatted_price }} <span class="text-[10px] font-normal text-slate-400">/ pax</span>
+            </div>
+        </div>
+        <a
+            href="{{ $waUrl }}"
+            target="_blank"
+            class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 shadow-lg shadow-amber-500/25 active:scale-95 transition-all"
+        >
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Konsultasi WA</span>
+        </a>
+    </div>
 </div>
 @endsection
