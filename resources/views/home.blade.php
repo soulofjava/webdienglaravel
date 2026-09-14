@@ -63,14 +63,9 @@
 
                 <!-- Desktop Nav Links -->
                 <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
-                    <a href="#scrollytelling" class="hover:text-amber-400 transition-colors flex items-center gap-1">
-                        <span>Jelajah Cerita</span>
-                    </a>
+                    <a href="#scrollytelling" class="hover:text-amber-400 transition-colors">Jelajah Cerita</a>
                     <a href="#paket" class="hover:text-amber-400 transition-colors">Paket Wisata</a>
-                    <a href="#dokumentasi" class="hover:text-cyan-400 transition-colors flex items-center gap-1">
-                        <i data-lucide="camera" class="w-3.5 h-3.5 text-cyan-400"></i>
-                        <span>Dokumentasi</span>
-                    </a>
+                    <a href="#dokumentasi" class="hover:text-amber-400 transition-colors">Dokumentasi</a>
                     <a href="#profil" class="hover:text-amber-400 transition-colors">Tentang Kami</a>
                     <a href="#kalkulator" class="hover:text-amber-400 transition-colors">Kalkulator Biaya</a>
                 </nav>
