@@ -14,7 +14,12 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $settings = SiteSetting::getSettings();
+        // Dynamic Multi-Theme Resolver (Prioritas: Query Param -> Host/Domain -> Database CMS)
+        $activeTheme = $this->resolveActiveTheme($request);
+
+        // Ambil settings spesifik milik sub-web aktif
+        $settings = SiteSetting::getSettings($activeTheme);
+
         $this->recordVisitor($request);
         $visitorStats = $this->getStats();
 
@@ -35,8 +40,6 @@ class HomeController extends Controller
                 ->get();
         });
 
-        // Dynamic Multi-Theme Resolver (Prioritas: Query Param -> Host/Domain -> Database CMS)
-        $activeTheme = $this->resolveActiveTheme($request, $settings);
         $themeView = "themes.{$activeTheme}.home";
         if (!view()->exists($themeView)) {
             $themeView = view()->exists('home') ? 'home' : 'themes.tiketdieng.home';
@@ -47,7 +50,9 @@ class HomeController extends Controller
 
     public function showPackage(Request $request, $slug)
     {
-        $settings = SiteSetting::getSettings();
+        $activeTheme = $this->resolveActiveTheme($request);
+        $settings = SiteSetting::getSettings($activeTheme);
+
         $this->recordVisitor($request);
 
         $package = \Illuminate\Support\Facades\Cache::remember('pkg_' . $slug, 600, function () use ($slug) {
@@ -65,7 +70,6 @@ class HomeController extends Controller
                 ->get();
         });
 
-        $activeTheme = $this->resolveActiveTheme($request, $settings);
         $themeView = "themes.{$activeTheme}.package-detail";
         if (!view()->exists($themeView)) {
             $themeView = view()->exists('package-detail') ? 'package-detail' : 'themes.tiketdieng.package-detail';
@@ -74,10 +78,13 @@ class HomeController extends Controller
         return view($themeView, compact('settings', 'package', 'otherPackages', 'activeTheme'));
     }
 
-    private function resolveActiveTheme(Request $request, $settings): string
+    private function resolveActiveTheme(Request $request): string
     {
         if ($request->filled('theme')) {
-            return (string) $request->query('theme');
+            $t = strtolower((string) $request->query('theme'));
+            if (in_array($t, ['tiketdieng', 'lotus', 'jeep', 'shuttle'])) {
+                return $t;
+            }
         }
 
         $host = (string) $request->getHost();
@@ -91,7 +98,7 @@ class HomeController extends Controller
             return 'shuttle';
         }
 
-        return !empty($settings->active_theme) ? $settings->active_theme : 'tiketdieng';
+        return SiteSetting::normalizeSiteKey(null);
     }
 
     public function documentation(Request $request)

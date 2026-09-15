@@ -119,9 +119,52 @@
             </div>
         </div>
 
+        <!-- TAB PEMILIH SUB-WEB PENGATURAN (MULTI-SITE SETTINGS) -->
+        <div class="glass-panel p-4 sm:p-5 rounded-3xl border border-white/10 shadow-xl space-y-3">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-1">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider text-white">Pilih Sub-Web Yang Ingin Dikonfigurasi:</span>
+                </div>
+                <span class="text-[11px] text-slate-400">
+                    Sedang mengatur profil: <strong class="text-amber-300 font-semibold">{{ $supportedSites[$selectedSite]['name'] }}</strong> (<code>{{ $supportedSites[$selectedSite]['domain'] }}</code>)
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                @foreach ($supportedSites as $siteKey => $siteInfo)
+                    @php
+                        $isActiveTab = ($selectedSite === $siteKey);
+                    @endphp
+                    <a
+                        href="{{ route('admin.index', ['site' => $siteKey]) }}"
+                        class="p-3.5 rounded-2xl border transition-all flex flex-col justify-between gap-2.5 {{ $isActiveTab ? 'bg-amber-400/15 border-amber-400/60 shadow-lg shadow-amber-500/15' : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.05]' }}"
+                    >
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded-md uppercase font-bold {{ $isActiveTab ? 'bg-amber-400 text-slate-950' : 'bg-white/10 text-slate-400' }}">
+                                {{ $siteInfo['badge'] }}
+                            </span>
+                            @if ($isActiveTab)
+                                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            @endif
+                        </div>
+                        <div>
+                            <span class="text-xs sm:text-sm font-bold block {{ $isActiveTab ? 'text-amber-300' : 'text-white' }}">
+                                {{ $siteInfo['name'] }}
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-500 block truncate">
+                                {{ $siteInfo['domain'] }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
         <!-- FORMULIR UTAMA PENGATURAN -->
         <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-8" id="settingsForm">
             @csrf
+            <input type="hidden" name="site_key" value="{{ $selectedSite }}" id="inputSiteKey">
 
             <!-- KARTU KHUSUS: PENGATURAN MULTI-SITUS & GANTI TEMA -->
             @if ($isSuperadmin)
@@ -144,7 +187,7 @@
                         <div class="flex items-center gap-2 text-xs">
                             <span class="text-slate-400">Tema Aktif Tersimpan:</span>
                             <span class="px-3 py-1 rounded-xl font-mono font-bold uppercase tracking-wider text-amber-300 bg-amber-400/15 border border-amber-400/40 shadow-sm shadow-amber-500/20">
-                                {{ $settings->active_theme ?? 'tiketdieng' }}
+                                {{ $globalSetting->active_theme ?? 'tiketdieng' }}
                             </span>
                         </div>
                     </div>
@@ -153,7 +196,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- 1. Tiket Dieng (Portal Induk) -->
                         <label class="relative group cursor-pointer block">
-                            <input type="radio" name="active_theme" value="tiketdieng" {{ old('active_theme', $settings->active_theme ?? 'tiketdieng') === 'tiketdieng' ? 'checked' : '' }} class="peer sr-only">
+                            <input type="radio" name="active_theme" value="tiketdieng" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'tiketdieng' ? 'checked' : '' }} class="peer sr-only">
                             <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-amber-400/50 peer-checked:border-amber-400 peer-checked:bg-amber-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-amber-500/15">
                                 <div>
                                     <div class="flex items-center justify-between mb-3">
@@ -185,7 +228,7 @@
 
                         <!-- 2. Lotus Creative -->
                         <label class="relative group cursor-pointer block">
-                            <input type="radio" name="active_theme" value="lotus" {{ old('active_theme', $settings->active_theme ?? 'tiketdieng') === 'lotus' ? 'checked' : '' }} class="peer sr-only">
+                            <input type="radio" name="active_theme" value="lotus" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'lotus' ? 'checked' : '' }} class="peer sr-only">
                             <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-purple-400/50 peer-checked:border-purple-400 peer-checked:bg-purple-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-purple-500/15">
                                 <div>
                                     <div class="flex items-center justify-between mb-3">
@@ -217,7 +260,7 @@
 
                         <!-- 3. Jeep Dieng -->
                         <label class="relative group cursor-pointer block">
-                            <input type="radio" name="active_theme" value="jeep" {{ old('active_theme', $settings->active_theme ?? 'tiketdieng') === 'jeep' ? 'checked' : '' }} class="peer sr-only">
+                            <input type="radio" name="active_theme" value="jeep" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'jeep' ? 'checked' : '' }} class="peer sr-only">
                             <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-emerald-400/50 peer-checked:border-emerald-400 peer-checked:bg-emerald-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-emerald-500/15">
                                 <div>
                                     <div class="flex items-center justify-between mb-3">
@@ -249,7 +292,7 @@
 
                         <!-- 4. Shuttle Dieng -->
                         <label class="relative group cursor-pointer block">
-                            <input type="radio" name="active_theme" value="shuttle" {{ old('active_theme', $settings->active_theme ?? 'tiketdieng') === 'shuttle' ? 'checked' : '' }} class="peer sr-only">
+                            <input type="radio" name="active_theme" value="shuttle" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'shuttle' ? 'checked' : '' }} class="peer sr-only">
                             <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-sky-400/50 peer-checked:border-sky-400 peer-checked:bg-sky-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-sky-500/15">
                                 <div>
                                     <div class="flex items-center justify-between mb-3">
@@ -286,7 +329,7 @@
                         <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
                         <span class="text-xs text-slate-300">Tema Beranda Aktif Saat Ini:</span>
                         <span class="px-2 py-0.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider text-amber-300 bg-amber-400/10 border border-amber-400/30">
-                            {{ $settings->active_theme ?? 'tiketdieng' }}
+                            {{ $globalSetting->active_theme ?? 'tiketdieng' }}
                         </span>
                     </div>
                     <span class="text-[11px] text-slate-500">Dikelola oleh Super Administrator</span>
@@ -1034,6 +1077,7 @@
         <div class="pt-4 border-t border-white/10 flex justify-end">
             <form action="{{ route('admin.settings.reset') }}" method="POST" onsubmit="return window.confirmDelete ? window.confirmDelete(event, 'Pengaturan Situs', 'Seluruh konfigurasi kontak, nama perusahaan, dan legalitas akan dikembalikan ke data awal bawaan.') : confirm('Kembalikan ke pengaturan awal bawaan?');">
                 @csrf
+                <input type="hidden" name="site_key" value="{{ $selectedSite }}">
                 <button
                     type="submit"
                     class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 border border-white/10 transition-colors cursor-pointer"
@@ -1107,6 +1151,7 @@
         faviconBtnText.innerText = 'Mengunggah...';
         const formData = new FormData();
         formData.append('favicon', file);
+        formData.append('site_key', '{{ $selectedSite }}');
         formData.append('_token', '{{ csrf_token() }}');
 
         try {
@@ -1142,6 +1187,7 @@
         ogBtnText.innerText = 'Mengunggah...';
         const formData = new FormData();
         formData.append('og_image', file);
+        formData.append('site_key', '{{ $selectedSite }}');
         formData.append('_token', '{{ csrf_token() }}');
 
         try {

@@ -37,6 +37,12 @@
 
 @section('content')
 <main class="relative min-h-screen bg-[#06080d] text-slate-100 overflow-hidden font-sans">
+    @php
+        $lotusWa = preg_replace('/[^0-9]/', '', $settings->whatsapp_number ?: '628164211196');
+        if (str_starts_with($lotusWa, '0')) {
+            $lotusWa = '62' . substr($lotusWa, 1);
+        }
+    @endphp
 
     <!-- FLOATING NAVBAR LOTUS CREATIVE -->
     <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
@@ -66,7 +72,7 @@
 
             <!-- CTA WA Header -->
             <div class="flex items-center gap-2">
-                <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20layanan%20dokumentasi%20wisata%20Dieng.%20Boleh%20tanya%20ketersediaan%20jadwal%3F" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-cyan-500 via-cyan-400 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:-translate-y-0.5">
+                <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20layanan%20dokumentasi%20wisata%20Dieng.%20Boleh%20tanya%20ketersediaan%20jadwal%3F" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-cyan-500 via-cyan-400 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:-translate-y-0.5">
                     <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
                     <span class="hidden sm:inline">Hubungi Studio</span>
                     <span class="sm:hidden">WhatsApp</span>
@@ -128,7 +134,7 @@
                         <i data-lucide="list-checks" class="w-4 h-4"></i>
                         <span>Lihat 5 Pilihan Paket</span>
                     </a>
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20tanya%20jadwal%20dan%20konsultasi%20dokumentasi%20foto%20Dieng" target="_blank" class="px-7 py-3.5 rounded-full text-xs font-bold text-slate-200 hover:text-white bg-white/10 hover:bg-white/15 border border-white/15 transition-all duration-300 flex items-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20tanya%20jadwal%20dan%20konsultasi%20dokumentasi%20foto%20Dieng" target="_blank" class="px-7 py-3.5 rounded-full text-xs font-bold text-slate-200 hover:text-white bg-white/10 hover:bg-white/15 border border-white/15 transition-all duration-300 flex items-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
                         <span>Konsultasi WA: 0816-4211-196</span>
                     </a>
@@ -231,7 +237,7 @@
 
                 <!-- Book Button -->
                 <div class="pt-6 border-t border-white/10 mt-6">
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%201%20Ultimate%20All%20Dieng%20Spots%20(Rp%202.500.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-sky-300 hover:from-cyan-300 hover:to-sky-200 transition-all duration-300 shadow-lg shadow-cyan-500/20 text-center flex items-center justify-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%201%20Ultimate%20All%20Dieng%20Spots%20(Rp%202.500.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-sky-300 hover:from-cyan-300 hover:to-sky-200 transition-all duration-300 shadow-lg shadow-cyan-500/20 text-center flex items-center justify-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4"></i>
                         <span>Booking Paket 1 via WhatsApp</span>
                     </a>
@@ -286,7 +292,7 @@
                 </div>
 
                 <div class="pt-6 border-t border-white/10 mt-6">
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%202%20Heritage%20%26%20Nature%20(Rp%201.200.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%202%20Heritage%20%26%20Nature%20(Rp%201.200.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
                         <span>Booking Paket 2 via WhatsApp</span>
                     </a>
@@ -341,7 +347,7 @@
                 </div>
 
                 <div class="pt-6 border-t border-white/10 mt-6">
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%203%20Scenic%20%26%20Waterfalls%20(Rp%201.400.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%203%20Scenic%20%26%20Waterfalls%20(Rp%201.400.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
                         <span>Booking Paket 3 via WhatsApp</span>
                     </a>
@@ -394,7 +400,7 @@
                 </div>
 
                 <div class="pt-6 border-t border-white/10 mt-6">
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%204%20Golden%20Sunrise%20Only%20(Rp%201.000.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%204%20Golden%20Sunrise%20Only%20(Rp%201.000.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
                         <span>Booking Paket 4 via WhatsApp</span>
                     </a>
@@ -447,7 +453,7 @@
                 </div>
 
                 <div class="pt-6 border-t border-white/10 mt-6">
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%205%20Single%20Spot%20(Rp%20500.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%205%20Single%20Spot%20(Rp%20500.000)%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/15 border border-white/15 hover:border-cyan-500/40 transition-all duration-300 text-center flex items-center justify-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
                         <span>Booking Paket 5 via WhatsApp</span>
                     </a>
@@ -480,7 +486,7 @@
                 </div>
 
                 <div class="pt-6 border-t border-white/10 mt-6">
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20konsultasi%20paket%20dokumentasi%20khusus%2Fprewedding%20di%20Dieng" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 transition-all duration-300 text-center flex items-center justify-center gap-2 shadow-lg shadow-rose-500/20">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20konsultasi%20paket%20dokumentasi%20khusus%2Fprewedding%20di%20Dieng" target="_blank" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 transition-all duration-300 text-center flex items-center justify-center gap-2 shadow-lg shadow-rose-500/20">
                         <i data-lucide="sparkles" class="w-4 h-4"></i>
                         <span>Diskusi Konsep Khusus</span>
                     </a>
@@ -641,7 +647,7 @@
                                 <span>Alamat Studio</span>
                             </div>
                             <p class="text-slate-300 font-medium leading-relaxed">
-                                Jalan Dieng KM 18 Rt 01/02 Tieng, Kejajar, Wonosobo, Jawa Tengah 56354
+                                {{ $settings->address ?: 'Jalan Dieng KM 18 Rt 01/02 Tieng, Kejajar, Wonosobo, Jawa Tengah 56354' }}
                             </p>
                         </div>
 
@@ -651,7 +657,7 @@
                                 <i data-lucide="phone" class="w-4 h-4"></i>
                                 <span>Telepon / WhatsApp</span>
                             </div>
-                            <p class="text-lg font-bold text-white font-mono">0816-4211-196</p>
+                            <p class="text-lg font-bold text-white font-mono">{{ $settings->phone_number ?: '0816-4211-196' }}</p>
                             <p class="text-[11px] text-slate-400">CS Lotus Creative Standby 24 Jam</p>
                         </div>
 
@@ -661,7 +667,7 @@
                                 <i data-lucide="mail" class="w-4 h-4"></i>
                                 <span>Email Korespondensi</span>
                             </div>
-                            <p class="text-white font-mono">lotuscreative465@gmail.com</p>
+                            <p class="text-white font-mono">{{ $settings->email ?: 'halo@lotuscreative.id' }}</p>
                         </div>
 
                         <!-- Rekening Bank -->
@@ -670,18 +676,18 @@
                                 <i data-lucide="credit-card" class="w-4 h-4"></i>
                                 <span>Rekening Pembayaran Resmi</span>
                             </div>
-                            <p class="text-xs text-slate-300 font-semibold">BNI — Cabang Wonosobo</p>
-                            <p class="text-base font-black text-amber-300 font-mono tracking-wider">8166754042</p>
-                            <p class="text-[10px] text-slate-400 uppercase">a.n. PT. GOTRIP ASIA TRAVELINDO</p>
+                            <p class="text-xs text-slate-300 font-semibold">{{ $settings->bank_name ?: 'BNI — Cabang Wonosobo' }}</p>
+                            <p class="text-base font-black text-amber-300 font-mono tracking-wider">{{ $settings->bank_account_number ?: '8166754042' }}</p>
+                            <p class="text-[10px] text-slate-400 uppercase">a.n. {{ $settings->bank_account_name ?: 'PT. GOTRIP ASIA TRAVELINDO' }}</p>
                         </div>
                     </div>
 
                     <!-- Social Media Links -->
                     <div class="flex flex-wrap items-center gap-3 pt-2">
                         <span class="text-xs text-slate-400 font-medium">Ikuti Portofolio:</span>
-                        <a href="https://www.instagram.com/lotus.creative01?stnk=dG83cjF1NHptaXB3" target="_blank" class="px-3.5 py-1.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/30 text-pink-300 text-xs flex items-center gap-1.5 transition-colors">
+                        <a href="{{ $settings->instagram_url ?: 'https://www.instagram.com/lotus.creative01?stnk=dG83cjF1NHptaXB3' }}" target="_blank" class="px-3.5 py-1.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/30 text-pink-300 text-xs flex items-center gap-1.5 transition-colors">
                             <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-400"></i>
-                            <span>@lotus.creative01</span>
+                            <span>{{ $settings->instagram_url ? '@' . basename(rtrim($settings->instagram_url, '/')) : '@lotus.creative01' }}</span>
                         </a>
                         <a href="https://www.tiktok.com/@lotuscreative_?_r=1&_t=ZS-99iFr2JbCcc" target="_blank" class="px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs flex items-center gap-1.5 transition-colors">
                             <i data-lucide="video" class="w-3.5 h-3.5 text-cyan-400"></i>
@@ -707,7 +713,7 @@
                         </p>
                     </div>
 
-                    <a href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20cek%20ketersediaan%20jadwal%20dokumentasi%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3.5 px-6 rounded-2xl text-xs font-black uppercase tracking-wider text-black bg-gradient-to-r from-cyan-400 to-sky-300 hover:from-cyan-300 hover:to-sky-200 transition-all duration-300 shadow-xl shadow-cyan-500/30 flex items-center justify-center gap-2">
+                    <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20cek%20ketersediaan%20jadwal%20dokumentasi%20untuk%20tanggal%3A%20" target="_blank" class="w-full py-3.5 px-6 rounded-2xl text-xs font-black uppercase tracking-wider text-black bg-gradient-to-r from-cyan-400 to-sky-300 hover:from-cyan-300 hover:to-sky-200 transition-all duration-300 shadow-xl shadow-cyan-500/30 flex items-center justify-center gap-2">
                         <i data-lucide="message-circle" class="w-4 h-4"></i>
                         <span>Chat WhatsApp Studio Sekarang</span>
                     </a>
@@ -737,7 +743,7 @@
     <!-- FLOATING WHATSAPP BUTTON KHUSUS LOTUS CREATIVE -->
     <div class="fixed bottom-6 right-6 z-50">
         <a 
-            href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20layanan%20dokumentasi%20foto%2Fvideo%20di%20Dieng" 
+            href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20layanan%20dokumentasi%20foto%2Fvideo%20di%20Dieng" 
             target="_blank" 
             class="flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-2xl shadow-emerald-500/40 hover:scale-105 transition-all duration-300 group"
             title="Chat WhatsApp Studio Lotus Creative"

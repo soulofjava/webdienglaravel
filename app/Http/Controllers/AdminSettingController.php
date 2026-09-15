@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminSettingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $settings = SiteSetting::getSettings();
+        $supportedSites = SiteSetting::supportedSites();
+        $selectedSite = SiteSetting::normalizeSiteKey($request->query('site'));
+
+        // Settings spesifik untuk sub-unit yang dipilih di panel
+        $settings = SiteSetting::getSettings($selectedSite);
+
+        // Settings induk untuk memantau tema publik yang sedang aktif
+        $globalSetting = SiteSetting::getSettings('tiketdieng');
 
         // Statistik ringkas untuk dashboard admin
         $today = Carbon::today()->toDateString();
@@ -31,11 +38,20 @@ class AdminSettingController extends Controller
         // Daftar akun admin (hanya dikelola superadmin)
         $users = \App\Models\User::with('roles')->get();
 
-        return view('admin.dashboard', compact('settings', 'statsSummary', 'users'));
+        return view('admin.dashboard', compact(
+            'settings',
+            'globalSetting',
+            'selectedSite',
+            'supportedSites',
+            'statsSummary',
+            'users'
+        ));
     }
 
     public function update(Request $request)
     {
+        $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
         $rules = [
             'site_name' => 'required|string|max:100',
             'site_tagline' => 'required|string|max:200',
@@ -70,8 +86,6 @@ class AdminSettingController extends Controller
 
         $validated = $request->validate($rules);
 
-        $settings = SiteSetting::getSettings();
-
         if (!($request->user() && $request->user()->hasRole('superadmin'))) {
             unset(
                 $validated['active_theme'],
@@ -82,33 +96,53 @@ class AdminSettingController extends Controller
             );
         }
 
-        $settings->update($validated);
+        // Ambil atau buat record row spesifik untuk sub-unit bisnis ini
+        $settingRecord = SiteSetting::find($siteKey);
+        if (!$settingRecord) {
+            $settingRecord = SiteSetting::create(array_merge(
+                SiteSetting::getDefaultConfig($siteKey),
+                ['id' => $siteKey]
+            ));
+        }
+
+        $settingRecord->update($validated);
+
+        // Jika superadmin mengubah tema aktif beranda publik, sinkronkan juga ke semua record
+        if (!empty($validated['active_theme'])) {
+            SiteSetting::whereIn('id', ['tiketdieng', 'default'])->update(['active_theme' => $validated['active_theme']]);
+        }
+
         SiteSetting::clearCache();
 
-        return back()->with('success', 'Konfigurasi situs berhasil disimpan dan diperbarui!');
+        return redirect()->route('admin.index', ['site' => $siteKey])
+            ->with('success', "Konfigurasi sub-web '" . strtoupper($siteKey) . "' berhasil disimpan dan diperbarui!");
     }
 
     public function uploadFavicon(Request $request)
     {
+        $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
         $request->validate([
             'favicon' => 'required|file|mimes:ico,png,svg,webp,jpg,jpeg|max:2048',
         ]);
 
         if ($request->hasFile('favicon')) {
             $file = $request->file('favicon');
-            $filename = 'favicon_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = 'favicon_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('uploads/favicons', $filename, 'public');
 
             $url = Storage::url($path);
 
-            $settings = SiteSetting::getSettings();
-            $settings->update(['favicon_url' => $url]);
-            SiteSetting::clearCache();
+            $settingRecord = SiteSetting::find($siteKey);
+            if ($settingRecord) {
+                $settingRecord->update(['favicon_url' => $url]);
+            }
+            SiteSetting::clearCache($siteKey);
 
             return response()->json([
                 'success' => true,
                 'url' => $url,
-                'message' => 'Berkas favicon berhasil diunggah.',
+                'message' => 'Favicon berhasil diunggah.',
             ]);
         }
 
@@ -117,20 +151,24 @@ class AdminSettingController extends Controller
 
     public function uploadOgImage(Request $request)
     {
+        $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
         $request->validate([
             'og_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         if ($request->hasFile('og_image')) {
             $file = $request->file('og_image');
-            $filename = 'og_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = 'og_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('uploads/og-images', $filename, 'public');
 
             $url = Storage::url($path);
 
-            $settings = SiteSetting::getSettings();
-            $settings->update(['og_image_url' => $url]);
-            SiteSetting::clearCache();
+            $settingRecord = SiteSetting::find($siteKey);
+            if ($settingRecord) {
+                $settingRecord->update(['og_image_url' => $url]);
+            }
+            SiteSetting::clearCache($siteKey);
 
             return response()->json([
                 'success' => true,
@@ -142,26 +180,18 @@ class AdminSettingController extends Controller
         return response()->json(['success' => false, 'message' => 'Gagal mengunggah berkas.'], 400);
     }
 
-    public function resetDefault()
+    public function resetDefault(Request $request)
     {
-        $settings = SiteSetting::getSettings();
-        $settings->update([
-            'site_name' => 'TIKETDIENG.COM',
-            'site_tagline' => 'Biro Wisata Dataran Tinggi Dieng',
-            'whatsapp_number' => '62816675404',
-            'phone_number' => '+62 816-675-404',
-            'email' => 'halo@tiketdieng.com',
-            'address' => 'Jl. Dieng Km. 03, Tieng, Kejajar, Wonosobo, Jawa Tengah 56354',
-            'legal_nib' => 'NIB: 1294801928472',
-            'hpi_badge' => 'Anggota Resmi HPI Dieng',
-            'favicon_url' => '/favicon.ico',
-            'seo_title' => 'TiketDieng.com — Paket Wisata Dieng & Biro Perjalanan Resmi',
-            'seo_description' => 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Offroad Safari dengan kenyamanan armada eksekutif.',
-            'seo_keywords' => 'paket wisata dieng, tiket dieng, tour dieng, biro wisata dieng, sunrise sikunir, open trip dieng, sewa jeep dieng, travel dieng',
-            'og_image_url' => 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop',
-        ]);
-        SiteSetting::clearCache();
+        $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
 
-        return back()->with('success', 'Konfigurasi telah dikembalikan ke pengaturan standar bawaan.');
+        $settingRecord = SiteSetting::find($siteKey);
+        if ($settingRecord) {
+            $settingRecord->update(SiteSetting::getDefaultConfig($siteKey));
+        }
+
+        SiteSetting::clearCache($siteKey);
+
+        return redirect()->route('admin.index', ['site' => $siteKey])
+            ->with('success', "Konfigurasi sub-web '" . strtoupper($siteKey) . "' telah dikembalikan ke pengaturan standar bawaan.");
     }
 }
