@@ -429,31 +429,63 @@
                         x-transition:enter-start="opacity-0 transform scale-95"
                         x-transition:enter-end="opacity-100 transform scale-100"
                         @click="selectedId = {{ $docPkg->id }}; selectedTitle = '{{ addslashes($docPkg->title) }}'; selectedPrice = 'Rp {{ number_format($docPkg->price, 0, ',', '.') }}'; selectedDuration = '{{ addslashes($docPkg->duration) }}'"
-                        class="rounded-3xl bg-white p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 relative cursor-pointer group"
-                        :class="selectedId === {{ $docPkg->id }} ? 'border-2 border-sky-500 shadow-2xl ring-4 ring-sky-500/15 -translate-y-1 bg-sky-50/10' : 'border border-slate-200/90 shadow-md hover:border-sky-300 hover:shadow-xl'"
+                        class="rounded-3xl bg-white p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 relative cursor-pointer group border-2"
+                        :class="selectedId === {{ $docPkg->id }} ? 'border-sky-500 shadow-2xl shadow-sky-500/15 ring-4 ring-sky-500/15 -translate-y-1.5 bg-gradient-to-b from-sky-50/40 via-white to-white' : 'border-slate-200/80 shadow-md hover:border-sky-300 hover:shadow-xl -translate-y-0'"
                     >
-                        @if ($docPkg->badge)
-                            <div class="absolute top-0 right-0 bg-slate-900 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-bl-xl tracking-wider"
-                                :class="selectedId === {{ $docPkg->id }} ? 'bg-gradient-to-l from-sky-600 to-rose-600' : 'bg-slate-900'">
-                                {{ $docPkg->badge }}
-                            </div>
-                        @endif
+                        <!-- Top Floating Ribbon on Selected Card -->
+                        <div x-show="selectedId === {{ $docPkg->id }}" 
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 -translate-y-2"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow-lg shadow-sky-500/25 flex items-center gap-1.5 z-20 whitespace-nowrap">
+                            <svg class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            <span>Paket Terpilih</span>
+                        </div>
 
                         <div class="space-y-5">
-                            <!-- Indicator Header Status Pilihan -->
-                            <div class="flex items-center justify-between gap-2 pt-1">
-                                <span class="text-xs font-mono font-bold uppercase tracking-wider" :class="selectedId === {{ $docPkg->id }} ? 'text-sky-600' : 'text-slate-400'">
-                                    PAKET {{ sprintf('%02d', $loop->iteration) }} &bull; {{ $docPkg->duration ?: 'FULL TRIP' }}
-                                </span>
-                                <span class="inline-flex items-center gap-1 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full transition-all"
-                                    :class="selectedId === {{ $docPkg->id }} ? 'bg-sky-600 text-white shadow-sm' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'">
-                                    <span class="w-1.5 h-1.5 rounded-full" :class="selectedId === {{ $docPkg->id }} ? 'bg-white' : 'bg-slate-400'"></span>
-                                    <span x-text="selectedId === {{ $docPkg->id }} ? '✓ Terpilih' : 'Pilih Paket'"></span>
-                                </span>
+                            <!-- Indicator Header Status Pilihan & Badge -->
+                            <div class="flex items-center justify-between gap-3 pt-1">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-xs font-mono font-bold uppercase tracking-wider transition-colors" 
+                                        :class="selectedId === {{ $docPkg->id }} ? 'text-sky-600 font-extrabold' : 'text-slate-400'">
+                                        PAKET {{ sprintf('%02d', $loop->iteration) }}
+                                    </span>
+                                    @if ($docPkg->badge)
+                                        <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/70">
+                                            {{ $docPkg->badge }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <!-- Selection Pill Button -->
+                                <div class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all duration-200 select-none"
+                                    :class="selectedId === {{ $docPkg->id }} 
+                                        ? 'bg-gradient-to-r from-sky-600 to-rose-600 text-white shadow-md shadow-sky-500/25 ring-2 ring-sky-300/40' 
+                                        : 'bg-slate-100 text-slate-600 group-hover:bg-sky-50 group-hover:text-sky-700 border border-slate-200/80'">
+                                    <span x-show="selectedId === {{ $docPkg->id }}" class="flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Terpilih</span>
+                                    </span>
+                                    <span x-show="selectedId !== {{ $docPkg->id }}" class="flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full border border-slate-400 group-hover:border-sky-500"></span>
+                                        <span>Pilih Paket</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Durasi & Info -->
+                            <div class="text-xs text-slate-500 font-medium flex items-center gap-1.5 -mt-2">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>{{ $docPkg->duration ?: 'Full Trip Fleksibel' }}</span>
                             </div>
 
                             <div>
-                                <h3 class="text-xl font-black text-slate-900 leading-snug group-hover:text-sky-600 transition-colors">
+                                <h3 class="text-xl font-black leading-snug transition-colors"
+                                    :class="selectedId === {{ $docPkg->id }} ? 'text-sky-950' : 'text-slate-900 group-hover:text-sky-600'">
                                     {{ $docPkg->title }}
                                 </h3>
                                 @if ($docPkg->summary)
@@ -463,16 +495,18 @@
                                 @endif
                             </div>
 
-                            <div class="py-4 border-y border-slate-100">
+                            <div class="py-4 border-y transition-colors"
+                                :class="selectedId === {{ $docPkg->id }} ? 'border-sky-100 bg-sky-50/50 -mx-7 sm:-mx-8 px-7 sm:px-8' : 'border-slate-100'">
                                 <div class="flex items-baseline gap-1">
-                                    <span class="text-3xl font-black text-slate-900">
+                                    <span class="text-3xl font-black transition-colors" :class="selectedId === {{ $docPkg->id }} ? 'text-sky-600' : 'text-slate-900'">
                                         Rp {{ number_format($docPkg->price, 0, ',', '.') }}
                                     </span>
                                     <span class="text-xs text-slate-500 font-medium">/ {{ $docPkg->price_note ?: 'rombongan' }}</span>
                                 </div>
-                                <span class="text-[11px] font-semibold block mt-1" :class="selectedId === {{ $docPkg->id }} ? 'text-rose-600 font-bold' : 'text-emerald-600'">
-                                    ✓ Unlimited RAW Photos + Cinematic Reels + Google Drive
-                                </span>
+                                <div class="text-[11px] font-semibold flex items-center gap-1.5 mt-1.5" :class="selectedId === {{ $docPkg->id }} ? 'text-sky-700 font-bold' : 'text-emerald-600'">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 shrink-0"></i>
+                                    <span>Semua File RAW + Video Reels + Drive Same-Day</span>
+                                </div>
                             </div>
 
                             <!-- Fasilitas Inclusions -->
@@ -480,7 +514,8 @@
                                 <ul class="space-y-2.5 text-xs text-slate-600">
                                     @foreach (array_slice($pkgInclusions, 0, 5) as $inc)
                                         <li class="flex items-start gap-2.5">
-                                            <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0 mt-0.5"></i>
+                                            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5 transition-colors"
+                                               :class="selectedId === {{ $docPkg->id }} ? 'text-sky-500' : 'text-slate-400 group-hover:text-sky-500'"></i>
                                             <span class="leading-tight">{{ $inc }}</span>
                                         </li>
                                     @endforeach
@@ -489,10 +524,14 @@
                         </div>
 
                         <div class="pt-6 mt-6 border-t border-slate-100 space-y-2.5" @click.stop>
-                            <a href="https://wa.me/{{ $lotusWa }}?text={{ urlencode('Halo Lotus Creative, saya ingin reservasi ' . $docPkg->title . ' (Rp ' . number_format($docPkg->price, 0, ',', '.') . '). Mohon info tanggal trip yang tersedia.') }}" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white transition-all text-center flex items-center justify-center gap-2"
-                                :class="selectedId === {{ $docPkg->id }} ? 'bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 hover:from-sky-500 hover:to-rose-500 shadow-lg shadow-sky-500/25' : 'bg-slate-900 hover:bg-slate-800'">
+                            <a href="https://wa.me/{{ $lotusWa }}?text={{ urlencode('Halo Lotus Creative, saya ingin reservasi ' . $docPkg->title . ' (Rp ' . number_format($docPkg->price, 0, ',', '.') . '). Mohon info tanggal trip yang tersedia.') }}" 
+                               target="_blank" 
+                               class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white transition-all text-center flex items-center justify-center gap-2"
+                               :class="selectedId === {{ $docPkg->id }} 
+                                   ? 'bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 hover:from-sky-500 hover:to-rose-500 shadow-lg shadow-sky-500/25 ring-2 ring-sky-400/20' 
+                                   : 'bg-slate-900 hover:bg-slate-800'">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                <span>Booking via WhatsApp</span>
+                                <span x-text="selectedId === {{ $docPkg->id }} ? 'Booking Paket Terpilih Ini' : 'Booking via WhatsApp'"></span>
                             </a>
                             <a href="{{ route('package.detail', $docPkg->slug) }}" class="w-full py-2 px-3 rounded-xl text-[11px] font-semibold text-slate-500 hover:text-sky-600 bg-slate-50 hover:bg-sky-50 transition-colors text-center block">
                                 Rincian Destinasi & Itinerary &rarr;
@@ -510,23 +549,25 @@
             <div class="mt-12 rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-2xl border border-slate-700/60 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
                 
-                <div class="space-y-1.5 text-center md:text-left z-10">
-                    <span class="text-[11px] font-mono uppercase tracking-widest text-sky-400 font-bold flex items-center justify-center md:justify-start gap-1.5">
+                <div class="space-y-2 text-center md:text-left z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-[11px] font-bold uppercase tracking-wider">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Paket yang Sedang Anda Pilih
-                    </span>
+                        <span>Paket Terpilih Siap Dipesan</span>
+                    </div>
                     <h3 class="text-xl sm:text-2xl font-black text-white" x-text="selectedTitle"></h3>
-                    <p class="text-xs text-slate-300">
-                        Tarif: <span class="font-extrabold text-emerald-400 text-base" x-text="selectedPrice"></span> &bull; 
-                        Durasi: <span class="font-semibold text-sky-300" x-text="selectedDuration"></span> &bull; 
-                        Garansi RAW files Google Drive Same-Day
+                    <p class="text-xs text-slate-300 flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1">
+                        <span>Tarif: <strong class="text-emerald-400 text-base" x-text="selectedPrice"></strong></span>
+                        <span class="text-slate-500 hidden sm:inline">&bull;</span>
+                        <span>Durasi: <strong class="text-sky-300" x-text="selectedDuration"></strong></span>
+                        <span class="text-slate-500 hidden sm:inline">&bull;</span>
+                        <span class="text-slate-300">File RAW Drive Same-Day</span>
                     </p>
                 </div>
 
                 <div class="flex items-center gap-3 w-full md:w-auto z-10 shrink-0">
-                    <a :href="waUrl" target="_blank" class="w-full md:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 via-sky-600 to-rose-600 hover:from-sky-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-sky-500/30 flex items-center justify-center gap-2 transition-all hover:scale-105">
+                    <a :href="waUrl" target="_blank" class="w-full md:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 via-sky-600 to-rose-600 hover:from-sky-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-sky-500/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.03]">
                         <i data-lucide="message-circle" class="w-4 h-4"></i>
-                        <span>Lanjut Booking Paket Terpilih via WA</span>
+                        <span>Lanjut Booking via WhatsApp</span>
                     </a>
                 </div>
             </div>
