@@ -53,11 +53,13 @@ class TourPackage extends Model
         static::saved(function () {
             \Illuminate\Support\Facades\Cache::forget('home_tour_packages');
             \Illuminate\Support\Facades\Cache::forget('home_doc_packages');
+            \Illuminate\Support\Facades\Cache::forget('lotus_doc_packages');
         });
 
         static::deleted(function () {
             \Illuminate\Support\Facades\Cache::forget('home_tour_packages');
             \Illuminate\Support\Facades\Cache::forget('home_doc_packages');
+            \Illuminate\Support\Facades\Cache::forget('lotus_doc_packages');
         });
     }
 

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 // Halaman Publik
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/paket/{slug}', [HomeController::class, 'showPackage'])->name('package.detail');
+Route::get('/dokumentasi', [HomeController::class, 'documentation'])->name('documentation');
+Route::get('/photography', fn () => redirect()->route('documentation'));
+Route::get('/lotus-creative', fn () => redirect()->route('documentation'));
 Route::get('/api/visitor-stats', [HomeController::class, 'apiVisitorStats'])->name('api.visitor.stats');
 Route::get('/api/search', [SearchController::class, 'search'])->name('api.search');
 

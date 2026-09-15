@@ -61,6 +61,21 @@ class HomeController extends Controller
         return view('package-detail', compact('settings', 'package', 'otherPackages'));
     }
 
+    public function documentation(Request $request)
+    {
+        $settings = SiteSetting::getSettings();
+        $this->recordVisitor($request);
+
+        $docPackages = \Illuminate\Support\Facades\Cache::remember('lotus_doc_packages', 600, function () {
+            return TourPackage::where('is_active', true)
+                ->where('category', 'Dokumentasi')
+                ->orderBy('sort_order', 'asc')
+                ->get();
+        });
+
+        return view('documentation', compact('settings', 'docPackages'));
+    }
+
     public function apiVisitorStats(Request $request): JsonResponse
     {
         return response()->json($this->getStats());

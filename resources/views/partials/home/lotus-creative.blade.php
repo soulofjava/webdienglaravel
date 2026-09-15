@@ -39,9 +39,9 @@
                     <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-400"></i>
                     <span>@lotus.creative01</span>
                 </a>
-                <a href="https://www.tiktok.com/@lotuscreative_?_r=1&_t=ZS-99iFr2JbCcc" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors">
-                    <i data-lucide="video" class="w-3.5 h-3.5 text-cyan-400"></i>
-                    <span>@lotuscreative_</span>
+                <a href="{{ route('documentation') }}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 hover:text-white transition-colors font-medium">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span>Halaman Khusus Lotus Creative</span>
                 </a>
             </div>
         </div>
