@@ -49,8 +49,14 @@ Route::get('/sitemap.xml', function () {
 Route::get('/admin/login', fn () => redirect()->route('login'))->name('admin.login');
 Route::get('/dashboard', fn () => redirect()->route('admin.index'))->name('dashboard');
 
-// Panel Pengelola Terproteksi Auth Breeze
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+// Panel Pengelola Terproteksi Auth Breeze & Inactivity Timeout Guard
+Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(function () {
+    // Keepalive endpoint untuk AJAX ping perpanjangan sesi dari client
+    Route::post('/session-keepalive', function () {
+        session()->put('last_activity_time', time());
+        return response()->json(['status' => 'active', 'timestamp' => time()]);
+    })->name('admin.session.keepalive');
+
     Route::get('/', [AdminSettingController::class, 'index'])->name('admin.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('admin.settings.update');
     Route::post('/upload/favicon', [AdminSettingController::class, 'uploadFavicon'])->name('admin.upload.favicon');

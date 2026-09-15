@@ -213,6 +213,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
 
+    <!-- Auto-Logout Inactivity Guard (Modal & Timer Pelindung Akun) -->
+    <x-inactivity-guard />
+
     @stack('scripts')
 </body>
 </html>

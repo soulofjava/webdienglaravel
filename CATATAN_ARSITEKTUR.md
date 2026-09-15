@@ -145,6 +145,13 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
    - **Usage Guard (Proteksi Anti-Hapus)**:
      - Method `Comcode::countUsedPackages()` menghitung secara riil referensi master kode pada kolom `category`, `badge`, `duration`, dan `pickup_location` di seluruh tabel paket wisata.
      - Jika sebuah master kode sedang digunakan oleh $\ge 1$ paket aktif, tombol Hapus digantikan oleh badge gembok proteksi dan controller menolak keras penghapusan demi menjaga integritas relasi data di portal.
+5. **Fitur Logout Otomatis / Inactivity Timeout Guard (`EnforceInactivityTimeout.php`)**:
+   - **Standar Keamanan**: Berbasis standar perbankan / OWASP (batas inaktivitas 15 menit = 900 detik).
+   - **Mekanisme Berlapis (Defense in Depth)**:
+     - **Client-Side Guard (`inactivity-guard.blade.php`)**: Memantau interaksi mouse, keyboard, touch, dan scroll. Pada menit ke-13 (2 menit sebelum timeout), modal peringatan keamanan interaktif muncul dengan hitung mundur digital (02:00 -> 00:00).
+     - **Interaksi Pengguna**: Tombol "Tetap Masuk" mengirimkan ping keepalive AJAX (`POST /admin/session-keepalive`) untuk memperpanjang masa aktif sesi tanpa perlu me-reload halaman.
+     - **Auto-Logout**: Jika waktu countdown habis (00:00), form logout dieksekusi otomatis dan diarahkan ke `/admin/login` dengan pesan flash status.
+     - **Server-Side Middleware (`EnforceInactivityTimeout`)**: Memvalidasi selisih waktu `last_activity_time` pada setiap request rute admin. Jika sesi ditinggalkan tanpa koneksi atau browser ditutup, server otomatis memutus sesi dan menghancurkan token autentikasi.
 
 ---
 
@@ -170,12 +177,12 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
 
 * **Server Lokal:** `http://localhost:8000` (`php artisan serve`)
 * **Admin Login:** `http://localhost:8000/admin/login`
-* **Akun Superadmin (Global Bypass):**
+* **Akun Superadmin (Global Bypass & Developer):**
   * Email: `isamaulanatantra@gmail.com`
-  * Password: `superadmin123` *(Role: `superadmin`)*
+  * Role: `superadmin`
 * **Akun Admin TiketDieng (Scope Paket Wisata):**
   * Email: `admin@tiketdieng.com`
-  * Password: `admin123` *(Role: `admin`)*
+  * Role: `admin` (Standard Enterprise Security Password)
 * **Akun Admin Lotus Creative (Scope Dokumentasi/Fotografi):**
   * Email: `admin@lotuscreative.id`
-  * Password: `lotusadmin123` *(Role: `admin`)*
+  * Role: `admin` (Standard Enterprise Security Password)
