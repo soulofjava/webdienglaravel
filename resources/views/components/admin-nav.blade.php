@@ -5,8 +5,70 @@
 
 @php
     $currentRoute = request()->route() ? request()->route()->getName() : '';
-    
-    // Menu navigasi admin terpusat - jika ingin menambah menu baru di masa depan, cukup tambahkan di sini
+    $user = Auth::user();
+    $userScope = $user ? $user->getSiteScope() : null;
+    $isSuper = $user && $user->hasRole('superadmin');
+
+    // Penentuan profil & identitas brand panel secara dinamis per unit pengelola (White-Label Multi-Tenant)
+    if ($isSuper) {
+        $panelBrand = 'Control Panel';
+        $panelBadge = 'CENTRAL CMS';
+        $panelBadgeClass = 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+        $panelIcon = 'layers';
+        $panelDefaultSubtitle = 'Pusat Pengelolaan Konten & Multi-Unit Bisnis';
+        $webPreviewUrl = route('home');
+        $webPreviewLabel = 'Lihat Web';
+        $roleLabel = 'SUPERADMIN';
+        $rolePillClass = 'bg-gradient-to-r from-amber-500/25 via-amber-500/15 to-yellow-500/10 border-amber-500/40 text-amber-300 shadow-amber-500/10';
+        $roleIcon = 'crown';
+    } elseif ($userScope === 'lotus') {
+        $panelBrand = 'Lotus Creative';
+        $panelBadge = 'STUDIO PANEL';
+        $panelBadgeClass = 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30';
+        $panelIcon = 'camera';
+        $panelDefaultSubtitle = 'Pengelolaan Studio Fotografi & Video Dokumentasi';
+        $webPreviewUrl = url('/?theme=lotus');
+        $webPreviewLabel = 'Lihat Studio';
+        $roleLabel = 'ADMIN LOTUS';
+        $rolePillClass = 'bg-fuchsia-500/15 border-fuchsia-500/30 text-fuchsia-300 shadow-fuchsia-500/10';
+        $roleIcon = 'camera';
+    } elseif ($userScope === 'jeep') {
+        $panelBrand = 'Jeep Dieng';
+        $panelBadge = 'OPERATIONS';
+        $panelBadgeClass = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+        $panelIcon = 'compass';
+        $panelDefaultSubtitle = 'Pengelolaan Armada & Paket Safari 4x4';
+        $webPreviewUrl = url('/?theme=jeep');
+        $webPreviewLabel = 'Lihat Web';
+        $roleLabel = 'ADMIN JEEP';
+        $rolePillClass = 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300 shadow-emerald-500/10';
+        $roleIcon = 'compass';
+    } elseif ($userScope === 'shuttle') {
+        $panelBrand = 'Shuttle Dieng';
+        $panelBadge = 'OPERATIONS';
+        $panelBadgeClass = 'bg-sky-500/20 text-sky-300 border-sky-500/30';
+        $panelIcon = 'bus';
+        $panelDefaultSubtitle = 'Pengelolaan Layanan Mikrobus 15 Seat';
+        $webPreviewUrl = url('/?theme=shuttle');
+        $webPreviewLabel = 'Lihat Web';
+        $roleLabel = 'ADMIN SHUTTLE';
+        $rolePillClass = 'bg-sky-500/15 border-sky-500/30 text-sky-300 shadow-sky-500/10';
+        $roleIcon = 'bus';
+    } else {
+        // TiketDieng / default admin
+        $panelBrand = 'TiketDieng';
+        $panelBadge = 'TRAVEL PANEL';
+        $panelBadgeClass = 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+        $panelIcon = 'compass';
+        $panelDefaultSubtitle = 'Pengelolaan Paket Wisata & Biro Perjalanan';
+        $webPreviewUrl = url('/?theme=tiketdieng');
+        $webPreviewLabel = 'Lihat Portal';
+        $roleLabel = 'ADMIN TIKETDIENG';
+        $rolePillClass = 'bg-amber-500/15 border-amber-500/30 text-amber-300 shadow-amber-500/10';
+        $roleIcon = 'user';
+    }
+
+    // Menu navigasi admin terpusat
     $navMenus = [
         [
             'name' => 'Pengaturan',
@@ -28,7 +90,7 @@
         ],
     ];
 
-    if (Auth::user()?->hasRole('superadmin')) {
+    if ($isSuper) {
         $navMenus[] = [
             'name' => 'Kelola Pengelola',
             'route' => 'admin.users.index',
@@ -44,26 +106,26 @@
         <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
             <a href="{{ route('admin.index') }}" class="flex items-center gap-3 group">
                 <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform flex-shrink-0">
-                    <i data-lucide="compass" class="w-4 h-4"></i>
+                    <i data-lucide="{{ $panelIcon }}" class="w-4 h-4"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="font-serif text-sm sm:text-base font-bold text-white tracking-wide">
-                            {{ $settings->site_name ?? 'TiketDieng.com' }}
+                            {{ $title ?? $panelBrand }}
                         </span>
-                        <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                            PANEL
+                        <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider {{ $panelBadgeClass }}">
+                            {{ $panelBadge }}
                         </span>
                     </div>
                     <p class="text-[10px] text-slate-400">
-                        {{ $subtitle ?? 'Pengelolaan Sistem & Konten Biro Wisata' }}
+                        {{ $subtitle ?? $panelDefaultSubtitle }}
                     </p>
                 </div>
             </a>
 
             <!-- Mobile View: Quick Actions -->
             <div class="flex items-center gap-1.5 md:hidden">
-                <a href="{{ route('home') }}" target="_blank" class="p-2 rounded-lg bg-white/5 text-slate-300 hover:text-white border border-white/10" title="Buka Situs Web">
+                <a href="{{ $webPreviewUrl }}" target="_blank" class="p-2 rounded-lg bg-white/5 text-slate-300 hover:text-white border border-white/10" title="{{ $webPreviewLabel }}">
                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                 </a>
                 <form action="{{ route('logout') }}" method="POST" onsubmit="return window.confirmLogout ? window.confirmLogout(event) : confirm('Keluar dari sesi pengelola?');">
@@ -91,34 +153,24 @@
         <!-- Sisi Kanan: Aksi Cepat, Akun & Logout (Desktop) -->
         <div class="hidden md:flex items-center gap-2.5">
             <a
-                href="{{ route('home') }}"
+                href="{{ $webPreviewUrl }}"
                 target="_blank"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
                 title="Buka Website Publik di Tab Baru"
             >
-                <span>Lihat Web</span>
+                <span>{{ $webPreviewLabel }}</span>
                 <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
             </a>
 
             <div class="h-4 w-px bg-white/10 mx-0.5"></div>
 
-            @if(Auth::user()?->hasRole('superadmin'))
-                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-amber-500/15 to-yellow-500/10 border border-amber-500/40 text-amber-300 text-xs shadow-md shadow-amber-500/10" title="Akun Superadmin: {{ Auth::user()->email }}">
-                    <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
-                    <div class="leading-tight">
-                        <span class="font-black text-[10px] tracking-widest uppercase block text-amber-300">SUPERADMIN</span>
-                        <span class="text-[10px] text-slate-300 max-w-[120px] truncate block">{{ Auth::user()->email }}</span>
-                    </div>
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs shadow-md {{ $rolePillClass }}" title="Akun Pengelola: {{ $user?->email }}">
+                <i data-lucide="{{ $roleIcon }}" class="w-3.5 h-3.5 shrink-0"></i>
+                <div class="leading-tight">
+                    <span class="font-black text-[10px] tracking-widest uppercase block">{{ $roleLabel }}</span>
+                    <span class="text-[10px] opacity-90 max-w-[130px] truncate block">{{ $user?->email }}</span>
                 </div>
-            @else
-                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-white/10 text-slate-300 text-xs" title="Akun Admin: {{ Auth::user()?->email }}">
-                    <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                    <div class="leading-tight">
-                        <span class="font-bold text-[10px] tracking-wider uppercase block text-slate-400">ADMIN STAF</span>
-                        <span class="text-[10px] text-slate-300 max-w-[120px] truncate block">{{ Auth::user()?->email }}</span>
-                    </div>
-                </div>
-            @endif
+            </div>
 
             <form action="{{ route('logout') }}" method="POST" onsubmit="return window.confirmLogout ? window.confirmLogout(event) : confirm('Keluar dari sesi pengelola?');" class="m-0 p-0 flex items-center">
                 @csrf

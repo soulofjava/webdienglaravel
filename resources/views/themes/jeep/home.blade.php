@@ -24,10 +24,6 @@
             </a>
 
             <div class="flex items-center gap-3">
-                <a href="{{ url('/?theme=tiketdieng') }}" class="text-xs text-slate-400 hover:text-white transition-colors hidden sm:flex items-center gap-1.5">
-                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                    <span>Portal Tiket Dieng</span>
-                </a>
                 <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->whatsapp_number) }}?text=Halo%20Admin%20Jeep%20Dieng%2C%20saya%20mau%20tanya%20sewa%20Jeep%20Offroad%20Dieng" target="_blank" class="px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-950 bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
                     <i data-lucide="message-circle" class="w-4 h-4"></i>
                     <span>Booking Jeep</span>

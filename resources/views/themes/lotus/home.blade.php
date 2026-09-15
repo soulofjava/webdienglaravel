@@ -120,10 +120,6 @@
 
             <!-- Actions Header -->
             <div class="flex items-center gap-3">
-                <a href="{{ url('/?theme=tiketdieng') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors" title="Kembali ke Portal Biro Wisata">
-                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                    <span>Portal TiketDieng</span>
-                </a>
                 <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20jasa%20dokumentasi%20foto%20dan%20video%20di%20Dieng.%20Bisa%20info%20ketersediaan%20jadwal%3F" target="_blank" class="px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-sky-500 via-sky-600 to-rose-600 hover:from-sky-600 hover:to-rose-700 transition-all shadow-md shadow-sky-500/25 flex items-center gap-2">
                     <i data-lucide="camera" class="w-4 h-4"></i>
                     <span>Booking Jadwal</span>

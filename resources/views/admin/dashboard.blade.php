@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Panel Pengelola — ' . $settings->site_name)
+@section('title', 'Panel Pengelola & Konfigurasi')
 
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">

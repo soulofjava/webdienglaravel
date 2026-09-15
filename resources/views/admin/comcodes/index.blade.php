@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Master Data Kode (Comcodes) — ' . $settings->site_name)
+@section('title', 'Master Data Kode')
 
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">

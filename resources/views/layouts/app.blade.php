@@ -11,7 +11,13 @@
         $favAsset = (str_starts_with($favUrl, 'http://') || str_starts_with($favUrl, 'https://')) ? $favUrl : asset(ltrim($favUrl, '/'));
     @endphp
 
-    <title>@yield('title', ($siteSettings->seo_title ?: ($siteSettings->site_name . ' — ' . ($siteSettings->site_tagline ?: 'Biro Wisata Dataran Tinggi Dieng'))))</title>
+    @php
+        $defaultTitle = request()->is('admin*') 
+            ? 'Panel Pengelola' 
+            : ($siteSettings->seo_title ?: ($siteSettings->site_name . ' — ' . ($siteSettings->site_tagline ?: 'Biro Wisata Dataran Tinggi Dieng')));
+    @endphp
+
+    <title>@yield('title', $defaultTitle)</title>
     
     <!-- Meta SEO Dasar -->
     <meta name="description" content="@yield('meta_description', ($siteSettings->seo_description ?: 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Safari.'))">
