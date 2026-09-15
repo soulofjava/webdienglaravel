@@ -644,11 +644,15 @@
 
                     <!-- Sosial Media -->
                     <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                        <div class="flex items-center gap-2 text-purple-600 font-bold text-xs">
-                            <i data-lucide="instagram" class="w-4 h-4"></i>
+                        <div class="flex items-center gap-2 text-rose-500 font-bold text-xs">
+                            <svg class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                            </svg>
                             <span>Instagram Portofolio</span>
                         </div>
-                        <a href="{{ $settings->instagram_url ?: 'https://www.instagram.com/lotus.creative01' }}" target="_blank" class="inline-flex items-center gap-1 text-xs font-bold text-purple-700 hover:underline font-mono">
+                        <a href="{{ $settings->instagram_url ?: 'https://www.instagram.com/lotus.creative01' }}" target="_blank" class="inline-flex items-center gap-1 text-xs font-bold text-rose-600 hover:underline font-mono">
                             <span>{{ $settings->instagram_url ? '@' . basename(rtrim($settings->instagram_url, '/')) : '@lotus.creative01' }}</span>
                             <i data-lucide="external-link" class="w-3 h-3"></i>
                         </a>
