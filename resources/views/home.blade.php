@@ -877,7 +877,7 @@
 
     <!-- 8. SMART BOOKING CALCULATOR & SIMULATOR HARGA INTERAKTIF -->
     <section id="kalkulator" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <div class="relative rounded-3xl p-6 sm:p-10 lg:p-12 glass-panel border border-white/15 shadow-2xl overflow-hidden">
+        <div class="relative rounded-3xl p-4 sm:p-8 lg:p-12 glass-panel border border-white/15 shadow-2xl overflow-hidden">
             <!-- Glow background -->
             <div class="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -959,7 +959,7 @@
                 </div>
 
                 <!-- Rincian Hasil & Tombol WA -->
-                <div class="lg:col-span-5 p-6 rounded-2xl bg-black/40 border border-white/10 space-y-6">
+                <div class="lg:col-span-5 p-4 sm:p-6 rounded-2xl bg-black/40 border border-white/10 space-y-5">
                     <div class="border-b border-white/10 pb-4">
                         <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Estimasi Awal Mulai Dari</span>
                         <div id="totalPriceDisplay" class="text-3xl sm:text-4xl font-black text-amber-400 mt-2 font-mono">Rp 2.780.000</div>
@@ -991,11 +991,15 @@
                         <span>Biaya akhir dapat menyesuaikan ketersediaan tipe kamar homestay (standar/VIP), musim liburan, dan kustomisasi rute Anda.</span>
                     </div>
 
-                    <button id="btnSendWa" class="w-full py-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider text-black bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 transition-all duration-300 shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer">
-                        <i data-lucide="message-circle" class="w-4 h-4"></i>
-                        <span>Konsultasi & Cek Homestay via WA</span>
+                    <button id="btnSendWa" class="w-full relative group overflow-hidden py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl sm:rounded-2xl text-slate-950 font-bold bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-400 hover:from-emerald-300 hover:to-emerald-200 transition-all duration-300 shadow-xl shadow-emerald-500/25 active:scale-[0.98] flex items-center justify-center gap-2.5 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-black/10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-slate-950"></i>
+                        </span>
+                        <span class="text-xs sm:text-sm font-extrabold tracking-tight sm:tracking-normal leading-snug text-slate-950 text-center">
+                            Konsultasi & Cek Homestay via WA
+                        </span>
                     </button>
-                    <p class="text-[11px] text-center text-slate-400">Terhubung langsung dengan Admin Resmi {{ $settings->site_name }} untuk pengecekan slot kamar & tanggal.</p>
+                    <p class="text-[11px] text-center text-slate-400 leading-tight">Terhubung langsung dengan Admin Resmi {{ $settings->site_name }} untuk pengecekan slot kamar & tanggal.</p>
                 </div>
             </div>
         </div>

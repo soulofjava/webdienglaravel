@@ -333,10 +333,14 @@
                             <a
                                 href="{{ $waUrl }}"
                                 target="_blank"
-                                class="w-full py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 text-center"
+                                class="w-full py-3.5 sm:py-4 px-3 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2.5 text-center"
                             >
-                                <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                <span>Konsultasi & Cek Homestay via WA</span>
+                                <span class="w-8 h-8 rounded-xl bg-black/10 flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="message-circle" class="w-4 h-4 text-slate-950"></i>
+                                </span>
+                                <span class="text-xs sm:text-sm font-extrabold tracking-tight sm:tracking-normal leading-snug">
+                                    Konsultasi & Cek Homestay via WA
+                                </span>
                             </a>
 
                             <a
