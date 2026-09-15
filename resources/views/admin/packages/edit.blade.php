@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Paket Wisata')
+
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">
     <!-- Header Panel Pengelola -->

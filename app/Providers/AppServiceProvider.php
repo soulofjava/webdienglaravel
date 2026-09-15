@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ini_set('unserialize_callback_func', 'spl_autoload_call');
+
         $viewPath = config('view.compiled');
         if ($viewPath && !is_dir($viewPath)) {
             @mkdir($viewPath, 0755, true);

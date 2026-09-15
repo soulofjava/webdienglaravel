@@ -6,10 +6,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
-        $siteSettings = \App\Models\SiteSetting::getSettings();
+        $siteSettings = $settings ?? \App\Models\SiteSetting::getSettings($activeTheme ?? null);
+        $favUrl = $siteSettings->favicon_url ?: '/favicon.png';
+        $favAsset = (str_starts_with($favUrl, 'http://') || str_starts_with($favUrl, 'https://')) ? $favUrl : asset(ltrim($favUrl, '/'));
     @endphp
 
-    <title>@yield('title', ($siteSettings->seo_title ?: ($siteSettings->site_name . ' — ' . ($siteSettings->site_tagline ?: 'Biro Wisata Dataran Tinggi Dieng'))))</title>
+    @php
+        $defaultTitle = request()->is('admin*') 
+            ? 'Panel Pengelola' 
+            : ($siteSettings->seo_title ?: ($siteSettings->site_name . ' — ' . ($siteSettings->site_tagline ?: 'Biro Wisata Dataran Tinggi Dieng')));
+    @endphp
+
+    <title>@yield('title', $defaultTitle)</title>
     
     <!-- Meta SEO Dasar -->
     <meta name="description" content="@yield('meta_description', ($siteSettings->seo_description ?: 'Biro perjalanan wisata resmi Dataran Tinggi Dieng. Nikmati keindahan Golden Sunrise Sikunir, Kawah Sikidang, Telaga Warna, Candi Arjuna, dan Jeep Safari.'))">
@@ -40,7 +48,9 @@
     @yield('schema_json')
 
     <!-- Favicon Dinamis -->
-    <link rel="icon" href="{{ $siteSettings->favicon_url ?: asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ $favAsset }}">
+    <link rel="shortcut icon" href="{{ $favAsset }}">
+    <link rel="apple-touch-icon" href="{{ $favAsset }}">
 
     <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -136,8 +146,52 @@
     <!-- Flatpickr CSS (Dark theme) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    @stack('styles')
 </head>
 <body class="antialiased selection:bg-amber-500/30 selection:text-amber-200">
+    <!-- Sticky Impersonation Alert Banner (Khusus saat Superadmin Login As) -->
+    @if(session()->has('impersonator_id'))
+        @php
+            $impersonator = \App\Models\User::find(session('impersonator_id'));
+            $currentUser = Auth::user();
+        @endphp
+        <aside aria-label="Notifikasi Mode Impersonasi" class="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white px-4 py-2.5 shadow-2xl border-b border-purple-500/40 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
+                    <span class="relative flex h-3 w-3 shrink-0">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                    </span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-black uppercase tracking-wider bg-purple-500/30 px-2 py-0.5 rounded text-[10px] border border-purple-400/40 text-purple-200">
+                            MODE IMPERSONATE
+                        </span>
+                        <span class="text-slate-300">Login Sebagai:</span>
+                        <span class="font-extrabold text-white bg-white/10 px-2 py-0.5 rounded border border-white/15">
+                            {{ $currentUser?->name }} ({{ $currentUser?->email }})
+                        </span>
+                        @if($impersonator)
+                            <span class="text-purple-300 text-[11px] hidden md:inline">
+                                &bull; Superadmin Asli: <strong class="text-amber-300 font-semibold">{{ $impersonator->name }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <form action="{{ route('admin.users.leave-impersonate') }}" method="POST" class="m-0 p-0 shrink-0 w-full sm:w-auto flex justify-center">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/25 hover:scale-105 cursor-pointer"
+                        title="Keluar dari akun staf ini dan kembali ke akun Superadmin"
+                    >
+                        <i data-lucide="arrow-left-circle" class="w-4 h-4"></i>
+                        <span>Kembali ke Superadmin</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+    @endif
+
     @if (isset($slot))
         {{ $slot }}
     @else
@@ -158,6 +212,9 @@
     <!-- Flatpickr JS & Locale Indonesia -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+
+    <!-- Auto-Logout Inactivity Guard (Modal & Timer Pelindung Akun) -->
+    <x-inactivity-guard />
 
     @stack('scripts')
 </body>

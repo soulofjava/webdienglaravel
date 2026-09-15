@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 // Halaman Publik
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/paket/{slug}', [HomeController::class, 'showPackage'])->name('package.detail');
+Route::get('/dokumentasi', [HomeController::class, 'documentation'])->name('documentation');
+Route::get('/photography', fn () => redirect()->route('documentation'));
+Route::get('/lotus-creative', fn () => redirect()->route('documentation'));
 Route::get('/api/visitor-stats', [HomeController::class, 'apiVisitorStats'])->name('api.visitor.stats');
 Route::get('/api/search', [SearchController::class, 'search'])->name('api.search');
 
@@ -46,8 +49,14 @@ Route::get('/sitemap.xml', function () {
 Route::get('/admin/login', fn () => redirect()->route('login'))->name('admin.login');
 Route::get('/dashboard', fn () => redirect()->route('admin.index'))->name('dashboard');
 
-// Panel Pengelola Terproteksi Auth Breeze
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+// Panel Pengelola Terproteksi Auth Breeze & Inactivity Timeout Guard
+Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(function () {
+    // Keepalive endpoint untuk AJAX ping perpanjangan sesi dari client
+    Route::post('/session-keepalive', function () {
+        session()->put('last_activity_time', time());
+        return response()->json(['status' => 'active', 'timestamp' => time()]);
+    })->name('admin.session.keepalive');
+
     Route::get('/', [AdminSettingController::class, 'index'])->name('admin.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('admin.settings.update');
     Route::post('/upload/favicon', [AdminSettingController::class, 'uploadFavicon'])->name('admin.upload.favicon');
@@ -75,6 +84,24 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'update' => 'admin.comcodes.update',
         'destroy' => 'admin.comcodes.destroy',
     ]);
+
+    // Kembali dari mode Impersonate (dapat diakses saat sedang impersonate sebagai admin biasa)
+    Route::post('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate'])->name('admin.users.leave-impersonate');
+    Route::get('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate']);
+
+    // CRUD Pengelola Akun & Role (Khusus Superadmin)
+    Route::middleware(['role:superadmin'])->group(function () {
+        Route::post('/users/{user}/impersonate', [\App\Http\Controllers\AdminUserController::class, 'impersonate'])->name('admin.users.impersonate');
+        Route::resource('users', \App\Http\Controllers\AdminUserController::class)->names([
+            'index' => 'admin.users.index',
+            'create' => 'admin.users.create',
+            'store' => 'admin.users.store',
+            'show' => 'admin.users.show',
+            'edit' => 'admin.users.edit',
+            'update' => 'admin.users.update',
+            'destroy' => 'admin.users.destroy',
+        ]);
+    });
 });
 
 // Profil Bawaan Breeze

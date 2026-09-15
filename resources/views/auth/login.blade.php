@@ -25,9 +25,17 @@
                     Portal Administrator
                 </h1>
                 <p class="text-xs text-slate-400 mt-1 max-w-xs">
-                    Silakan masukkan kredensial resmi pengelola untuk mengakses dashboard {{ $settings->site_name }}.
+                    Silakan masukkan kredensial resmi pengelola untuk mengakses dashboard manajemen sistem.
                 </p>
             </div>
+
+            <!-- Notifikasi Peringatan Keamanan / Inactivity Timeout -->
+            @if (session('warning'))
+                <div class="mb-6 p-4 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs flex items-start gap-2.5">
+                    <i data-lucide="shield-alert" class="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-400"></i>
+                    <span>{{ session('warning') }}</span>
+                </div>
+            @endif
 
             <!-- Session Status Breeze -->
             @if (session('status'))

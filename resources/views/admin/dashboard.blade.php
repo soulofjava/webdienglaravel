@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Panel Pengelola — ' . $settings->site_name)
+@section('title', 'Panel Pengelola & Konfigurasi')
 
 @section('content')
 <div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">
@@ -28,6 +28,61 @@
                         <li>{{ $err }}</li>
                     @endforeach
                 </ul>
+            </div>
+        @endif
+
+        @php
+            $currentUser = Auth::user();
+            $isSuperadmin = $currentUser && $currentUser->hasRole('superadmin');
+        @endphp
+
+        <!-- Banner Selamat Datang Berdasarkan Role -->
+        @if ($isSuperadmin)
+            <div class="relative overflow-hidden rounded-3xl p-6 sm:p-7 border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-purple-500/10 to-slate-900/80 backdrop-blur-xl shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/30 shrink-0">
+                            <i data-lucide="crown" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2.5">
+                                <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">Selamat Datang, Super Administrator</h2>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 shadow-sm shadow-amber-500/30">Full Access</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-1">
+                                Anda memiliki kewenangan penuh: beralih tema multi-site (Tiket Dieng, Lotus Creative, Jeep 4x4, Shuttle), kontrol rekening bank resmi, dan manajemen staf pengelola.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 self-stretch sm:self-auto shrink-0">
+                        <a href="#section-theme-switcher" class="px-3.5 py-2 rounded-xl text-xs font-bold text-amber-300 bg-amber-400/10 border border-amber-400/30 hover:bg-amber-400/20 transition-all flex items-center gap-1.5">
+                            <i data-lucide="palette" class="w-4 h-4"></i>
+                            <span>Tema Multi-Site</span>
+                        </a>
+                        <a href="#section-users" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center gap-1.5">
+                            <i data-lucide="users" class="w-4 h-4"></i>
+                            <span>Daftar Pengelola</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="relative overflow-hidden rounded-3xl p-5 sm:p-6 border border-sky-500/30 bg-gradient-to-r from-sky-500/10 via-slate-900/50 to-slate-900/80 backdrop-blur-xl">
+                <div class="flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-2xl bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 font-bold shrink-0">
+                        <i data-lucide="user-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">Selamat Datang, {{ $currentUser->name ?? 'Staf Pengelola' }}</h2>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30">Admin Staf</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Panel operasional aktif: Anda dapat mengelola paket wisata, pesanan & konten. Pengaturan tema dan rekening bank resmi dikunci oleh Super Administrator.
+                        </p>
+                    </div>
+                </div>
             </div>
         @endif
 
@@ -64,9 +119,222 @@
             </div>
         </div>
 
+        <!-- TAB PEMILIH SUB-WEB PENGATURAN (MULTI-SITE SETTINGS) -->
+        <div class="glass-panel p-4 sm:p-5 rounded-3xl border border-white/10 shadow-xl space-y-3">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-1">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider text-white">Pilih Sub-Web Yang Ingin Dikonfigurasi:</span>
+                </div>
+                <span class="text-[11px] text-slate-400">
+                    Sedang mengatur profil: <strong class="text-amber-300 font-semibold">{{ $supportedSites[$selectedSite]['name'] }}</strong> (<code>{{ $supportedSites[$selectedSite]['domain'] }}</code>)
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                @foreach ($supportedSites as $siteKey => $siteInfo)
+                    @php
+                        $isActiveTab = ($selectedSite === $siteKey);
+                    @endphp
+                    <a
+                        href="{{ route('admin.index', ['site' => $siteKey]) }}"
+                        class="p-3.5 rounded-2xl border transition-all flex flex-col justify-between gap-2.5 {{ $isActiveTab ? 'bg-amber-400/15 border-amber-400/60 shadow-lg shadow-amber-500/15' : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.05]' }}"
+                    >
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded-md uppercase font-bold {{ $isActiveTab ? 'bg-amber-400 text-slate-950' : 'bg-white/10 text-slate-400' }}">
+                                {{ $siteInfo['badge'] }}
+                            </span>
+                            @if ($isActiveTab)
+                                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            @endif
+                        </div>
+                        <div>
+                            <span class="text-xs sm:text-sm font-bold block {{ $isActiveTab ? 'text-amber-300' : 'text-white' }}">
+                                {{ $siteInfo['name'] }}
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-500 block truncate">
+                                {{ $siteInfo['domain'] }}
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
         <!-- FORMULIR UTAMA PENGATURAN -->
         <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-8" id="settingsForm">
             @csrf
+            <input type="hidden" name="site_key" value="{{ $selectedSite }}" id="inputSiteKey">
+
+            <!-- KARTU KHUSUS: PENGATURAN MULTI-SITUS & GANTI TEMA -->
+            @if ($isSuperadmin)
+                <div id="section-theme-switcher" class="glass-panel p-6 sm:p-8 rounded-3xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-white/[0.02] to-purple-500/10 shadow-2xl space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shrink-0">
+                                <i data-lucide="layers" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h2 class="font-bold text-base text-white">Pengaturan Multi-Situs & Tema Beranda Publik</h2>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950">Superadmin</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-0.5">
+                                    Pilih tema tampilan yang aktif untuk rute beranda (<code>/</code>). Di produksi, sistem juga otomatis beralih mengikuti custom domain pengunjung.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="text-slate-400">Tema Aktif Tersimpan:</span>
+                            <span class="px-3 py-1 rounded-xl font-mono font-bold uppercase tracking-wider text-amber-300 bg-amber-400/15 border border-amber-400/40 shadow-sm shadow-amber-500/20">
+                                {{ $globalSetting->active_theme ?? 'tiketdieng' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Pilihan 4 Tema Sub-Unit Bisnis -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- 1. Tiket Dieng (Portal Induk) -->
+                        <label class="relative group cursor-pointer block">
+                            <input type="radio" name="active_theme" value="tiketdieng" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'tiketdieng' ? 'checked' : '' }} class="peer sr-only">
+                            <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-amber-400/50 peer-checked:border-amber-400 peer-checked:bg-amber-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-amber-500/15">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center font-bold text-xs font-mono">
+                                            01
+                                        </span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                                            Portal Induk
+                                        </span>
+                                    </div>
+                                    <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition-colors">Tiket Dieng</h3>
+                                    <p class="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                                        Portal biro perjalanan terlengkap, paket VIP tour, sunrise Sikunir, kawah, dan candi Dieng.
+                                    </p>
+                                    <div class="mt-2.5 text-[10px] font-mono text-slate-500 flex items-center gap-1">
+                                        <i data-lucide="globe" class="w-3 h-3 text-slate-400"></i>
+                                        <span>tiketdieng.com</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                                    <a href="{{ url('/?theme=tiketdieng') }}" target="_blank" class="text-[11px] font-medium text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors" onclick="event.stopPropagation()">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        <span>Preview</span>
+                                    </a>
+                                    <span class="text-[11px] font-bold text-amber-400 peer-checked:inline hidden">✓ Dipilih</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- 2. Lotus Creative -->
+                        <label class="relative group cursor-pointer block">
+                            <input type="radio" name="active_theme" value="lotus" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'lotus' ? 'checked' : '' }} class="peer sr-only">
+                            <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-purple-400/50 peer-checked:border-purple-400 peer-checked:bg-purple-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-purple-500/15">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-8 h-8 rounded-xl bg-purple-400/20 text-purple-400 flex items-center justify-center font-bold text-xs font-mono">
+                                            02
+                                        </span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-purple-400/20 text-purple-300 border border-purple-400/30">
+                                            Creative Studio
+                                        </span>
+                                    </div>
+                                    <h3 class="font-bold text-sm text-white group-hover:text-purple-300 transition-colors">Lotus Creative</h3>
+                                    <p class="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                                        Layanan dokumentasi foto liburan estetik, video cinematic reels, dan pilot drone 4K Dieng.
+                                    </p>
+                                    <div class="mt-2.5 text-[10px] font-mono text-slate-500 flex items-center gap-1">
+                                        <i data-lucide="globe" class="w-3 h-3 text-slate-400"></i>
+                                        <span>lotuscreative.id</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                                    <a href="{{ url('/?theme=lotus') }}" target="_blank" class="text-[11px] font-medium text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors" onclick="event.stopPropagation()">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        <span>Preview</span>
+                                    </a>
+                                    <span class="text-[11px] font-bold text-purple-400 peer-checked:inline hidden">✓ Dipilih</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- 3. Jeep Dieng -->
+                        <label class="relative group cursor-pointer block">
+                            <input type="radio" name="active_theme" value="jeep" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'jeep' ? 'checked' : '' }} class="peer sr-only">
+                            <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-emerald-400/50 peer-checked:border-emerald-400 peer-checked:bg-emerald-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-emerald-500/15">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-8 h-8 rounded-xl bg-emerald-400/20 text-emerald-400 flex items-center justify-center font-bold text-xs font-mono">
+                                            03
+                                        </span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30">
+                                            Adventure 4x4
+                                        </span>
+                                    </div>
+                                    <h3 class="font-bold text-sm text-white group-hover:text-emerald-300 transition-colors">Jeep Dieng</h3>
+                                    <p class="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                                        Sewa Jeep wisata offroad 4x4, rute fun trip, sunrise Bukit Sikunir, kawah & telaga Dieng.
+                                    </p>
+                                    <div class="mt-2.5 text-[10px] font-mono text-slate-500 flex items-center gap-1">
+                                        <i data-lucide="globe" class="w-3 h-3 text-slate-400"></i>
+                                        <span>jeepdieng.com</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                                    <a href="{{ url('/?theme=jeep') }}" target="_blank" class="text-[11px] font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors" onclick="event.stopPropagation()">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        <span>Preview</span>
+                                    </a>
+                                    <span class="text-[11px] font-bold text-emerald-400 peer-checked:inline hidden">✓ Dipilih</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- 4. Shuttle Dieng -->
+                        <label class="relative group cursor-pointer block">
+                            <input type="radio" name="active_theme" value="shuttle" {{ old('active_theme', $globalSetting->active_theme ?? 'tiketdieng') === 'shuttle' ? 'checked' : '' }} class="peer sr-only">
+                            <div class="p-5 rounded-2xl border transition-all duration-300 h-full flex flex-col justify-between bg-white/[0.02] border-white/10 hover:border-sky-400/50 peer-checked:border-sky-400 peer-checked:bg-sky-400/[0.08] peer-checked:shadow-lg peer-checked:shadow-sky-500/15">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-8 h-8 rounded-xl bg-sky-400/20 text-sky-400 flex items-center justify-center font-bold text-xs font-mono">
+                                            04
+                                        </span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-sky-400/20 text-sky-300 border border-sky-400/30">
+                                            Transportasi
+                                        </span>
+                                    </div>
+                                    <h3 class="font-bold text-sm text-white group-hover:text-sky-300 transition-colors">Shuttle Dieng</h3>
+                                    <p class="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                                        Armada mikrobus 15 kursi nyaman ber-AC, antar-jemput stasiun/bandara ke Dieng Plateau.
+                                    </p>
+                                    <div class="mt-2.5 text-[10px] font-mono text-slate-500 flex items-center gap-1">
+                                        <i data-lucide="globe" class="w-3 h-3 text-slate-400"></i>
+                                        <span>shuttledieng.com</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                                    <a href="{{ url('/?theme=shuttle') }}" target="_blank" class="text-[11px] font-medium text-sky-400 hover:text-sky-300 flex items-center gap-1 transition-colors" onclick="event.stopPropagation()">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        <span>Preview</span>
+                                    </a>
+                                    <span class="text-[11px] font-bold text-sky-400 peer-checked:inline hidden">✓ Dipilih</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            @else
+                <div class="glass-panel p-4 rounded-2xl border border-white/10 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
+                        <span class="text-xs text-slate-300">Tema Beranda Aktif Saat Ini:</span>
+                        <span class="px-2 py-0.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider text-amber-300 bg-amber-400/10 border border-amber-400/30">
+                            {{ $globalSetting->active_theme ?? 'tiketdieng' }}
+                        </span>
+                    </div>
+                    <span class="text-[11px] text-slate-500">Dikelola oleh Super Administrator</span>
+                </div>
+            @endif
 
             <!-- Kartu 1: Identitas Platform -->
             <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
@@ -351,16 +619,24 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
-                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-400"></i>
-                                <span>Nomor Legalitas NIB / Perizinan Usaha</span>
-                            </label>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-400"></i>
+                                    <span>Nomor Legalitas NIB / Perizinan Usaha</span>
+                                </label>
+                                @unless ($isSuperadmin)
+                                    <span class="text-[10px] font-semibold text-amber-400/80 flex items-center gap-1">
+                                        <i data-lucide="lock" class="w-3 h-3"></i> Superadmin
+                                    </span>
+                                @endunless
+                            </div>
                             <input
                                 type="text"
                                 name="legal_nib"
                                 value="{{ old('legal_nib', $settings->legal_nib) }}"
                                 placeholder="Contoh: NIB: 1294801928472"
-                                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors"
+                                @unless ($isSuperadmin) readonly disabled @endunless
+                                class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors @unless($isSuperadmin) opacity-60 bg-white/[0.02] cursor-not-allowed @endunless"
                             />
                         </div>
 
@@ -381,10 +657,25 @@
 
                     <!-- Informasi Rekening Bank Perusahaan -->
                     <div class="pt-4 border-t border-white/10">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-1.5">
-                            <i data-lucide="credit-card" class="w-4 h-4"></i>
-                            <span>Rekening Resmi Pembayaran / Reservasi</span>
-                        </h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                                <i data-lucide="credit-card" class="w-4 h-4"></i>
+                                <span>Rekening Resmi Pembayaran / Reservasi</span>
+                            </h3>
+                            @unless ($isSuperadmin)
+                                <span class="text-[10px] font-semibold text-amber-400/90 flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20">
+                                    <i data-lucide="lock" class="w-3 h-3"></i> Terkunci (Superadmin Only)
+                                </span>
+                            @endunless
+                        </div>
+
+                        @unless ($isSuperadmin)
+                            <div class="p-3 mb-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-center gap-2">
+                                <i data-lucide="shield-alert" class="w-4 h-4 shrink-0"></i>
+                                <span>Rekening pembayaran resmi dilindungi dan hanya dapat diperbarui oleh Super Administrator demi integritas transaksi.</span>
+                            </div>
+                        @endunless
+
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-300 mb-1.5">Nama Bank & Cabang</label>
@@ -393,7 +684,8 @@
                                     name="bank_name"
                                     value="{{ old('bank_name', $settings->bank_name) }}"
                                     placeholder="BNI Cabang Wonosobo"
-                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                    @unless ($isSuperadmin) readonly disabled @endunless
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none @unless($isSuperadmin) opacity-60 bg-white/[0.02] cursor-not-allowed @endunless"
                                 />
                             </div>
                             <div>
@@ -403,7 +695,8 @@
                                     name="bank_account_number"
                                     value="{{ old('bank_account_number', $settings->bank_account_number) }}"
                                     placeholder="8166754042"
-                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-mono focus:border-amber-400 focus:outline-none"
+                                    @unless ($isSuperadmin) readonly disabled @endunless
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-mono focus:border-amber-400 focus:outline-none @unless($isSuperadmin) opacity-60 bg-white/[0.02] cursor-not-allowed @endunless"
                                 />
                             </div>
                             <div>
@@ -413,7 +706,8 @@
                                     name="bank_account_name"
                                     value="{{ old('bank_account_name', $settings->bank_account_name) }}"
                                     placeholder="PT. GOTRIP ASIA TRAVELINDO"
-                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                    @unless ($isSuperadmin) readonly disabled @endunless
+                                    class="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none @unless($isSuperadmin) opacity-60 bg-white/[0.02] cursor-not-allowed @endunless"
                                 />
                             </div>
                         </div>
@@ -673,10 +967,122 @@
             </div>
         </form>
 
+        <!-- KARTU KHUSUS SUPERADMIN: MANAJEMEN AKUN PENGELOLA & ROLE (SPATIE) -->
+        @if ($isSuperadmin && isset($users))
+            <div id="section-users" class="glass-panel p-6 sm:p-8 rounded-3xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/5 via-white/[0.01] to-amber-500/5 shadow-2xl space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 shrink-0">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="font-bold text-base text-white">Manajemen Akun Pengelola & Hak Akses (Spatie Role)</h2>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500 text-white">Superadmin Only</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-0.5">
+                                Daftar akun terautentikasi dan pembagian role hak akses sistem (Superadmin vs Admin Staf).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 shrink-0">
+                        <span class="text-xs text-slate-400 font-mono hidden sm:inline">Total: <strong class="text-white">{{ $users->count() }} Akun</strong></span>
+                        <a href="{{ route('admin.users.index') }}" class="px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 transition-all shadow-md shadow-amber-500/20 flex items-center gap-1.5">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                            <span>Kelola & Tambah Pengelola</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="uppercase tracking-wider text-[10px] text-slate-400 bg-white/[0.03] border-y border-white/5 font-bold">
+                            <tr>
+                                <th class="py-3 px-4">Pengelola</th>
+                                <th class="py-3 px-4">Email Login</th>
+                                <th class="py-3 px-4">Role Sistem</th>
+                                <th class="py-3 px-4">Hak Akses & Batasan</th>
+                                <th class="py-3 px-4 text-right">Terdaftar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            @foreach ($users as $u)
+                                @php
+                                    $uIsSuper = $u->hasRole('superadmin');
+                                @endphp
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="py-3.5 px-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs {{ $uIsSuper ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-500/30' : 'bg-sky-500/20 text-sky-300 border border-sky-500/30' }}">
+                                                {{ strtoupper(substr($u->name, 0, 1)) }}
+                                            </div>
+                                            <div>
+                                                <div class="font-semibold text-white flex items-center gap-2">
+                                                    <span>{{ $u->name }}</span>
+                                                    @if (Auth::id() === $u->id)
+                                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-400/10 text-amber-300 border border-amber-400/30 shadow-xs">
+                                                            <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            <span>Akun Anda</span>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <div class="text-[10px] text-slate-500 font-mono mt-0.5">ID #{{ $u->id }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3.5 px-4 font-mono text-slate-300">
+                                        {{ $u->email }}
+                                    </td>
+                                    <td class="py-3.5 px-4">
+                                        @if ($uIsSuper)
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/40 shadow-sm shadow-amber-500/20">
+                                                <i data-lucide="crown" class="w-3 h-3 text-amber-400"></i>
+                                                Superadmin
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] font-semibold uppercase tracking-wider bg-sky-500/15 text-sky-300 border border-sky-500/30">
+                                                <i data-lucide="user" class="w-3 h-3 text-sky-400"></i>
+                                                Admin Staf
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="py-3.5 px-4">
+                                        @if ($uIsSuper)
+                                            <span class="text-[11px] text-amber-300/90 font-medium">
+                                                Full Control: Multi-Site Themes, NIB & Rekening Bank, Manajemen User & Database.
+                                            </span>
+                                        @else
+                                            <span class="text-[11px] text-slate-400">
+                                                Operasional: Kelola Paket Wisata, Voucher, Pesanan & Konten Promosi.
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="py-3.5 px-4 text-right font-mono text-slate-400 text-[11px]">
+                                        {{ $u->created_at ? $u->created_at->format('d M Y') : '—' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 text-[11px] text-slate-400 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4 text-purple-400 shrink-0"></i>
+                        <span>Otorisasi role dikelola secara aman menggunakan pustaka <strong>Spatie Laravel-Permission</strong> pada tingkat middleware dan model database.</span>
+                    </div>
+                    <span class="text-[10px] font-mono text-slate-500 hidden sm:inline">Role Table: roles & model_has_roles</span>
+                </div>
+            </div>
+        @endif
+
         <!-- Form Reset Default Terpisah -->
         <div class="pt-4 border-t border-white/10 flex justify-end">
             <form action="{{ route('admin.settings.reset') }}" method="POST" onsubmit="return window.confirmDelete ? window.confirmDelete(event, 'Pengaturan Situs', 'Seluruh konfigurasi kontak, nama perusahaan, dan legalitas akan dikembalikan ke data awal bawaan.') : confirm('Kembalikan ke pengaturan awal bawaan?');">
                 @csrf
+                <input type="hidden" name="site_key" value="{{ $selectedSite }}">
                 <button
                     type="submit"
                     class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 border border-white/10 transition-colors cursor-pointer"
@@ -750,6 +1156,7 @@
         faviconBtnText.innerText = 'Mengunggah...';
         const formData = new FormData();
         formData.append('favicon', file);
+        formData.append('site_key', '{{ $selectedSite }}');
         formData.append('_token', '{{ csrf_token() }}');
 
         try {
@@ -785,6 +1192,7 @@
         ogBtnText.innerText = 'Mengunggah...';
         const formData = new FormData();
         formData.append('og_image', file);
+        formData.append('site_key', '{{ $selectedSite }}');
         formData.append('_token', '{{ csrf_token() }}');
 
         try {
