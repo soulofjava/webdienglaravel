@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         );
         $superadmin->syncRoles([$superRole]);
 
-        // 2. Akun Administrator Biasa
+        // 2. Akun Administrator TiketDieng
         $admin = User::updateOrCreate(
             ['email' => 'admin@tiketdieng.com'],
             [
@@ -40,6 +40,17 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $admin->syncRoles([$adminRole]);
+
+        // 3. Akun Administrator Lotus Creative
+        $lotusAdmin = User::updateOrCreate(
+            ['email' => 'admin@lotuscreative.id'],
+            [
+                'name' => 'Admin Lotus Creative',
+                'password' => Hash::make('lotusadmin123'),
+                'email_verified_at' => now(),
+            ]
+        );
+        $lotusAdmin->syncRoles([$adminRole]);
 
         // 2. Pengaturan Default Situs
         SiteSetting::getSettings();
