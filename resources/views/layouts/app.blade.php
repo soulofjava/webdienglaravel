@@ -6,7 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
-        $siteSettings = \App\Models\SiteSetting::getSettings();
+        $siteSettings = $settings ?? \App\Models\SiteSetting::getSettings($activeTheme ?? null);
+        $favUrl = $siteSettings->favicon_url ?: '/favicon.png';
+        $favAsset = (str_starts_with($favUrl, 'http://') || str_starts_with($favUrl, 'https://')) ? $favUrl : asset(ltrim($favUrl, '/'));
     @endphp
 
     <title>@yield('title', ($siteSettings->seo_title ?: ($siteSettings->site_name . ' — ' . ($siteSettings->site_tagline ?: 'Biro Wisata Dataran Tinggi Dieng'))))</title>
@@ -40,7 +42,9 @@
     @yield('schema_json')
 
     <!-- Favicon Dinamis -->
-    <link rel="icon" href="{{ $siteSettings->favicon_url ?: asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ $favAsset }}">
+    <link rel="shortcut icon" href="{{ $favAsset }}">
+    <link rel="apple-touch-icon" href="{{ $favAsset }}">
 
     <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

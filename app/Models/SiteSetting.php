@@ -127,6 +127,27 @@ class SiteSetting extends Model
             return $key;
         }
 
+        // Cek request query / domain jika dipanggil dalam konteks web
+        if (app()->runningInConsole() === false && request()) {
+            if (request()->filled('theme')) {
+                $reqTheme = strtolower(trim((string) request()->query('theme')));
+                if (in_array($reqTheme, ['tiketdieng', 'lotus', 'jeep', 'shuttle'])) {
+                    return $reqTheme;
+                }
+            }
+
+            $host = (string) request()->getHost();
+            if (str_contains($host, 'lotuscreative') || str_contains($host, 'lotus.')) {
+                return 'lotus';
+            }
+            if (str_contains($host, 'jeepdieng') || str_contains($host, 'jeep.')) {
+                return 'jeep';
+            }
+            if (str_contains($host, 'shuttledieng') || str_contains($host, 'shuttle.')) {
+                return 'shuttle';
+            }
+        }
+
         // Coba periksa active_theme tersimpan di record default/tiketdieng
         $mainRecord = self::find('tiketdieng') ?: self::find('default');
         if ($mainRecord && in_array($mainRecord->active_theme, ['tiketdieng', 'lotus', 'jeep', 'shuttle'])) {
@@ -134,6 +155,21 @@ class SiteSetting extends Model
         }
 
         return 'tiketdieng';
+    }
+
+    /**
+     * Accessor favicon dinamis agar sub-web seperti Lotus otomatis memakai favicon ikon tematik
+     */
+    public function getFaviconUrlAttribute(?string $value): string
+    {
+        if ($this->id === 'lotus') {
+            if (!empty($value) && $value !== '/favicon.png' && $value !== '/favicon.ico') {
+                return $value;
+            }
+            return '/images/favicon-lotus.png';
+        }
+
+        return $value ?: '/favicon.png';
     }
 
     /**
@@ -187,7 +223,7 @@ class SiteSetting extends Model
                 'bank_account_name' => 'PT. GOTRIP ASIA TRAVELINDO',
                 'legal_nib' => 'NIB: 1294801928472 (PT. GOTRIP ASIA TRAVELINDO)',
                 'hpi_badge' => 'Certified Drone Pilot & Photographer',
-                'favicon_url' => '/favicon.png',
+                'favicon_url' => '/images/favicon-lotus.png',
                 'seo_title' => 'Lotus Creative — Travel Photography, Cinematic Reels & Drone 4K Dieng',
                 'seo_description' => 'Layanan dokumentasi foto liburan estetik, video cinematic reels, dan pilot drone 4K di Dataran Tinggi Dieng oleh tim fotografer profesional Lotus Creative.',
                 'seo_keywords' => 'lotus creative, foto wisata dieng, jasa foto dieng, sewa drone dieng, video reels dieng, fotografer sikunir, fotografer telaga warna',
