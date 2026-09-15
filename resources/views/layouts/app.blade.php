@@ -136,6 +136,7 @@
     <!-- Flatpickr CSS (Dark theme) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    @stack('styles')
 </head>
 <body class="antialiased selection:bg-amber-500/30 selection:text-amber-200">
     @if (isset($slot))
