@@ -362,9 +362,20 @@
     </section>
 
     <!-- SECTION 3: PILIHAN PAKET DOKUMENTASI & TARIF RESMI -->
-    <section id="paket-harga" class="py-20 lg:py-28 bg-[#f8fafc]">
+    <section id="paket-harga" class="py-20 lg:py-28 bg-[#f8fafc]"
+        x-data="{
+            selectedId: {{ $docPackages->first()->id ?? 25 }},
+            selectedTitle: '{{ addslashes($docPackages->first()->title ?? 'Dokumentasi Paket 1: Ultimate All Dieng Spots (Drone 4K)') }}',
+            selectedPrice: 'Rp {{ number_format($docPackages->first()->price ?? 2500000, 0, ',', '.') }}',
+            selectedDuration: '{{ addslashes($docPackages->first()->duration ?? 'Full Day') }}',
+            filterTab: 'all',
+            waBase: 'https://wa.me/{{ $lotusWa }}?text=',
+            get waUrl() {
+                return this.waBase + encodeURIComponent('Halo Lotus Creative, saya tertarik reservasi ' + this.selectedTitle + ' (' + this.selectedPrice + '). Mohon info jadwal dan ketersediaan tanggalnya.');
+            }
+        }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
                 <span class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-700 border border-sky-200">
                     Investasi Memori Liburan
                 </span>
@@ -372,34 +383,77 @@
                     Pilihan Paket Dokumentasi & Tarif Transparan
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Semua paket sudah termasuk seluruh file mentah original dikirim di hari yang sama via Google Drive, editing color grading, dan pengarah gaya ramah.
+                    Klik pada kartu paket untuk memilih. Semua sesi sudah mencakup seluruh file mentah original dikirim di hari yang sama via Google Drive, editing color grading, dan pengarah gaya ramah.
                 </p>
             </div>
 
-            <!-- Grid Paket Dokumentasi Dinamis dari Database (CRUD /admin/packages) -->
+            <!-- Tab Filter Kategori & UX Pemilihan -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+                <button 
+                    type="button"
+                    @click="filterTab = 'all'" 
+                    class="px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer"
+                    :class="filterTab === 'all' ? 'bg-slate-900 text-white shadow-md' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+                >
+                    ✨ Semua Paket ({{ $docPackages->count() }})
+                </button>
+                <button 
+                    type="button"
+                    @click="filterTab = 'tour'" 
+                    class="px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer"
+                    :class="filterTab === 'tour' ? 'bg-sky-600 text-white shadow-md' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+                >
+                    🏆 Paket Tour Lengkap / Drone (3)
+                </button>
+                <button 
+                    type="button"
+                    @click="filterTab = 'short'" 
+                    class="px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer"
+                    :class="filterTab === 'short' ? 'bg-rose-600 text-white shadow-md' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+                >
+                    ⚡ Sunrise Hunter & Sesi Kilat (2)
+                </button>
+            </div>
+
+            <!-- Grid Paket Dokumentasi Interaktif (Bisa Dipilih) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                 @forelse ($docPackages as $docPkg)
                     @php
-                        $isFeatured = $docPkg->is_popular || $loop->first;
+                        $isFeaturedDefault = $docPkg->is_popular || $loop->first;
                         $pkgInclusions = is_array($docPkg->inclusions) ? $docPkg->inclusions : json_decode($docPkg->inclusions ?? '[]', true);
+                        $isTourType = $docPkg->price >= 1200000;
                     @endphp
-                    <div class="rounded-3xl bg-white {{ $isFeatured ? 'border-2 border-sky-500 shadow-2xl relative overflow-hidden ring-4 ring-sky-500/10' : 'border border-slate-200/90 shadow-lg' }} p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative">
-                        @if ($isFeatured)
-                            <div class="absolute top-0 right-0 bg-gradient-to-l from-sky-500 to-rose-500 text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-bl-2xl tracking-widest shadow-sm">
-                                {{ $docPkg->badge ?: 'PALING REKOMENDASI' }}
-                            </div>
-                        @elseif ($docPkg->badge)
-                            <div class="absolute top-0 right-0 bg-slate-900 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-bl-xl tracking-wider">
+                    <div 
+                        x-show="filterTab === 'all' || (filterTab === 'tour' && {{ $isTourType ? 'true' : 'false' }}) || (filterTab === 'short' && {{ !$isTourType ? 'true' : 'false' }})"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 transform scale-95"
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        @click="selectedId = {{ $docPkg->id }}; selectedTitle = '{{ addslashes($docPkg->title) }}'; selectedPrice = 'Rp {{ number_format($docPkg->price, 0, ',', '.') }}'; selectedDuration = '{{ addslashes($docPkg->duration) }}'"
+                        class="rounded-3xl bg-white p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 relative cursor-pointer group"
+                        :class="selectedId === {{ $docPkg->id }} ? 'border-2 border-sky-500 shadow-2xl ring-4 ring-sky-500/15 -translate-y-1 bg-sky-50/10' : 'border border-slate-200/90 shadow-md hover:border-sky-300 hover:shadow-xl'"
+                    >
+                        @if ($docPkg->badge)
+                            <div class="absolute top-0 right-0 bg-slate-900 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-bl-xl tracking-wider"
+                                :class="selectedId === {{ $docPkg->id }} ? 'bg-gradient-to-l from-sky-600 to-rose-600' : 'bg-slate-900'">
                                 {{ $docPkg->badge }}
                             </div>
                         @endif
 
-                        <div class="space-y-6">
-                            <div>
-                                <span class="text-xs font-mono font-bold {{ $isFeatured ? 'text-sky-600' : 'text-slate-500' }} uppercase tracking-wider">
+                        <div class="space-y-5">
+                            <!-- Indicator Header Status Pilihan -->
+                            <div class="flex items-center justify-between gap-2 pt-1">
+                                <span class="text-xs font-mono font-bold uppercase tracking-wider" :class="selectedId === {{ $docPkg->id }} ? 'text-sky-600' : 'text-slate-400'">
                                     PAKET {{ sprintf('%02d', $loop->iteration) }} &bull; {{ $docPkg->duration ?: 'FULL TRIP' }}
                                 </span>
-                                <h3 class="text-xl font-black text-slate-900 mt-1 leading-snug">
+                                <span class="inline-flex items-center gap-1 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full transition-all"
+                                    :class="selectedId === {{ $docPkg->id }} ? 'bg-sky-600 text-white shadow-sm' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'">
+                                    <span class="w-1.5 h-1.5 rounded-full" :class="selectedId === {{ $docPkg->id }} ? 'bg-white' : 'bg-slate-400'"></span>
+                                    <span x-text="selectedId === {{ $docPkg->id }} ? '✓ Terpilih' : 'Pilih Paket'"></span>
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-black text-slate-900 leading-snug group-hover:text-sky-600 transition-colors">
                                     {{ $docPkg->title }}
                                 </h3>
                                 @if ($docPkg->summary)
@@ -416,7 +470,7 @@
                                     </span>
                                     <span class="text-xs text-slate-500 font-medium">/ {{ $docPkg->price_note ?: 'rombongan' }}</span>
                                 </div>
-                                <span class="text-[11px] {{ $isFeatured ? 'text-rose-600 font-bold' : 'text-emerald-600 font-semibold' }} block mt-1">
+                                <span class="text-[11px] font-semibold block mt-1" :class="selectedId === {{ $docPkg->id }} ? 'text-rose-600 font-bold' : 'text-emerald-600'">
                                     ✓ Unlimited RAW Photos + Cinematic Reels + Google Drive
                                 </span>
                             </div>
@@ -426,7 +480,7 @@
                                 <ul class="space-y-2.5 text-xs text-slate-600">
                                     @foreach (array_slice($pkgInclusions, 0, 5) as $inc)
                                         <li class="flex items-start gap-2.5">
-                                            <i data-lucide="check-circle-2" class="w-4 h-4 {{ $isFeatured ? 'text-sky-500' : 'text-emerald-500' }} shrink-0 mt-0.5"></i>
+                                            <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0 mt-0.5"></i>
                                             <span class="leading-tight">{{ $inc }}</span>
                                         </li>
                                     @endforeach
@@ -434,8 +488,9 @@
                             @endif
                         </div>
 
-                        <div class="pt-6 mt-6 border-t border-slate-100 space-y-2.5">
-                            <a href="https://wa.me/{{ $lotusWa }}?text={{ urlencode('Halo Lotus Creative, saya ingin reservasi ' . $docPkg->title . ' (Rp ' . number_format($docPkg->price, 0, ',', '.') . '). Mohon info tanggal trip yang tersedia.') }}" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white {{ $isFeatured ? 'bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 hover:from-sky-500 hover:to-rose-500 shadow-lg shadow-sky-500/25' : 'bg-slate-900 hover:bg-slate-800' }} transition-all text-center flex items-center justify-center gap-2">
+                        <div class="pt-6 mt-6 border-t border-slate-100 space-y-2.5" @click.stop>
+                            <a href="https://wa.me/{{ $lotusWa }}?text={{ urlencode('Halo Lotus Creative, saya ingin reservasi ' . $docPkg->title . ' (Rp ' . number_format($docPkg->price, 0, ',', '.') . '). Mohon info tanggal trip yang tersedia.') }}" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white transition-all text-center flex items-center justify-center gap-2"
+                                :class="selectedId === {{ $docPkg->id }} ? 'bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 hover:from-sky-500 hover:to-rose-500 shadow-lg shadow-sky-500/25' : 'bg-slate-900 hover:bg-slate-800'">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i>
                                 <span>Booking via WhatsApp</span>
                             </a>
@@ -449,6 +504,31 @@
                         Belum ada paket dokumentasi yang dipublikasikan. Kelola paket melalui Admin Dashboard.
                     </div>
                 @endforelse
+            </div>
+
+            <!-- Interactive Selected Package Action Summary Bar -->
+            <div class="mt-12 rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-2xl border border-slate-700/60 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="space-y-1.5 text-center md:text-left z-10">
+                    <span class="text-[11px] font-mono uppercase tracking-widest text-sky-400 font-bold flex items-center justify-center md:justify-start gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Paket yang Sedang Anda Pilih
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-black text-white" x-text="selectedTitle"></h3>
+                    <p class="text-xs text-slate-300">
+                        Tarif: <span class="font-extrabold text-emerald-400 text-base" x-text="selectedPrice"></span> &bull; 
+                        Durasi: <span class="font-semibold text-sky-300" x-text="selectedDuration"></span> &bull; 
+                        Garansi RAW files Google Drive Same-Day
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3 w-full md:w-auto z-10 shrink-0">
+                    <a :href="waUrl" target="_blank" class="w-full md:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 via-sky-600 to-rose-600 hover:from-sky-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-sky-500/30 flex items-center justify-center gap-2 transition-all hover:scale-105">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        <span>Lanjut Booking Paket Terpilih via WA</span>
+                    </a>
+                </div>
             </div>
 
             <!-- Opsi Tambahan: Single Spot & Prewedding Custom -->
