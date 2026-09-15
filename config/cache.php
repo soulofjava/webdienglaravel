@@ -131,6 +131,11 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => env('CACHE_SERIALIZABLE_CLASSES', [
+        \Illuminate\Database\Eloquent\Collection::class,
+        \Illuminate\Support\Collection::class,
+        \App\Models\TourPackage::class,
+        \App\Models\SiteSetting::class,
+    ]),
 
 ];

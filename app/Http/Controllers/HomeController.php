@@ -18,18 +18,22 @@ class HomeController extends Controller
         $this->recordVisitor($request);
         $visitorStats = $this->getStats();
 
-        // Mengambil paket tour wisata aktif
-        $packages = TourPackage::where('is_active', true)
-            ->where('category', '!=', 'Dokumentasi')
-            ->orderBy('sort_order', 'asc')
-            ->orderBy('id', 'asc')
-            ->get();
+        // Mengambil paket tour wisata aktif (di-cache 10 menit untuk respon instan)
+        $packages = \Illuminate\Support\Facades\Cache::remember('home_tour_packages', 600, function () {
+            return TourPackage::where('is_active', true)
+                ->where('category', '!=', 'Dokumentasi')
+                ->orderBy('sort_order', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+        });
 
-        // Mengambil paket dokumentasi foto & drone resmi Lotus Creative
-        $docPackages = TourPackage::where('is_active', true)
-            ->where('category', 'Dokumentasi')
-            ->orderBy('sort_order', 'asc')
-            ->get();
+        // Mengambil paket dokumentasi foto & drone resmi Lotus Creative (di-cache 10 menit)
+        $docPackages = \Illuminate\Support\Facades\Cache::remember('home_doc_packages', 600, function () {
+            return TourPackage::where('is_active', true)
+                ->where('category', 'Dokumentasi')
+                ->orderBy('sort_order', 'asc')
+                ->get();
+        });
 
         return view('home', compact('settings', 'visitorStats', 'packages', 'docPackages'));
     }
@@ -39,11 +43,20 @@ class HomeController extends Controller
         $settings = SiteSetting::getSettings();
         $this->recordVisitor($request);
 
-        $package = TourPackage::where('slug', $slug)->firstOrFail();
-        $otherPackages = TourPackage::where('is_active', true)
-            ->where('id', '!=', $package->id)
-            ->take(3)
-            ->get();
+        $package = \Illuminate\Support\Facades\Cache::remember('pkg_' . $slug, 600, function () use ($slug) {
+            return TourPackage::where('slug', $slug)->first();
+        });
+
+        if (!$package) {
+            abort(404);
+        }
+
+        $otherPackages = \Illuminate\Support\Facades\Cache::remember('other_packages_' . $package->id, 600, function () use ($package) {
+            return TourPackage::where('is_active', true)
+                ->where('id', '!=', $package->id)
+                ->take(3)
+                ->get();
+        });
 
         return view('package-detail', compact('settings', 'package', 'otherPackages'));
     }
@@ -60,6 +73,25 @@ class HomeController extends Controller
             $ip = $request->ip() ?? '127.0.0.1';
             $ua = $request->userAgent() ?? 'Unknown';
             $ipHash = hash('sha256', $ip . '|' . substr($ua, 0, 100));
+
+            // Cek session atau cache agar tidak melakukan query blocking ke Aiven Cloud berulang kali
+            $sessionKey = 'visited_' . $today;
+            $cacheKey = 'vlog_' . $ipHash . '_' . $today;
+
+            if ($request->hasSession() && $request->session()->has($sessionKey)) {
+                return;
+            }
+            if (\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+                if ($request->hasSession()) {
+                    $request->session()->put($sessionKey, true);
+                }
+                return;
+            }
+
+            if ($request->hasSession()) {
+                $request->session()->put($sessionKey, true);
+            }
+            \Illuminate\Support\Facades\Cache::put($cacheKey, true, now()->endOfDay());
 
             $isNewVisitToday = false;
             $existingLog = VisitorLog::where('ip_hash', $ipHash)
