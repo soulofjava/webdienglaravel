@@ -1017,13 +1017,16 @@
                                                 {{ strtoupper(substr($u->name, 0, 1)) }}
                                             </div>
                                             <div>
-                                                <div class="font-semibold text-white flex items-center gap-1.5">
+                                                <div class="font-semibold text-white flex items-center gap-2">
                                                     <span>{{ $u->name }}</span>
                                                     @if (Auth::id() === $u->id)
-                                                        <span class="text-[9px] px-1.5 py-0.2 rounded bg-white/10 text-slate-300 font-normal">(Akun Anda)</span>
+                                                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wide bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm shadow-emerald-500/10">
+                                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                                            <span>Akun Anda</span>
+                                                        </span>
                                                     @endif
                                                 </div>
-                                                <div class="text-[10px] text-slate-500">ID #{{ $u->id }}</div>
+                                                <div class="text-[10px] text-slate-500 font-mono mt-0.5">ID #{{ $u->id }}</div>
                                             </div>
                                         </div>
                                     </td>

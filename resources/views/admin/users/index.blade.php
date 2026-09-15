@@ -144,10 +144,13 @@
                                             {{ strtoupper(substr($user->name, 0, 1)) }}
                                         </div>
                                         <div>
-                                            <div class="font-bold text-white flex items-center gap-1.5">
+                                            <div class="font-bold text-white flex items-center gap-2">
                                                 <span>{{ $user->name }}</span>
                                                 @if ($isSelf)
-                                                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">Anda</span>
+                                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wide bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm shadow-emerald-500/10">
+                                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                                        <span>Akun Anda</span>
+                                                    </span>
                                                 @endif
                                             </div>
                                             <span class="text-[10px] text-slate-500">ID Pengguna: #{{ $user->id }}</span>
