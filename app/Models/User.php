@@ -63,6 +63,62 @@ class User extends Authenticatable
     }
 
     /**
+     * Dapatkan daftar kategori paket yang menjadi hak kelola user ini.
+     * Mengembalikan null jika superadmin (memiliki akses ke seluruh kategori).
+     */
+    public function getAllowedPackageCategories(): ?array
+    {
+        $scope = $this->getSiteScope();
+        if (!$scope) {
+            return null; // Superadmin: bebas kelola semua kategori
+        }
+
+        if ($scope === 'lotus') {
+            return Comcode::whereIn('code_group', ['package_category', 'category'])
+                ->where('site_scope', 'lotus')
+                ->pluck('code_value')
+                ->push('Dokumentasi')
+                ->unique()
+                ->values()
+                ->toArray();
+        }
+
+        if ($scope === 'tiketdieng') {
+            // TiketDieng adalah portal induk: boleh seluruh kategori di database KECUALI kategori khusus Lotus
+            $lotusCats = Comcode::whereIn('code_group', ['package_category', 'category'])
+                ->where('site_scope', 'lotus')
+                ->pluck('code_value')
+                ->push('Dokumentasi')
+                ->unique()
+                ->toArray();
+
+            $comcodeCats = Comcode::whereIn('code_group', ['package_category', 'category'])
+                ->where(function ($q) {
+                    $q->where('site_scope', 'tiketdieng')
+                      ->orWhere('site_scope', 'global')
+                      ->orWhereNull('site_scope');
+                })
+                ->pluck('code_value');
+
+            $existingPkgCats = TourPackage::select('category')->distinct()->pluck('category');
+
+            return $comcodeCats->merge($existingPkgCats)
+                ->reject(fn($cat) => in_array($cat, $lotusCats, true))
+                ->unique()
+                ->values()
+                ->toArray();
+        }
+
+        // Sub-web lain jika ada (misal jeep, shuttle)
+        return Comcode::whereIn('code_group', ['package_category', 'category'])
+            ->where('site_scope', $scope)
+            ->pluck('code_value')
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    /**
      * Cek apakah user berhak mengelola postingan paket tertentu
      */
     public function canManagePackage(TourPackage $package): bool
@@ -73,14 +129,28 @@ class User extends Authenticatable
 
         $scope = $this->getSiteScope();
         if ($scope === 'lotus') {
-            return $package->category === 'Dokumentasi';
+            $lotusCategories = Comcode::whereIn('code_group', ['package_category', 'category'])
+                ->where('site_scope', 'lotus')
+                ->pluck('code_value')
+                ->push('Dokumentasi')
+                ->unique()
+                ->toArray();
+
+            return in_array($package->category, $lotusCategories, true);
         }
 
         if ($scope === 'tiketdieng') {
-            return $package->category !== 'Dokumentasi';
+            $lotusCategories = Comcode::whereIn('code_group', ['package_category', 'category'])
+                ->where('site_scope', 'lotus')
+                ->pluck('code_value')
+                ->push('Dokumentasi')
+                ->unique()
+                ->toArray();
+
+            return !in_array($package->category, $lotusCategories, true);
         }
 
-        return true;
+        return false;
     }
 
     /**

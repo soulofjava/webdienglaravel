@@ -134,6 +134,17 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
      - Sticky Alert Banner mengambang di bagian paling atas seluruh halaman sistem (`layouts/app.blade.php`) memberi tahu identitas akun yang sedang diimpersonasi.
      - Tombol **"Kembali ke Superadmin"** (`POST /admin/leave-impersonate`) dapat diklik kapan saja untuk mengembalikan sesi login ke akun Superadmin asli dan membersihkan penanda session.
      - Dilengkapi proteksi berlapis: anti-impersonasi berantai, larangan impersonasi akun sendiri, dan verifikasi role Superadmin.
+4. **Multi-Tenant Master Data (Comcodes) & Usage Guard (`AdminComcodeController.php`)**:
+   - **Tujuan**: Membebaskan developer/superadmin dari kerepotan manual setiap kali klien/pengelola unit ingin membuat kategori atau badge baru, sekaligus mencegah admin antar-unit saling merusak atau menghapus data kategori satu sama lain.
+   - **Multi-Tenant Scoping (`site_scope`)**:
+     - Tabel `comcodes` dilengkapi kolom `site_scope` (`global`, `tiketdieng`, `lotus`, `jeep`, `shuttle`).
+     - Admin Lotus (`admin@lotuscreative.id`) saat menambah kategori/badge baru otomatis terdaftar dengan `site_scope = 'lotus'` dan hanya berhak mengedit/menghapus master kodenya sendiri.
+     - Admin TiketDieng (`admin@tiketdieng.com`) hanya berhak mengelola master kodenya sendiri (`site_scope = 'tiketdieng'`).
+     - Master kode umum bertaraf `global` (misal titik jemput dan durasi bersama) berstatus **Terkunci** (read-only) bagi admin sub-web dan hanya dapat diubah/dihapus oleh Superadmin.
+     - Kategori yang tersedia saat create/edit paket wisata (`getAllowedPackageCategories()`) ditarik dinamis dari `Comcode` berdasarkan `site_scope`.
+   - **Usage Guard (Proteksi Anti-Hapus)**:
+     - Method `Comcode::countUsedPackages()` menghitung secara riil referensi master kode pada kolom `category`, `badge`, `duration`, dan `pickup_location` di seluruh tabel paket wisata.
+     - Jika sebuah master kode sedang digunakan oleh $\ge 1$ paket aktif, tombol Hapus digantikan oleh badge gembok proteksi dan controller menolak keras penghapusan demi menjaga integritas relasi data di portal.
 
 ---
 

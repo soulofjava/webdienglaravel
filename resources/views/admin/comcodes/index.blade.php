@@ -17,6 +17,14 @@
             </div>
         @endif
 
+        <!-- Notifikasi Gagal / Proteksi Usage Guard -->
+        @if (session('error'))
+            <div class="p-4 rounded-2xl bg-red-500/15 border border-red-500/40 text-red-300 text-xs sm:text-sm flex items-center gap-3">
+                <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
         @if (isset($errors) && $errors->any())
             <div class="p-4 rounded-2xl bg-red-500/15 border border-red-500/40 text-red-300 text-xs sm:text-sm space-y-1">
                 <div class="font-bold flex items-center gap-2">
@@ -87,13 +95,19 @@
                                 <th class="py-3 px-5 w-12 text-center">Urutan</th>
                                 <th class="py-3 px-5">Nama Tampil (Label Dropdown)</th>
                                 <th class="py-3 px-5">Nilai Teknis (Slug)</th>
+                                <th class="py-3 px-5">Cakupan Unit</th>
                                 <th class="py-3 px-5 hidden md:table-cell">Keterangan</th>
                                 <th class="py-3 px-5 w-24 text-center">Status</th>
-                                <th class="py-3 px-5 w-28 text-right">Aksi</th>
+                                <th class="py-3 px-5 w-32 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-white/5 text-xs text-slate-300">
                             @foreach ($items as $item)
+                                @php
+                                    $scope = $item->site_scope ?? 'global';
+                                    $canManage = $item->canManage(auth()->user());
+                                    $usedCount = $item->countUsedPackages();
+                                @endphp
                                 <tr class="hover:bg-white/[0.02] transition-colors group">
                                     <td class="py-3 px-5 text-center font-mono text-slate-400">
                                         {{ $item->sort_order }}
@@ -105,6 +119,29 @@
                                     </td>
                                     <td class="py-3 px-5 font-mono text-[11px] text-amber-300">
                                         {{ $item->code_value }}
+                                    </td>
+                                    <td class="py-3 px-5">
+                                        @if ($scope === 'lotus')
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/30">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-400"></span> Lotus
+                                            </span>
+                                        @elseif ($scope === 'tiketdieng')
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> TiketDieng
+                                            </span>
+                                        @elseif ($scope === 'jeep')
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Jeep
+                                            </span>
+                                        @elseif ($scope === 'shuttle')
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span> Shuttle
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-500/15 text-slate-300 border border-white/10">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Global
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="py-3 px-5 text-slate-400 hidden md:table-cell text-[11px]">
                                         {{ $item->description ?? '-' }}
@@ -122,31 +159,48 @@
                                     </td>
                                     <td class="py-3 px-5 text-right">
                                         <div class="flex items-center justify-end gap-1.5">
-                                            <button
-                                                type="button"
-                                                onclick="openEditModal({{ json_encode($item) }})"
-                                                class="p-1.5 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-white/5 transition-colors cursor-pointer"
-                                                title="Edit Kode"
-                                            >
-                                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                                            </button>
-
-                                            <form
-                                                action="{{ route('admin.comcodes.destroy', $item->id) }}"
-                                                method="POST"
-                                                onsubmit="return window.confirmDelete ? window.confirmDelete(event, '{{ addslashes($item->code_name) }}', 'Kode ini akan dihapus dari pilihan master data dropdown.') : confirm('Hapus master kode {{ $item->code_name }}?');"
-                                                class="inline"
-                                            >
-                                                @csrf
-                                                @method('DELETE')
+                                            @if ($canManage)
                                                 <button
-                                                    type="submit"
-                                                    class="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-white/5 transition-colors cursor-pointer"
-                                                    title="Hapus Kode"
+                                                    type="button"
+                                                    onclick="openEditModal({{ json_encode($item) }})"
+                                                    class="p-1.5 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-white/5 transition-colors cursor-pointer"
+                                                    title="Edit Master Kode"
                                                 >
-                                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                                                 </button>
-                                            </form>
+
+                                                @if ($usedCount > 0)
+                                                    <span
+                                                        class="p-1.5 rounded-lg text-amber-400/80 bg-amber-500/10 border border-amber-500/20 inline-flex items-center gap-1 cursor-help"
+                                                        title="Proteksi Integritas: Master kode ini digunakan oleh {{ $usedCount }} paket wisata aktif"
+                                                    >
+                                                        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                                                        <span class="text-[9px] font-mono font-bold">{{ $usedCount }}</span>
+                                                    </span>
+                                                @else
+                                                    <form
+                                                        action="{{ route('admin.comcodes.destroy', $item->id) }}"
+                                                        method="POST"
+                                                        onsubmit="return window.confirmDelete ? window.confirmDelete(event, '{{ addslashes($item->code_name) }}', 'Kode ini akan dihapus dari pilihan master data dropdown.') : confirm('Hapus master kode {{ $item->code_name }}?');"
+                                                        class="inline"
+                                                    >
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button
+                                                            type="submit"
+                                                            class="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-white/5 transition-colors cursor-pointer"
+                                                            title="Hapus Master Kode"
+                                                        >
+                                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            @else
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-white/[0.03] text-[10px] text-slate-500 border border-white/5 font-medium" title="Kode dilindungi: Hanya Superadmin atau unit terkait yang berhak mengubahnya.">
+                                                    <i data-lucide="shield-check" class="w-3 h-3 text-slate-500"></i>
+                                                    <span>Terkunci</span>
+                                                </span>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -195,6 +249,25 @@
                         @endforeach
                     </select>
                 </div>
+
+                @if (auth()->user() && auth()->user()->isSuperAdmin())
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cakupan Unit Bisnis (Site Scope) <span class="text-amber-400">*</span></label>
+                        <select name="site_scope" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
+                            <option value="global">Global (Berlaku untuk seluruh unit bisnis & portal)</option>
+                            <option value="tiketdieng">TiketDieng (Portal Utama / Wisata Reguler)</option>
+                            <option value="lotus">Lotus Creative (Fotografi, Video & Drone)</option>
+                            <option value="jeep">Jeep Dieng 4x4</option>
+                            <option value="shuttle">Shuttle Bus Dieng</option>
+                        </select>
+                        <p class="text-[10px] text-slate-500 mt-1">Tentukan unit mana yang dapat memilih dan mengelola master data ini.</p>
+                    </div>
+                @else
+                    <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] text-slate-400 flex items-center justify-between">
+                        <span>Cakupan Unit Anda:</span>
+                        <span class="font-bold uppercase tracking-wider text-amber-300">{{ auth()->user()->getSiteScope() }}</span>
+                    </div>
+                @endif
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Tampil (Label Dropdown) <span class="text-amber-400">*</span></label>
@@ -297,6 +370,19 @@
                     </select>
                 </div>
 
+                @if (auth()->user() && auth()->user()->isSuperAdmin())
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cakupan Unit Bisnis (Site Scope) <span class="text-amber-400">*</span></label>
+                        <select id="edit_site_scope" name="site_scope" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
+                            <option value="global">Global (Berlaku untuk seluruh unit bisnis & portal)</option>
+                            <option value="tiketdieng">TiketDieng (Portal Utama / Wisata Reguler)</option>
+                            <option value="lotus">Lotus Creative (Fotografi, Video & Drone)</option>
+                            <option value="jeep">Jeep Dieng 4x4</option>
+                            <option value="shuttle">Shuttle Bus Dieng</option>
+                        </select>
+                    </div>
+                @endif
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Tampil (Label Dropdown) <span class="text-amber-400">*</span></label>
                     <input
@@ -377,6 +463,11 @@ function openEditModal(item) {
     document.getElementById('edit_sort_order').value = item.sort_order ?? 0;
     document.getElementById('edit_description').value = item.description ?? '';
     document.getElementById('edit_is_active').checked = Boolean(item.is_active);
+
+    const siteScopeSelect = document.getElementById('edit_site_scope');
+    if (siteScopeSelect) {
+        siteScopeSelect.value = item.site_scope || 'global';
+    }
 
     document.getElementById('modalEditComcode').classList.remove('hidden');
 }

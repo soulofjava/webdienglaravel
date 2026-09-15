@@ -21,11 +21,9 @@ class AdminPackageController extends Controller
 
         // Scoping paket sesuai hak akses pengelola
         if ($user && !$user->isSuperAdmin()) {
-            $scope = $user->getSiteScope();
-            if ($scope === 'lotus') {
-                $query->where('category', 'Dokumentasi');
-            } elseif ($scope === 'tiketdieng') {
-                $query->where('category', '!=', 'Dokumentasi');
+            $allowedCategories = $user->getAllowedPackageCategories();
+            if ($allowedCategories !== null) {
+                $query->whereIn('category', $allowedCategories);
             }
         }
 
@@ -45,14 +43,9 @@ class AdminPackageController extends Controller
         $packages = $query->paginate(10)->withQueryString();
         
         if ($user && !$user->isSuperAdmin()) {
-            $scope = $user->getSiteScope();
-            if ($scope === 'lotus') {
-                $categories = collect(['Dokumentasi']);
-            } elseif ($scope === 'tiketdieng') {
-                $categories = Comcode::getCategories()->pluck('code_value')->filter(fn($c) => $c !== 'Dokumentasi');
-                if ($categories->isEmpty()) {
-                    $categories = TourPackage::where('category', '!=', 'Dokumentasi')->select('category')->distinct()->pluck('category');
-                }
+            $allowedCategories = $user->getAllowedPackageCategories();
+            if ($allowedCategories !== null) {
+                $categories = collect($allowedCategories);
             } else {
                 $categories = Comcode::getCategories()->pluck('code_value');
             }
@@ -76,11 +69,9 @@ class AdminPackageController extends Controller
         $pickupLocations = Comcode::getPickupLocations();
 
         if ($user && !$user->isSuperAdmin()) {
-            $scope = $user->getSiteScope();
-            if ($scope === 'lotus') {
-                $categories = $categories->filter(fn($c) => $c->code_value === 'Dokumentasi');
-            } elseif ($scope === 'tiketdieng') {
-                $categories = $categories->filter(fn($c) => $c->code_value !== 'Dokumentasi');
+            $allowedCategories = $user->getAllowedPackageCategories();
+            if ($allowedCategories !== null) {
+                $categories = $categories->filter(fn($c) => in_array($c->code_value, $allowedCategories, true));
             }
         }
 
@@ -114,12 +105,9 @@ class AdminPackageController extends Controller
 
         $user = Auth::user();
         if ($user && !$user->isSuperAdmin()) {
-            $scope = $user->getSiteScope();
-            if ($scope === 'lotus' && $validated['category'] !== 'Dokumentasi') {
-                abort(403, 'Akses ditolak: Akun pengelola Lotus Creative hanya berwenang menerbitkan paket dengan kategori Dokumentasi.');
-            }
-            if ($scope === 'tiketdieng' && $validated['category'] === 'Dokumentasi') {
-                abort(403, 'Akses ditolak: Akun pengelola TiketDieng tidak berwenang menerbitkan paket dokumentasi Lotus.');
+            $allowedCategories = $user->getAllowedPackageCategories();
+            if ($allowedCategories !== null && !in_array($validated['category'], $allowedCategories, true)) {
+                abort(403, 'Akses ditolak: Akun pengelola Anda tidak berwenang menerbitkan paket dengan kategori ini.');
             }
         }
 
@@ -187,11 +175,9 @@ class AdminPackageController extends Controller
         $settings = SiteSetting::getSettings();
         $categories = Comcode::getCategories();
         if ($user && !$user->isSuperAdmin()) {
-            $scope = $user->getSiteScope();
-            if ($scope === 'lotus') {
-                $categories = $categories->filter(fn($c) => $c->code_value === 'Dokumentasi');
-            } elseif ($scope === 'tiketdieng') {
-                $categories = $categories->filter(fn($c) => $c->code_value !== 'Dokumentasi');
+            $allowedCategories = $user->getAllowedPackageCategories();
+            if ($allowedCategories !== null) {
+                $categories = $categories->filter(fn($c) => in_array($c->code_value, $allowedCategories, true));
             }
         }
         $badges = Comcode::getBadges();
@@ -232,12 +218,9 @@ class AdminPackageController extends Controller
         ]);
 
         if ($user && !$user->isSuperAdmin()) {
-            $scope = $user->getSiteScope();
-            if ($scope === 'lotus' && $validated['category'] !== 'Dokumentasi') {
-                abort(403, 'Akses ditolak: Paket Lotus Creative harus berkategori Dokumentasi.');
-            }
-            if ($scope === 'tiketdieng' && $validated['category'] === 'Dokumentasi') {
-                abort(403, 'Akses ditolak: Anda tidak diizinkan mengubah kategori paket menjadi Dokumentasi Lotus.');
+            $allowedCategories = $user->getAllowedPackageCategories();
+            if ($allowedCategories !== null && !in_array($validated['category'], $allowedCategories, true)) {
+                abort(403, 'Akses ditolak: Akun pengelola Anda tidak berwenang mengubah kategori paket ke kategori ini.');
             }
         }
 
