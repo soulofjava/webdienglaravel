@@ -417,13 +417,13 @@
         </div>
 
         <!-- Filter Tab Kategori Interaktif -->
-        <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div class="flex items-center justify-start sm:justify-center sm:flex-wrap gap-2 overflow-x-auto sm:overflow-visible pb-3 mb-10 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             <button
                 @click="activeCategory = 'all'; showAll = false"
                 type="button"
-                class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex-shrink-0 cursor-pointer flex items-center gap-1.5"
+                class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 flex-shrink-0 cursor-pointer flex items-center gap-1.5"
                 :class="activeCategory === 'all'
-                    ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20 scale-105'
+                    ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20 font-extrabold'
                     : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10'"
             >
                 <span>Semua Paket</span>
@@ -438,9 +438,9 @@
                 <button
                     @click="activeCategory = '{{ $cat }}'; showAll = false"
                     type="button"
-                    class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex-shrink-0 cursor-pointer flex items-center gap-1.5"
+                    class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 flex-shrink-0 cursor-pointer flex items-center gap-1.5"
                     :class="activeCategory === '{{ $cat }}'
-                        ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20 scale-105'
+                        ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20 font-extrabold'
                         : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10'"
                 >
                     <span>{{ $cat }}</span>
