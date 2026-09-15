@@ -27,6 +27,15 @@
             'icon' => 'database',
         ],
     ];
+
+    if (Auth::user()?->hasRole('superadmin')) {
+        $navMenus[] = [
+            'name' => 'Kelola Pengelola',
+            'route' => 'admin.users.index',
+            'active' => request()->routeIs('admin.users.*'),
+            'icon' => 'users',
+        ];
+    }
 @endphp
 
 <header class="border-b border-white/10 bg-[#090d16]/95 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-3">

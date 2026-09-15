@@ -78,6 +78,19 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'update' => 'admin.comcodes.update',
         'destroy' => 'admin.comcodes.destroy',
     ]);
+
+    // CRUD Pengelola Akun & Role (Khusus Superadmin)
+    Route::middleware(['role:superadmin'])->group(function () {
+        Route::resource('users', \App\Http\Controllers\AdminUserController::class)->names([
+            'index' => 'admin.users.index',
+            'create' => 'admin.users.create',
+            'store' => 'admin.users.store',
+            'show' => 'admin.users.show',
+            'edit' => 'admin.users.edit',
+            'update' => 'admin.users.update',
+            'destroy' => 'admin.users.destroy',
+        ]);
+    });
 });
 
 // Profil Bawaan Breeze

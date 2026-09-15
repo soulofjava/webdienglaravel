@@ -942,8 +942,12 @@
                             </p>
                         </div>
                     </div>
-                    <div class="text-xs text-slate-400 font-mono">
-                        Total Pengelola: <span class="text-white font-bold">{{ $users->count() }} Akun</span>
+                    <div class="flex items-center gap-3 shrink-0">
+                        <span class="text-xs text-slate-400 font-mono hidden sm:inline">Total: <strong class="text-white">{{ $users->count() }} Akun</strong></span>
+                        <a href="{{ route('admin.users.index') }}" class="px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-black bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 transition-all shadow-md shadow-amber-500/20 flex items-center gap-1.5">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                            <span>Kelola & Tambah Pengelola</span>
+                        </a>
                     </div>
                 </div>
 
