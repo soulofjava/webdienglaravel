@@ -16,14 +16,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Administrator
-        User::updateOrCreate(
+        // Role & Permissions
+        $superRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => 'web']);
+        $adminRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+
+        // 1. Akun Superadmin
+        $superadmin = User::updateOrCreate(
+            ['email' => 'isamaulanatantra@gmail.com'],
+            [
+                'name' => 'Isa Maulana Tantra (Superadmin)',
+                'password' => Hash::make('superadmin123'),
+                'email_verified_at' => now(),
+            ]
+        );
+        $superadmin->syncRoles([$superRole]);
+
+        // 2. Akun Administrator Biasa
+        $admin = User::updateOrCreate(
             ['email' => 'admin@tiketdieng.com'],
             [
                 'name' => 'Administrator TiketDieng',
                 'password' => Hash::make('admin123'),
             ]
         );
+        $admin->syncRoles([$adminRole]);
 
         // 2. Pengaturan Default Situs
         SiteSetting::getSettings();
