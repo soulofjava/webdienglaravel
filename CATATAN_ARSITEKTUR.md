@@ -170,6 +170,18 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
    - `recordVisitor()` di-bypass jika visitor telah memiliki cookie session aktif atau hash IP tercatat hari ini, sehingga menghemat 5 query blocking per reload.
 5. **Hasil Benchmark:**
    - TTFB Beranda turun dari **~6.5 detik** menjadi **~0.047 detik (47 ms)** ⚡.
+6. **Strategi Database Indexing Komprehensif (Zero Filesort & Covering Indexes):**
+   - **Tabel `tour_packages`**:
+     - `idx_tp_category_sort_id` (`category`, `sort_order`, `id`): Menghilangkan full-table scan pada listing paket admin per kategori dan filter tenant.
+     - `idx_tp_sort_id` (`sort_order`, `id`): Menjamin urutan sorting paket stabil dan cepat saat pagination.
+     - `idx_tp_badge`, `idx_tp_duration`, `idx_tp_pickup_location`: Mengubah 30+ query `countUsedPackages()` (Usage Guard) menjadi *Covering Index Scans* tanpa menyentuh data tabel fisik.
+     - `idx_tp_active_popular_sort` (`is_active`, `is_popular`, `sort_order`): Menghilangkan `filesort` pada query paket populer dan rekomendasi spotlight search publik.
+     - `idx_tp_active_category_sort` (`is_active`, `category`, `sort_order`): Mengoptimalkan filter kategori di beranda publik.
+   - **Tabel `comcodes`**:
+     - `idx_comcodes_group_active_sort_name` (`code_group`, `is_active`, `sort_order`, `code_name`): Menghilangkan `filesort` pada pemuatan dropdown form paket dan helper `Comcode::getGroup()`.
+     - `idx_comcodes_scope_group_sort` (`site_scope`, `code_group`, `sort_order`, `code_name`): Mempercepat dashboard master kode multi-tenant.
+     - `idx_comcodes_group_scope_active` (`code_group`, `site_scope`, `is_active`): Mempercepat resolusi izin kategori di `User::getAllowedPackageCategories()`.
+     - `idx_comcodes_code_value` (`code_value`): Menjamin lookup nilai teknis kode berlangsung seketika (*O(1)*).
 
 ---
 
