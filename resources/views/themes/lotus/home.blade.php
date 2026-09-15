@@ -460,19 +460,21 @@
                                 </div>
 
                                 <!-- Selection Pill Button -->
-                                <div class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all duration-200 select-none"
+                                <div class="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-full transition-all duration-200 select-none shadow-xs"
                                     :class="selectedId === {{ $docPkg->id }} 
-                                        ? 'bg-gradient-to-r from-sky-600 to-rose-600 text-white shadow-md shadow-sky-500/25 ring-2 ring-sky-300/40' 
-                                        : 'bg-slate-100 text-slate-600 group-hover:bg-sky-50 group-hover:text-sky-700 border border-slate-200/80'">
+                                        ? 'bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 text-white shadow-md shadow-sky-500/25 ring-2 ring-sky-300/40' 
+                                        : 'bg-white text-slate-700 border-2 border-slate-200/90 group-hover:border-sky-400 group-hover:bg-sky-50/70 group-hover:text-sky-700'">
                                     <span x-show="selectedId === {{ $docPkg->id }}" class="flex items-center gap-1.5">
-                                        <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        <svg class="w-3.5 h-3.5 text-white shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
-                                        <span>Terpilih</span>
+                                        <span class="tracking-wide">Terpilih</span>
                                     </span>
                                     <span x-show="selectedId !== {{ $docPkg->id }}" class="flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full border border-slate-400 group-hover:border-sky-500"></span>
-                                        <span>Pilih Paket</span>
+                                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-500 shrink-0 transition-colors" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="10" cy="10" r="7"/>
+                                        </svg>
+                                        <span class="tracking-wide">Pilih Paket</span>
                                     </span>
                                 </div>
                             </div>
@@ -495,8 +497,8 @@
                                 @endif
                             </div>
 
-                            <div class="py-4 border-y transition-colors"
-                                :class="selectedId === {{ $docPkg->id }} ? 'border-sky-100 bg-sky-50/50 -mx-7 sm:-mx-8 px-7 sm:px-8' : 'border-slate-100'">
+                            <div class="py-4 px-5 rounded-2xl transition-all duration-200"
+                                :class="selectedId === {{ $docPkg->id }} ? 'border border-sky-200/90 bg-sky-50/70 shadow-xs' : 'border border-slate-200/80 bg-slate-50/70'">
                                 <div class="flex items-baseline gap-1">
                                     <span class="text-3xl font-black transition-colors" :class="selectedId === {{ $docPkg->id }} ? 'text-sky-600' : 'text-slate-900'">
                                         Rp {{ number_format($docPkg->price, 0, ',', '.') }}
@@ -515,7 +517,7 @@
                                     @foreach (array_slice($pkgInclusions, 0, 5) as $inc)
                                         <li class="flex items-start gap-2.5">
                                             <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5 transition-colors"
-                                               :class="selectedId === {{ $docPkg->id }} ? 'text-sky-500' : 'text-slate-400 group-hover:text-sky-500'"></i>
+                                               :class="selectedId === {{ $docPkg->id }} ? 'text-sky-500' : 'text-emerald-500'"></i>
                                             <span class="leading-tight">{{ $inc }}</span>
                                         </li>
                                     @endforeach
