@@ -6,14 +6,24 @@ use App\Models\SiteSetting;
 use App\Models\VisitorStat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminSettingController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $supportedSites = SiteSetting::supportedSites();
-        $selectedSite = SiteSetting::normalizeSiteKey($request->query('site'));
+
+        if ($user && !$user->isSuperAdmin()) {
+            $userScope = $user->getSiteScope();
+            $selectedSite = $userScope;
+            // Batasi tab pengelola hanya ke unit bisnis miliknya
+            $supportedSites = array_intersect_key($supportedSites, [$userScope => true]);
+        } else {
+            $selectedSite = SiteSetting::normalizeSiteKey($request->query('site'));
+        }
 
         // Settings spesifik untuk sub-unit yang dipilih di panel
         $settings = SiteSetting::getSettings($selectedSite);
@@ -50,7 +60,12 @@ class AdminSettingController extends Controller
 
     public function update(Request $request)
     {
+        $user = Auth::user();
         $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
+        if ($user && !$user->canManageSite($siteKey)) {
+            abort(403, 'Akses ditolak: Anda tidak memiliki wewenang untuk mengubah pengaturan sub-web ini.');
+        }
 
         $rules = [
             'site_name' => 'required|string|max:100',
@@ -120,7 +135,12 @@ class AdminSettingController extends Controller
 
     public function uploadFavicon(Request $request)
     {
+        $user = Auth::user();
         $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
+        if ($user && !$user->canManageSite($siteKey)) {
+            return response()->json(['success' => false, 'message' => 'Akses ditolak: Tidak berwenang mengunggah favicon untuk sub-web ini.'], 403);
+        }
 
         $request->validate([
             'favicon' => 'required|file|mimes:ico,png,svg,webp,jpg,jpeg|max:2048',
@@ -151,7 +171,12 @@ class AdminSettingController extends Controller
 
     public function uploadOgImage(Request $request)
     {
+        $user = Auth::user();
         $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
+        if ($user && !$user->canManageSite($siteKey)) {
+            return response()->json(['success' => false, 'message' => 'Akses ditolak: Tidak berwenang mengunggah banner untuk sub-web ini.'], 403);
+        }
 
         $request->validate([
             'og_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
@@ -182,7 +207,12 @@ class AdminSettingController extends Controller
 
     public function resetDefault(Request $request)
     {
+        $user = Auth::user();
         $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
+        if ($user && !$user->canManageSite($siteKey)) {
+            abort(403, 'Akses ditolak: Tidak berwenang mereset konfigurasi sub-web ini.');
+        }
 
         $settingRecord = SiteSetting::find($siteKey);
         if ($settingRecord) {

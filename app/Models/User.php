@@ -30,4 +30,68 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Cek apakah user adalah Superadmin
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('superadmin');
+    }
+
+    /**
+     * Dapatkan scope sub-web untuk pengelola (null jika superadmin)
+     */
+    public function getSiteScope(): ?string
+    {
+        if ($this->isSuperAdmin()) {
+            return null;
+        }
+
+        $email = strtolower($this->email);
+        if (str_contains($email, 'lotus')) {
+            return 'lotus';
+        }
+        if (str_contains($email, 'jeep')) {
+            return 'jeep';
+        }
+        if (str_contains($email, 'shuttle')) {
+            return 'shuttle';
+        }
+
+        return 'tiketdieng';
+    }
+
+    /**
+     * Cek apakah user berhak mengelola postingan paket tertentu
+     */
+    public function canManagePackage(TourPackage $package): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        $scope = $this->getSiteScope();
+        if ($scope === 'lotus') {
+            return $package->category === 'Dokumentasi';
+        }
+
+        if ($scope === 'tiketdieng') {
+            return $package->category !== 'Dokumentasi';
+        }
+
+        return true;
+    }
+
+    /**
+     * Cek apakah user berhak mengelola konfigurasi sub-web tertentu
+     */
+    public function canManageSite(string $siteKey): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        return $this->getSiteScope() === $siteKey;
+    }
 }

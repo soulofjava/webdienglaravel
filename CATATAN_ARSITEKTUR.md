@@ -107,14 +107,26 @@ resources/views/
 
 ---
 
-## 👥 5. ROLE & PERMISSIONS (SPATIE PERMISSION)
+## 👥 5. ROLE & PERMISSIONS (SPATIE PERMISSION + SUB-WEB SCOPING)
 
-Aplikasi telah dilengkapi package `spatie/laravel-permission` dengan pemisahan wewenang yang tegas:
+Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang operasional antar unit bisnis (Multi-Tenant Scoping):
 
-| Role | Permissions | Daftar Pengguna | Wewenang |
+| Role | Scope Unit | Email Akun | Wewenang & Batasan Akses |
 | :--- | :--- | :--- | :--- |
-| 👑 **`superadmin`** | `manage_themes`<br>`manage_settings`<br>`manage_users`<br>`manage_packages`<br>`manage_comcodes` | **Isa Maulana Tantra**<br>(`isamaulanatantra@gmail.com`) | **Full Access**: Mengatur mode multi-situs/ganti tema di database, mengubah rekening bank resmi & legalitas PT, mengelola user admin, dan CRUD semua paket. |
-| 👤 **`admin`** | `manage_packages`<br>`manage_comcodes` | **Administrator TiketDieng**<br>(`admin@tiketdieng.com`) | **Akses Operasional**: Input paket tour, edit itinerary, update comcodes. Dilarang mengganti tema situs dan rekening bank. |
+| 👑 **`superadmin`** | **Global (Semua Unit)** | `isamaulanatantra@gmail.com` | **Full Bypass & Master Access**:<br>• Akses seluruh 29 paket wisata & dokumentasi tanpa batasan.<br>• Mengatur mode multi-situs dan beralih tema aktif (tiketdieng, lotus, jeep, shuttle).<br>• Mengatur legalitas PT, rekening bank resmi, dan manajemen user pengelola.<br>• Mengakses seluruh tab pengaturan situs. |
+| 👤 **`admin`** | **TiketDieng** (`tiketdieng`) | `admin@tiketdieng.com` | **Operasional Tur & Paket Wisata**:<br>• Hanya dapat mengelola paket tur wisata (kategori non-`Dokumentasi`).<br>• Hanya dapat mengakses tab Pengaturan Situs TiketDieng.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit atau memanipulasi paket Lotus Creative / pengaturan unit lain. |
+| 👤 **`admin`** | **Lotus Creative** (`lotus`) | `admin@lotuscreative.id` | **Operasional Fotografi & Dokumentasi**:<br>• Hanya dapat mengelola paket foto/video/drone (kategori `Dokumentasi`).<br>• Hanya dapat mengakses tab Pengaturan Situs Lotus Creative.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit atau memanipulasi paket tur TiketDieng / pengaturan unit lain. |
+
+### Mekanisme Keamanan Scoping:
+1. **Model Scope Helper (`app/Models/User.php`)**:
+   - `isSuperAdmin()`: Mengecek role `superadmin`.
+   - `getSiteScope()`: Mengembalikan `'lotus'` untuk domain/akun Lotus, `'tiketdieng'` untuk TiketDieng, dan `null` (global) untuk Superadmin.
+   - `canManagePackage(TourPackage $package)`: Memverifikasi kesesuaian kategori paket dengan scope akun.
+   - `canManageSite(string $siteKey)`: Memverifikasi wewenang admin terhadap konfigurasi situs yang dituju.
+2. **Controller Hardening (`AdminPackageController.php` & `AdminSettingController.php`)**:
+   - Query `index()` otomatis memfilter daftar paket sesuai unit masing-masing.
+   - Operasi `create`, `store`, `edit`, `update`, dan `destroy` memvalidasi kategori paket. Pelanggaran batas unit menghasilkan respons `403 Forbidden`.
+   - Akses tab dan update setting situs diisolasi ketat sesuai unit masing-masing.
 
 ---
 
@@ -140,9 +152,12 @@ Aplikasi telah dilengkapi package `spatie/laravel-permission` dengan pemisahan w
 
 * **Server Lokal:** `http://localhost:8000` (`php artisan serve`)
 * **Admin Login:** `http://localhost:8000/admin/login`
-* **Akun Superadmin:**
+* **Akun Superadmin (Global Bypass):**
   * Email: `isamaulanatantra@gmail.com`
   * Password: `superadmin123` *(Role: `superadmin`)*
-* **Akun Admin Biasa:**
+* **Akun Admin TiketDieng (Scope Paket Wisata):**
   * Email: `admin@tiketdieng.com`
   * Password: `admin123` *(Role: `admin`)*
+* **Akun Admin Lotus Creative (Scope Dokumentasi/Fotografi):**
+  * Email: `admin@lotuscreative.id`
+  * Password: `lotusadmin123` *(Role: `admin`)*
