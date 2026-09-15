@@ -189,6 +189,26 @@
                                 </td>
                                 <td class="py-4 px-5 text-right">
                                     <div class="flex items-center justify-end gap-1.5">
+                                        <!-- Tombol Login As (Impersonate khusus non-self) -->
+                                        @if (!$isSelf)
+                                            <form
+                                                action="{{ route('admin.users.impersonate', $user->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Masuk dan kelola sistem sebagai {{ addslashes($user->name) }} ({{ addslashes($user->email) }})? Anda dapat kembali ke Superadmin kapan saja melalui tombol di atas.');"
+                                                class="inline"
+                                            >
+                                                @csrf
+                                                <button
+                                                    type="submit"
+                                                    class="px-2.5 py-1.5 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 hover:text-purple-200 border border-purple-500/30 transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-bold shadow-sm shadow-purple-500/10"
+                                                    title="Login As {{ $user->name }}"
+                                                >
+                                                    <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+                                                    <span>Login As</span>
+                                                </button>
+                                            </form>
+                                        @endif
+
                                         <!-- Tombol Edit -->
                                         <button
                                             type="button"

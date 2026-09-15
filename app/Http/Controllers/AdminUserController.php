@@ -141,4 +141,62 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', "Akun pengelola '{$deletedName}' berhasil dihapus dari sistem.");
     }
+
+    /**
+     * Fitur Login As (Impersonate) khusus Superadmin.
+     */
+    public function impersonate(User $user)
+    {
+        $currentUser = Auth::user();
+
+        // Hanya superadmin yang berhak melakukan impersonasi
+        if (!$currentUser || !$currentUser->hasRole('superadmin')) {
+            abort(403, 'Hanya Superadmin yang memiliki hak akses untuk fitur Login As.');
+        }
+
+        // Cegah impersonasi akun sendiri
+        if ($user->id === $currentUser->id) {
+            return back()->withErrors(['impersonate' => 'Anda tidak dapat melakukan impersonasi ke akun Anda sendiri.']);
+        }
+
+        // Cegah impersonasi berantai jika session sudah ada
+        if (session()->has('impersonator_id')) {
+            return back()->withErrors(['impersonate' => 'Anda sedang dalam mode impersonasi. Kembalilah ke superadmin terlebih dahulu.']);
+        }
+
+        // Simpan ID superadmin asli ke dalam session
+        session(['impersonator_id' => $currentUser->id]);
+
+        // Login sebagai target user
+        Auth::login($user);
+
+        return redirect()->route('admin.index')->with('success', "Mode Impersonate aktif: Anda kini login sebagai {$user->name} ({$user->email}).");
+    }
+
+    /**
+     * Kembali ke akun Superadmin dari sesi impersonasi.
+     */
+    public function leaveImpersonate(Request $request)
+    {
+        if (!session()->has('impersonator_id')) {
+            return redirect()->route('admin.index');
+        }
+
+        $impersonatorId = session('impersonator_id');
+        $superadmin = User::find($impersonatorId);
+
+        if (!$superadmin || !$superadmin->hasRole('superadmin')) {
+            session()->forget('impersonator_id');
+            abort(403, 'Sesi Superadmin asli tidak ditemukan atau tidak valid.');
+        }
+
+        // Hapus penanda impersonasi dari session
+        session()->forget('impersonator_id');
+
+        // Login kembali sebagai Superadmin asli
+        Auth::login($superadmin);
+
+        return redirect()->route('admin.users.index')->with('success', "Kembali ke mode Superadmin ({$superadmin->name}). Sesi impersonasi telah diakhiri.");
+    }
 }
+

@@ -127,6 +127,13 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
    - Query `index()` otomatis memfilter daftar paket sesuai unit masing-masing.
    - Operasi `create`, `store`, `edit`, `update`, dan `destroy` memvalidasi kategori paket. Pelanggaran batas unit menghasilkan respons `403 Forbidden`.
    - Akses tab dan update setting situs diisolasi ketat sesuai unit masing-masing.
+3. **Fitur Impersonate / Login As (`AdminUserController.php`)**:
+   - **Tujuan**: Memungkinkan Superadmin menguji atau mengelola sistem dari sudut pandang admin sub-web (`admin@tiketdieng.com`, `admin@lotuscreative.id`) di browser yang sama tanpa perlu logout atau membuka incognito/browser lain.
+   - **Mekanisme**:
+     - Route `POST /admin/users/{user}/impersonate` menyimpan `impersonator_id` di session dan mengotentikasi sebagai target admin.
+     - Sticky Alert Banner mengambang di bagian paling atas seluruh halaman sistem (`layouts/app.blade.php`) memberi tahu identitas akun yang sedang diimpersonasi.
+     - Tombol **"Kembali ke Superadmin"** (`POST /admin/leave-impersonate`) dapat diklik kapan saja untuk mengembalikan sesi login ke akun Superadmin asli dan membersihkan penanda session.
+     - Dilengkapi proteksi berlapis: anti-impersonasi berantai, larangan impersonasi akun sendiri, dan verifikasi role Superadmin.
 
 ---
 

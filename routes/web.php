@@ -79,8 +79,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'destroy' => 'admin.comcodes.destroy',
     ]);
 
+    // Kembali dari mode Impersonate (dapat diakses saat sedang impersonate sebagai admin biasa)
+    Route::post('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate'])->name('admin.users.leave-impersonate');
+    Route::get('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate']);
+
     // CRUD Pengelola Akun & Role (Khusus Superadmin)
     Route::middleware(['role:superadmin'])->group(function () {
+        Route::post('/users/{user}/impersonate', [\App\Http\Controllers\AdminUserController::class, 'impersonate'])->name('admin.users.impersonate');
         Route::resource('users', \App\Http\Controllers\AdminUserController::class)->names([
             'index' => 'admin.users.index',
             'create' => 'admin.users.create',
