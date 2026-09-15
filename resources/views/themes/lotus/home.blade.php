@@ -376,170 +376,79 @@
                 </p>
             </div>
 
-            <!-- Grid 3 Paket Utama -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-                <!-- Paket 1: ULTIMATE (Paling Populer) -->
-                <div class="rounded-3xl bg-white border-2 border-sky-500 p-7 sm:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-gradient-to-l from-sky-500 to-rose-500 text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-bl-2xl tracking-widest shadow-sm">
-                        PALING REKOMENDASI
-                    </div>
-
-                    <div class="space-y-6">
-                        <div>
-                            <span class="text-xs font-mono font-bold text-sky-600 uppercase tracking-wider">PAKET 01 &bull; ALL-IN DAY</span>
-                            <h3 class="text-xl font-black text-slate-900 mt-1">Ultimate All Dieng Spots + Drone 4K</h3>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                                Pendampingan seharian penuh mulai subuh sunrise sampai sore sunset di seluruh destinasi utama Dieng.
-                            </p>
-                        </div>
-
-                        <div class="py-4 border-y border-slate-100">
-                            <span class="text-xs text-slate-400 line-through">Rp 3.000.000</span>
-                            <div class="flex items-baseline gap-1 mt-0.5">
-                                <span class="text-3xl sm:text-4xl font-black text-slate-900">Rp 2.500.000</span>
-                                <span class="text-xs text-slate-500 font-medium">/ rombongan</span>
+            <!-- Grid Paket Dokumentasi Dinamis dari Database (CRUD /admin/packages) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+                @forelse ($docPackages as $docPkg)
+                    @php
+                        $isFeatured = $docPkg->is_popular || $loop->first;
+                        $pkgInclusions = is_array($docPkg->inclusions) ? $docPkg->inclusions : json_decode($docPkg->inclusions ?? '[]', true);
+                    @endphp
+                    <div class="rounded-3xl bg-white {{ $isFeatured ? 'border-2 border-sky-500 shadow-2xl relative overflow-hidden ring-4 ring-sky-500/10' : 'border border-slate-200/90 shadow-lg' }} p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative">
+                        @if ($isFeatured)
+                            <div class="absolute top-0 right-0 bg-gradient-to-l from-sky-500 to-rose-500 text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-bl-2xl tracking-widest shadow-sm">
+                                {{ $docPkg->badge ?: 'PALING REKOMENDASI' }}
                             </div>
-                            <span class="text-[11px] text-emerald-600 font-semibold block mt-1">✓ Termasuk Foto Mirrorless + Pilot Drone + Reels</span>
-                        </div>
-
-                        <!-- Fasilitas List -->
-                        <ul class="space-y-3 text-xs text-slate-600">
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0"></i>
-                                <span><strong>Durasi:</strong> Full Day (03.30 Subuh - 16.00 Sore)</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0"></i>
-                                <span><strong>Destinasi:</strong> 4-5 Spot Bebas Pilih</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0"></i>
-                                <span><strong>Jumlah Foto:</strong> Unlimited Shots (300-600+ File Asli)</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0"></i>
-                                <span><strong>Edited:</strong> 30 Foto Signature Color Grading</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0"></i>
-                                <span><strong>Aerial Drone:</strong> 3x Sesi Terbang Video 4K 60fps</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-500 shrink-0"></i>
-                                <span><strong>Video Reels:</strong> 2 Video Cinematic Siap FYP</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="pt-8 mt-8 border-t border-slate-100">
-                        <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%2001%20Ultimate%20All%20Dieng%20Spots%20(Rp%202.500.000)" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 hover:from-sky-500 hover:to-rose-500 transition-all shadow-lg shadow-sky-500/25 text-center flex items-center justify-center gap-2">
-                            <i data-lucide="message-circle" class="w-4 h-4"></i>
-                            <span>Booking Paket 01 via WhatsApp</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paket 2: Heritage & Nature -->
-                <div class="rounded-3xl bg-white border border-slate-200/90 p-7 sm:p-8 shadow-lg flex flex-col justify-between relative">
-                    <div class="space-y-6">
-                        <div>
-                            <span class="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">PAKET 02 &bull; HALF DAY</span>
-                            <h3 class="text-xl font-black text-slate-900 mt-1">Heritage & Nature Tour</h3>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                                Pilihan pas untuk wisata santai menjelajahi 3 ikon sejarah dan keajaiban geologi Dieng.
-                            </p>
-                        </div>
-
-                        <div class="py-4 border-y border-slate-100">
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-3xl font-black text-slate-900">Rp 1.200.000</span>
-                                <span class="text-xs text-slate-500 font-medium">/ sesi</span>
+                        @elseif ($docPkg->badge)
+                            <div class="absolute top-0 right-0 bg-slate-900 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-bl-xl tracking-wider">
+                                {{ $docPkg->badge }}
                             </div>
-                            <span class="text-[11px] text-sky-600 font-semibold block mt-1">✓ Foto Mirrorless Full-Frame + 1 Video Reels</span>
-                        </div>
+                        @endif
 
-                        <ul class="space-y-3 text-xs text-slate-600">
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Durasi:</strong> 4 - 5 Jam Sesi</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Lokasi:</strong> Candi Arjuna, Kawah Sikidang, Telaga Warna</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>File:</strong> 150-250+ Foto Asli HD via GDrive</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Edited:</strong> 15 Foto Pilihan Color Graded</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Video:</strong> 1 Cinematic Reels Video Vertikal</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="pt-8 mt-8 border-t border-slate-100">
-                        <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%2002%20Heritage%20%26%20Nature%20(Rp%201.200.000)" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-slate-800 bg-slate-100 hover:bg-slate-200 transition-colors text-center flex items-center justify-center gap-2">
-                            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
-                            <span>Booking Paket 02 via WA</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Paket 3: Golden Sunrise Hunter -->
-                <div class="rounded-3xl bg-white border border-slate-200/90 p-7 sm:p-8 shadow-lg flex flex-col justify-between relative">
-                    <div class="space-y-6">
-                        <div>
-                            <span class="text-xs font-mono font-bold text-amber-600 uppercase tracking-wider">PAKET 03 &bull; SUNRISE SPECIAL</span>
-                            <h3 class="text-xl font-black text-slate-900 mt-1">Golden Sunrise Sikunir Hunter</h3>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                                Start jam 03.30 pagi untuk mengabadikan momen matahari terbit paling spektakuler di Asia Tenggara.
-                            </p>
-                        </div>
-
-                        <div class="py-4 border-y border-slate-100">
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-3xl font-black text-slate-900">Rp 1.000.000</span>
-                                <span class="text-xs text-slate-500 font-medium">/ trip</span>
+                        <div class="space-y-6">
+                            <div>
+                                <span class="text-xs font-mono font-bold {{ $isFeatured ? 'text-sky-600' : 'text-slate-500' }} uppercase tracking-wider">
+                                    PAKET {{ sprintf('%02d', $loop->iteration) }} &bull; {{ $docPkg->duration ?: 'FULL TRIP' }}
+                                </span>
+                                <h3 class="text-xl font-black text-slate-900 mt-1 leading-snug">
+                                    {{ $docPkg->title }}
+                                </h3>
+                                @if ($docPkg->summary)
+                                    <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-3">
+                                        {{ $docPkg->summary }}
+                                    </p>
+                                @endif
                             </div>
-                            <span class="text-[11px] text-amber-600 font-semibold block mt-1">✓ Termasuk Sesi Puncak & Danau Cebong</span>
+
+                            <div class="py-4 border-y border-slate-100">
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-3xl font-black text-slate-900">
+                                        Rp {{ number_format($docPkg->price, 0, ',', '.') }}
+                                    </span>
+                                    <span class="text-xs text-slate-500 font-medium">/ {{ $docPkg->price_note ?: 'rombongan' }}</span>
+                                </div>
+                                <span class="text-[11px] {{ $isFeatured ? 'text-rose-600 font-bold' : 'text-emerald-600 font-semibold' }} block mt-1">
+                                    ✓ Unlimited RAW Photos + Cinematic Reels + Google Drive
+                                </span>
+                            </div>
+
+                            <!-- Fasilitas Inclusions -->
+                            @if (!empty($pkgInclusions) && is_array($pkgInclusions))
+                                <ul class="space-y-2.5 text-xs text-slate-600">
+                                    @foreach (array_slice($pkgInclusions, 0, 5) as $inc)
+                                        <li class="flex items-start gap-2.5">
+                                            <i data-lucide="check-circle-2" class="w-4 h-4 {{ $isFeatured ? 'text-sky-500' : 'text-emerald-500' }} shrink-0 mt-0.5"></i>
+                                            <span class="leading-tight">{{ $inc }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </div>
 
-                        <ul class="space-y-3 text-xs text-slate-600">
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Durasi:</strong> 03.30 - 08.00 Pagi</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Lokasi:</strong> Puncak Sikunir + Telaga Cebong Sembungan</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>File:</strong> 100-200+ Foto Asli Full HD</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Edited:</strong> 12 Foto Signature Sunrise</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                                <span><strong>Video:</strong> 1 Cinematic Sunrise Short Video</span>
-                            </li>
-                        </ul>
+                        <div class="pt-6 mt-6 border-t border-slate-100 space-y-2.5">
+                            <a href="https://wa.me/{{ $lotusWa }}?text={{ urlencode('Halo Lotus Creative, saya ingin reservasi ' . $docPkg->title . ' (Rp ' . number_format($docPkg->price, 0, ',', '.') . '). Mohon info tanggal trip yang tersedia.') }}" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white {{ $isFeatured ? 'bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 hover:from-sky-500 hover:to-rose-500 shadow-lg shadow-sky-500/25' : 'bg-slate-900 hover:bg-slate-800' }} transition-all text-center flex items-center justify-center gap-2">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                                <span>Booking via WhatsApp</span>
+                            </a>
+                            <a href="{{ route('package.detail', $docPkg->slug) }}" class="w-full py-2 px-3 rounded-xl text-[11px] font-semibold text-slate-500 hover:text-sky-600 bg-slate-50 hover:bg-sky-50 transition-colors text-center block">
+                                Rincian Destinasi & Itinerary &rarr;
+                            </a>
+                        </div>
                     </div>
-
-                    <div class="pt-8 mt-8 border-t border-slate-100">
-                        <a href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20ingin%20booking%20Paket%2003%20Golden%20Sunrise%20(Rp%201.000.000)" target="_blank" class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-slate-800 bg-slate-100 hover:bg-slate-200 transition-colors text-center flex items-center justify-center gap-2">
-                            <i data-lucide="message-circle" class="w-4 h-4 text-amber-500"></i>
-                            <span>Booking Sunrise via WA</span>
-                        </a>
+                @empty
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        Belum ada paket dokumentasi yang dipublikasikan. Kelola paket melalui Admin Dashboard.
                     </div>
-                </div>
+                @endforelse
             </div>
 
             <!-- Opsi Tambahan: Single Spot & Prewedding Custom -->
