@@ -115,10 +115,7 @@
                 </button>
                 <a href="#scrollytelling" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Jelajah Cerita Dieng</a>
                 <a href="#paket" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Paket Wisata All-Inclusive</a>
-                <a href="#dokumentasi" class="text-sm py-1.5 text-slate-300 hover:text-cyan-400 flex items-center gap-2">
-                    <i data-lucide="camera" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Jasa Dokumentasi & Drone (Lotus Creative)</span>
-                </a>
+                <a href="#dokumentasi" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Jasa Dokumentasi & Drone (Lotus Creative)</a>
                 <a href="#profil" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Tentang Kami & Visi Misi</a>
                 <a href="#kalkulator" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Kalkulator Reservasi</a>
                 <div class="pt-2">
