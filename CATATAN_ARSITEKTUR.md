@@ -1,10 +1,10 @@
 # 🏔️ CATATAN ARSITEKTUR & PANDUAN PROYEK (TIKETDIENG MULTI-SITE)
 
-> **Dokumen ini adalah referensi resmi arsitektur sistem, koneksi database, platform deployment, dan alur multi-site untuk pengembang dan agen AI di semua sesi.**
+> **Dokumen ini adalah referensi resmi arsitektur sistem, infrastruktur database Aiven, integrasi Vercel, hak akses Role Spatie, dan alur Multi-Tema untuk pengembang serta agen AI di seluruh sesi.**
 
 ---
 
-## 📌 1. INFORMASI DASAR PROYEK & DEPLOYMENT
+## 📌 1. INFORMASI DASAR PROYEK & INFRASTRUKTUR
 
 * **Repositori Git:** `https://github.com/soulofjava/webdienglaravel.git`
 * **Branch Workflow:**
@@ -12,15 +12,16 @@
   * `main` : Branch produksi tunggal (*single production branch*) yang dideploy ke hosting.
 * **Platform Hosting / Deployment:**
   * **Vercel** (Serverless Laravel via runtime `vercel-php@0.7.3` & file konfigurasi `vercel.json`).
+  * Production URL: `https://webdieng.vercel.app`
+  * Vercel Account: `soulofjava`, Active Team: `isa-s-projects16 (isa's projects)`.
+  * Token Akses Vercel CLI tersimpan aman di `~/.config/codex-private/vercel-token.txt`.
   * Aset frontend dibuild menggunakan **Vite** (`npm run build` -> `public/build/`).
-  * Caching di Vercel diarahkan ke `/tmp/` (`APP_CONFIG_CACHE`, `VIEW_COMPILED_PATH`, dll.).
 * **Database Server:**
   * **Aiven Cloud MySQL**
   * **Host:** `mysql-2c7456c1-isamaulanatantra-d020.c.aivencloud.com`
-  * **Port:** `12339`
-  * **Database:** `defaultdb`
-  * **User:** `avnadmin`
-  * **SSL Mode:** `REQUIRED`
+  * **Port:** `12339` | **DB:** `defaultdb` | **User:** `avnadmin`
+  * **Region:** **Asia Pacific** (IP: `168.144.93.27`, Datacenter DigitalOcean Bengaluru / Asia).
+  * **Latency Jaringan:** Turun dari ~193ms (eks-Amsterdam) menjadi **~62ms** dengan SSL Mode `REQUIRED`.
 
 ---
 
@@ -29,16 +30,17 @@
 > ### 🛑 JANGAN PERNAH MENJALANKAN `php artisan migrate:fresh` ATAU `migrate:reset`!
 > 
 > * Database di **Aiven Cloud** saat ini **DIANGGAP SEBAGAI DATABASE PRODUKSI**.
-> * Database ini **SUDAH BERISI DATA RIIL/AKTIF** (puluhan paket wisata `tour_packages`, data `site_settings`, akun pengguna, dan log).
+> * Database ini **SUDAH BERISI DATA RIIL/AKTIF** (29 paket tur lengkap, itinerary, foto, data `site_settings`, akun user, dan tabel permission).
+> * Backup database lokal tersimpan di file `backup_aiven_amsterdam.sql` (85.9 KB, gitignored).
 > * Jika ada perubahan skema database di masa mendatang:
->   * **HANYA gunakan migrasi inkremental** (`ALTER TABLE` / tambah kolom baru melalui migrasi baru).
+>   * **HANYA gunakan migrasi inkremental biasa** (`php artisan migrate` atau `ALTER TABLE` melalui file migrasi baru).
 >   * **DILARANG KERAS** melakukan tindakan yang menghapus (*drop*) tabel atau mereset data yang sudah ada.
 
 ---
 
 ## 🏢 3. ENTIKAS BISNIS & PEMETAAN 4 SITUS (MULTI-SITE)
 
-Seluruh unit bisnis bernaung di bawah legalitas perusahaan induk **PT. GOTRIP ASIA TRAVELINDO** (Wonosobo). Sistem ini menggunakan **1 Codebase & 1 Database** untuk melayani **1 Web Induk + 3 Sub-Web**:
+Seluruh unit bisnis bernaung di bawah legalitas resmi **PT. GOTRIP ASIA TRAVELINDO** (Wonosobo). Sistem ini menggunakan **1 Codebase & 1 Database Bersama** untuk melayani **1 Web Induk + 3 Sub-Web**:
 
 ```
                   ┌─────────────────────────────────────────┐
@@ -60,62 +62,87 @@ Seluruh unit bisnis bernaung di bawah legalitas perusahaan induk **PT. GOTRIP AS
 | **1** | **Web Induk** | **`tiketdieng.com`** *(Tiket Wisata Dieng)* | **Portal All-in-One**: Paket tour lengkap (1D, 2D1N, 3D2N), akomodasi homestay/villa, simulator biaya wisata (kalkulator), dan etalase induk seluruh sub-layanan. | WA: `0816675404`<br>Email: `tiket.wisatadieng@gmail.com`<br>Tema: *Cinematic Parallax Dark & Gold* |
 | **2** | **Sub-Web 1** | **Shuttle Dieng** | **Transportasi Rombongan**: Sewa mikrobus (kapasitas 15 orang dewasa), antar-jemput stasiun/bandara, tour keliling Dieng untuk keluarga/instansi (Paket 1–5). | WA: `0816675404`<br>Tema: *Clean, Reliable & Professional Travel* |
 | **3** | **Sub-Web 2** | **Jeep Dieng** *(Dieng Travelbuddies)* | **Safari 4x4 & Adrenalin**: Armada Jeep offroad Feroza/Katana (4 pax), rute Sunrise (Sikunir, Pintu Langit) dan rute ekstrem (Sikarim, Dringo, Bedakah). | WA: `0816675404`<br>Tema: *Adventurous, Bold & Earthy (Orange/Amber)* |
-| **4** | **Sub-Web 3** | **Dokumentasi Dieng** *(Lotus Creative)* | **Fotografi & Videografi Wisata**: Fotografer pro DSLR/mirrorless, reels cinematic, dan drone 4K (Paket 1–5, mulai Rp 500rb s/d Rp 2.5jt). | WA: `08164211196`<br>Email: `lotuscreative465@gmail.com`<br>Tema: *Portfolio Visual, Modern Gallery (Cyan/Red)* |
+| **4** | **Sub-Web 3** | **Dokumentasi Dieng** *(Lotus Creative)* | **Fotografi & Videografi Wisata**: Fotografer pro DSLR/mirrorless, reels cinematic, dan drone 4K (Paket 1–5, Rp 500rb s/d Rp 2.5jt). Studio: Tieng, Kejajar. | WA: `08164211196`<br>Email: `lotuscreative465@gmail.com`<br>Rekening: BNI 8166754042<br>Tema: *Visual Studio (Cyan & Rose)* |
 
 ---
 
-## 🛠️ 4. ARSITEKTUR IMPLEMENTASI (SINGLE CODEBASE MULTI-TENANT)
+## 🎨 4. ARSITEKTUR MULTI-TEMA (TOTAL DISTINCT HOMEPAGE)
 
-### A. Database Design
-1. **Tabel `sites` (Tenant Registry)**:
-   * Menyimpan metadata per web: `id`, `slug`, `domain`, `name`, `tagline`, `theme`, `whatsapp_number`, `email`, `address`, `logo_url`, `seo_title`, `seo_description`.
-2. **Kolom `site_id` pada Tabel Data**:
-   * `tour_packages` : Memiliki kolom `site_id` (1: TiketDieng, 2: Shuttle, 3: Jeep, 4: Lotus).
-   * `visitor_logs` / `visitor_stats` : Memiliki kolom `site_id` agar analitik per situs terisolasi rapi.
-   * `site_settings` : Menggunakan relasi `site_id` atau terintegrasi ke tabel `sites`.
+### A. Konsep Beranda (`/`)
+Ketika pengunjung mengakses URL beranda (`http://localhost:8000/` atau domain live), **tampilannya benar-benar website yang berbeda total**, bukan sekadar sub-halaman:
+- Mode **TiketDieng**: Beranda adalah portal biro wisata all-inclusive.
+- Mode **Lotus Creative**: Beranda adalah website studio dokumentasi & drone Lotus Creative seutuhnya.
+- Mode **Jeep**: Beranda adalah website armada rental jeep wisata offroad.
+- Mode **Shuttle**: Beranda adalah website sewa mikrobus 15 kursi.
 
-### B. Deteksi Domain & Dinamisasi Blade (View Prepend)
-1. **Middleware `IdentifySiteMiddleware`**:
-   * Membaca hostname request: `$host = $request->getHost();`.
-   * Mencocokkan dengan data tabel `sites`:
-     ```php
-     $site = Site::where('domain', $host)->first() ?? Site::find(1); // fallback ke tiketdieng
-     app()->instance('currentSite', $site);
-     View::prependLocation(resource_path("views/themes/{$site->theme}"));
-     ```
-2. **Struktur Folder Views**:
-   ```text
-   resources/views/
-   ├── themes/
-   │   ├── tiketdieng/          <-- Tampilan khusus TiketDieng (Parallax, Scrollytelling)
-   │   │   ├── layouts/app.blade.php
-   │   │   ├── home.blade.php
-   │   │   └── package-detail.blade.php
-   │   ├── shuttle/             <-- Tampilan khusus Shuttle Dieng
-   │   │   ├── layouts/app.blade.php
-   │   │   └── home.blade.php
-   │   ├── jeep/                <-- Tampilan khusus Jeep Dieng (Travelbuddies)
-   │   │   ├── layouts/app.blade.php
-   │   │   └── home.blade.php
-   │   └── lotus/               <-- Tampilan khusus Lotus Creative (Portfolio foto & drone)
-   │       ├── layouts/app.blade.php
-   │       └── home.blade.php
-   ├── shared/                  <-- Komponen bersama (modal WA, scripts, icons)
-   └── admin/                   <-- Single unified admin panel untuk semua web
-   ```
-3. **Penyaringan Data Otomatis**:
-   * Model `TourPackage` menggunakan Global Scope `site_id = app('currentSite')->id` saat diakses publik.
-   * Di Web Induk (`tiketdieng.com`), paket dari sub-layanan lain dapat di-bundling atau ditampilkan sebagai rekomendasi mitra resmi.
+### B. Struktur Folder Views (`resources/views/themes/`)
+```text
+resources/views/
+├── themes/
+│   ├── tiketdieng/               <-- Web Induk (TiketDieng)
+│   │   ├── layouts/app.blade.php
+│   │   ├── home.blade.php
+│   │   ├── package-detail.blade.php
+│   │   └── partials/
+│   ├── lotus/                    <-- Web Lotus Creative
+│   │   ├── layouts/app.blade.php
+│   │   ├── home.blade.php
+│   │   ├── package-detail.blade.php
+│   │   └── partials/
+│   ├── jeep/                     <-- Web Jeep Dieng
+│   │   └── home.blade.php
+│   └── shuttle/                  <-- Web Shuttle Dieng
+│       └── home.blade.php
+├── admin/                        <-- Single Master CMS Dashboard
+└── shared/                       <-- Komponen bersama (modal WA, scripts)
+```
 
-### C. Panel Admin Terpadu (Single Dashboard)
-* Admin hanya memiliki 1 URL login (`/admin/login`).
-* Di header dashboard tersedia dropdown pemilih situs: `[ Kelola Web: TiketDieng.com ▾ ]`.
-* Mengganti pilihan situs akan memfilter paket wisata, statistik pengunjung, dan pengaturan kontak sesuai web yang dipilih.
+### C. Mekanisme Penentuan Mode Aktif (Hierarki Resolusi)
+1. **Prioritas 1 (Live / Production Domain)**:
+   Membaca `$request->getHost()`. Domain `lotuscreative.id` otomatis merender tema `lotus`; `tiketdieng.com` merender tema `tiketdieng`.
+2. **Prioritas 2 (Pengaturan Database / CMS)**:
+   Superadmin dapat mengganti tema aktif untuk localhost/staging langsung dari panel admin tanpa menyentuh file konfigurasi/kode.
+3. **Prioritas 3 (Parameter URL Pengujian Cepat)**:
+   Akses `?theme=lotus` atau `?theme=tiketdieng` untuk preview instan.
 
 ---
 
-## 📋 5. KREDENSIAL PENGUJIAN LOKAL
+## 👥 5. ROLE & PERMISSIONS (SPATIE PERMISSION)
+
+Aplikasi telah dilengkapi package `spatie/laravel-permission` dengan pemisahan wewenang yang tegas:
+
+| Role | Permissions | Daftar Pengguna | Wewenang |
+| :--- | :--- | :--- | :--- |
+| 👑 **`superadmin`** | `manage_themes`<br>`manage_settings`<br>`manage_users`<br>`manage_packages`<br>`manage_comcodes` | **Isa Maulana Tantra**<br>(`isamaulanatantra@gmail.com`) | **Full Access**: Mengatur mode multi-situs/ganti tema di database, mengubah rekening bank resmi & legalitas PT, mengelola user admin, dan CRUD semua paket. |
+| 👤 **`admin`** | `manage_packages`<br>`manage_comcodes` | **Administrator TiketDieng**<br>(`admin@tiketdieng.com`) | **Akses Operasional**: Input paket tour, edit itinerary, update comcodes. Dilarang mengganti tema situs dan rekening bank. |
+
+---
+
+## ⚡ 6. OPTIMASI PERFORMA & CACHING
+
+1. **Pengalihan Driver Database ke File / In-Memory:**
+   - `.env` lokal: `SESSION_DRIVER=file` dan `CACHE_STORE=file`.
+   - Vercel env: `SESSION_DRIVER=cookie` dan `CACHE_STORE=array`.
+   - Menghindari 4–6 query serial bolak-balik ke cloud Aiven per request.
+2. **Cache Whitelist:**
+   - Di `config/cache.php`, parameter `serializable_classes` di-whitelist untuk class `TourPackage`, `SiteSetting`, dan `Collection` guna mencegah `__PHP_Incomplete_Class` pada Laravel 11+.
+3. **Caching Paket Tur:**
+   - Data paket beranda dan detail di-cache 10 menit via `Cache::remember`.
+   - Di model `TourPackage::boot()`, event hook `saved` dan `deleted` otomatis menghapus cache saat data paket diubah di CMS.
+4. **Optimasi Visitor Tracking:**
+   - `recordVisitor()` di-bypass jika visitor telah memiliki cookie session aktif atau hash IP tercatat hari ini, sehingga menghemat 5 query blocking per reload.
+5. **Hasil Benchmark:**
+   - TTFB Beranda turun dari **~6.5 detik** menjadi **~0.047 detik (47 ms)** ⚡.
+
+---
+
+## 📋 7. KREDENSIAL PENGUJIAN LOKAL
+
 * **Server Lokal:** `http://localhost:8000` (`php artisan serve`)
 * **Admin Login:** `http://localhost:8000/admin/login`
-* **Email:** `admin@tiketdieng.com`
-* **Password:** `admin123`
+* **Akun Superadmin:**
+  * Email: `isamaulanatantra@gmail.com`
+  * Password: `superadmin123` *(Role: `superadmin`)*
+* **Akun Admin Biasa:**
+  * Email: `admin@tiketdieng.com`
+  * Password: `admin123` *(Role: `admin`)*
