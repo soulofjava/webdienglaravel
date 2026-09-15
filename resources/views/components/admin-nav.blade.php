@@ -93,10 +93,23 @@
 
             <div class="h-4 w-px bg-white/10 mx-0.5"></div>
 
-            <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300" title="Akun Aktif: {{ Auth::user()?->email ?? 'Admin' }}">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium text-white max-w-[130px] truncate text-[11px]">{{ Auth::user()?->email ?? 'Admin' }}</span>
-            </div>
+            @if(Auth::user()?->hasRole('superadmin'))
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-amber-500/15 to-yellow-500/10 border border-amber-500/40 text-amber-300 text-xs shadow-md shadow-amber-500/10" title="Akun Superadmin: {{ Auth::user()->email }}">
+                    <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                    <div class="leading-tight">
+                        <span class="font-black text-[10px] tracking-widest uppercase block text-amber-300">SUPERADMIN</span>
+                        <span class="text-[10px] text-slate-300 max-w-[120px] truncate block">{{ Auth::user()->email }}</span>
+                    </div>
+                </div>
+            @else
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-white/10 text-slate-300 text-xs" title="Akun Admin: {{ Auth::user()?->email }}">
+                    <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                    <div class="leading-tight">
+                        <span class="font-bold text-[10px] tracking-wider uppercase block text-slate-400">ADMIN STAF</span>
+                        <span class="text-[10px] text-slate-300 max-w-[120px] truncate block">{{ Auth::user()?->email }}</span>
+                    </div>
+                </div>
+            @endif
 
             <form action="{{ route('logout') }}" method="POST" onsubmit="return window.confirmLogout ? window.confirmLogout(event) : confirm('Keluar dari sesi pengelola?');" class="m-0 p-0 flex items-center">
                 @csrf

@@ -15,6 +15,7 @@ class SiteSetting extends Model
         'id',
         'site_name',
         'site_tagline',
+        'active_theme',
         'company_name',
         'about_us',
         'company_history',

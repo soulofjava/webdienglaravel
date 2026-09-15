@@ -35,7 +35,14 @@ class HomeController extends Controller
                 ->get();
         });
 
-        return view('home', compact('settings', 'visitorStats', 'packages', 'docPackages'));
+        // Dynamic Multi-Theme Resolver (Prioritas: Query Param -> Host/Domain -> Database CMS)
+        $activeTheme = $this->resolveActiveTheme($request, $settings);
+        $themeView = "themes.{$activeTheme}.home";
+        if (!view()->exists($themeView)) {
+            $themeView = view()->exists('home') ? 'home' : 'themes.tiketdieng.home';
+        }
+
+        return view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme'));
     }
 
     public function showPackage(Request $request, $slug)
@@ -58,7 +65,33 @@ class HomeController extends Controller
                 ->get();
         });
 
-        return view('package-detail', compact('settings', 'package', 'otherPackages'));
+        $activeTheme = $this->resolveActiveTheme($request, $settings);
+        $themeView = "themes.{$activeTheme}.package-detail";
+        if (!view()->exists($themeView)) {
+            $themeView = view()->exists('package-detail') ? 'package-detail' : 'themes.tiketdieng.package-detail';
+        }
+
+        return view($themeView, compact('settings', 'package', 'otherPackages', 'activeTheme'));
+    }
+
+    private function resolveActiveTheme(Request $request, $settings): string
+    {
+        if ($request->filled('theme')) {
+            return (string) $request->query('theme');
+        }
+
+        $host = (string) $request->getHost();
+        if (str_contains($host, 'lotuscreative') || str_contains($host, 'lotus.')) {
+            return 'lotus';
+        }
+        if (str_contains($host, 'jeepdieng') || str_contains($host, 'jeep.')) {
+            return 'jeep';
+        }
+        if (str_contains($host, 'shuttledieng') || str_contains($host, 'shuttle.')) {
+            return 'shuttle';
+        }
+
+        return !empty($settings->active_theme) ? $settings->active_theme : 'tiketdieng';
     }
 
     public function documentation(Request $request)

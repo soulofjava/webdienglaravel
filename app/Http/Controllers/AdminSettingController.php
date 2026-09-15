@@ -28,12 +28,15 @@ class AdminSettingController extends Controller
             'today_unique' => $todayUnique,
         ];
 
-        return view('admin.dashboard', compact('settings', 'statsSummary'));
+        // Daftar akun admin (hanya dikelola superadmin)
+        $users = \App\Models\User::with('roles')->get();
+
+        return view('admin.dashboard', compact('settings', 'statsSummary', 'users'));
     }
 
     public function update(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'site_name' => 'required|string|max:100',
             'site_tagline' => 'required|string|max:200',
             'company_name' => 'nullable|string|max:150',
@@ -45,10 +48,6 @@ class AdminSettingController extends Controller
             'phone_number' => 'required|string|max:30',
             'email' => 'required|email|max:100',
             'address' => 'required|string|max:500',
-            'bank_name' => 'nullable|string|max:100',
-            'bank_account_number' => 'nullable|string|max:50',
-            'bank_account_name' => 'nullable|string|max:100',
-            'legal_nib' => 'nullable|string|max:100',
             'hpi_badge' => 'nullable|string|max:100',
             'favicon_url' => 'nullable|string|max:255',
             'seo_title' => 'nullable|string|max:200',
@@ -58,9 +57,31 @@ class AdminSettingController extends Controller
             'instagram_url' => 'nullable|string|max:255',
             'tiktok_url' => 'nullable|string|max:255',
             'facebook_url' => 'nullable|string|max:255',
-        ]);
+        ];
+
+        // Hanya Superadmin yang boleh mengubah tema dan data rekening/legalitas perusahaan
+        if ($request->user() && $request->user()->hasRole('superadmin')) {
+            $rules['active_theme'] = 'required|string|in:tiketdieng,lotus,jeep,shuttle';
+            $rules['bank_name'] = 'nullable|string|max:100';
+            $rules['bank_account_number'] = 'nullable|string|max:50';
+            $rules['bank_account_name'] = 'nullable|string|max:100';
+            $rules['legal_nib'] = 'nullable|string|max:100';
+        }
+
+        $validated = $request->validate($rules);
 
         $settings = SiteSetting::getSettings();
+
+        if (!($request->user() && $request->user()->hasRole('superadmin'))) {
+            unset(
+                $validated['active_theme'],
+                $validated['bank_name'],
+                $validated['bank_account_number'],
+                $validated['bank_account_name'],
+                $validated['legal_nib']
+            );
+        }
+
         $settings->update($validated);
         SiteSetting::clearCache();
 
