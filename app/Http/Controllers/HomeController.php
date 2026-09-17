@@ -164,23 +164,26 @@ class HomeController extends Controller
             $yesterday = Carbon::yesterday()->toDateString();
             $sevenDaysAgo = Carbon::today()->subDays(6)->toDateString();
             $startOfMonth = Carbon::today()->startOfMonth()->toDateString();
+            $startOfYear = Carbon::today()->startOfYear()->toDateString();
 
-            // Konsolidasi 5 query terpisah menjadi 1 query tunggal berkecepatan tinggi
+            // Konsolidasi seluruh rentang statistik menjadi 1 query tunggal berkecepatan tinggi
             $result = DB::selectOne("
                 SELECT 
                     COALESCE(SUM(CASE WHEN `date` = ? THEN `total_visits` ELSE 0 END), 0) as today,
                     COALESCE(SUM(CASE WHEN `date` = ? THEN `total_visits` ELSE 0 END), 0) as yesterday,
                     COALESCE(SUM(CASE WHEN `date` >= ? THEN `total_visits` ELSE 0 END), 0) as this_week,
                     COALESCE(SUM(CASE WHEN `date` >= ? THEN `total_visits` ELSE 0 END), 0) as this_month,
+                    COALESCE(SUM(CASE WHEN `date` >= ? THEN `total_visits` ELSE 0 END), 0) as this_year,
                     COALESCE(SUM(`total_visits`), 0) as total
                 FROM visitor_stats
-            ", [$today, $yesterday, $sevenDaysAgo, $startOfMonth]);
+            ", [$today, $yesterday, $sevenDaysAgo, $startOfMonth, $startOfYear]);
 
             return [
                 'today' => max(1, (int) ($result->today ?? 1)),
                 'yesterday' => (int) ($result->yesterday ?? 0),
                 'this_week' => max(1, (int) ($result->this_week ?? 1)),
                 'this_month' => max(1, (int) ($result->this_month ?? 1)),
+                'this_year' => max(1, (int) ($result->this_year ?? 1)),
                 'total' => max(1, (int) ($result->total ?? 1)),
                 'online' => rand(4, 9),
             ];
