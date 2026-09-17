@@ -18,11 +18,11 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                 <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                     <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Hari Ini</span>
                     <div class="text-xl sm:text-2xl font-bold text-amber-400 font-mono mt-1">{{ number_format($visitorStats['today'], 0, ',', '.') }}</div>
-                    <span class="text-[10px] text-slate-500">Pengunjung unik</span>
+                    <span class="text-[10px] text-slate-500">Kunjungan hari ini</span>
                 </div>
 
                 <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
@@ -40,13 +40,19 @@
                 <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                     <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Bulan Ini</span>
                     <div class="text-xl sm:text-2xl font-bold text-purple-400 font-mono mt-1">{{ number_format($visitorStats['this_month'], 0, ',', '.') }}</div>
-                    <span class="text-[10px] text-slate-500">Bulan aktif</span>
+                    <span class="text-[10px] text-slate-500">Bulan berjalan</span>
                 </div>
 
-                <div class="col-span-2 sm:col-span-1 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Tahun Ini</span>
+                    <div class="text-xl sm:text-2xl font-bold text-rose-400 font-mono mt-1">{{ number_format($visitorStats['this_year'], 0, ',', '.') }}</div>
+                    <span class="text-[10px] text-slate-500">Tahun berjalan</span>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                     <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Total Kunjungan</span>
                     <div class="text-xl sm:text-2xl font-bold text-white font-mono mt-1">{{ number_format($visitorStats['total'], 0, ',', '.') }}</div>
-                    <span class="text-[10px] text-slate-500">Sejak platform rilis</span>
+                    <span class="text-[10px] text-slate-500">Semua kunjungan</span>
                 </div>
             </div>
         </div>
