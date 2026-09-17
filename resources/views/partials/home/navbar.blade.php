@@ -55,8 +55,7 @@
 
             <!-- Mobile Drawer -->
             <div id="mobileMenu" class="hidden md:hidden pt-4 pb-2 border-t border-white/10 mt-3 flex flex-col gap-3">
-                <button type="button" onclick="window.openSpotlightSearch(); document.getElementById('mobileMenu').classList.add('hidden');" class="flex items-center gap-2 text-sm py-1.5 text-slate-300 hover:text-amber-400 text-left">
-                    <i data-lucide="search" class="w-4 h-4 text-amber-400"></i>
+                <button type="button" onclick="window.openSpotlightSearch(); document.getElementById('mobileMenu').classList.add('hidden');" class="text-sm py-1.5 text-slate-300 hover:text-amber-400 text-left">
                     <span>Cari Paket & Destinasi (Pencarian Cepat)</span>
                 </button>
                 <a href="#scrollytelling" class="text-sm py-1.5 text-slate-300 hover:text-amber-400">Jelajah Cerita Dieng</a>
