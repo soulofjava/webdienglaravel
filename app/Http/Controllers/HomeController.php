@@ -45,7 +45,9 @@ class HomeController extends Controller
             $themeView = view()->exists('home') ? 'home' : 'themes.tiketdieng.home';
         }
 
-        return view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme'));
+        return response()
+            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme'))
+            ->header('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     }
 
     public function showPackage(Request $request, $slug)
@@ -75,7 +77,9 @@ class HomeController extends Controller
             $themeView = view()->exists('package-detail') ? 'package-detail' : 'themes.tiketdieng.package-detail';
         }
 
-        return view($themeView, compact('settings', 'package', 'otherPackages', 'activeTheme'));
+        return response()
+            ->view($themeView, compact('settings', 'package', 'otherPackages', 'activeTheme'))
+            ->header('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=600');
     }
 
     private function resolveActiveTheme(Request $request): string
@@ -113,7 +117,9 @@ class HomeController extends Controller
                 ->get();
         });
 
-        return view('documentation', compact('settings', 'docPackages'));
+        return response()
+            ->view('documentation', compact('settings', 'docPackages'))
+            ->header('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=600');
     }
 
     public function apiVisitorStats(Request $request): JsonResponse
