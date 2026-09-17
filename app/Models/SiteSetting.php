@@ -136,14 +136,14 @@ class SiteSetting extends Model
                 }
             }
 
-            $host = (string) request()->getHost();
-            if (str_contains($host, 'lotuscreative') || str_contains($host, 'lotus.')) {
+            $host = strtolower((string) request()->getHost());
+            if (str_contains($host, 'lotus') || str_contains($host, 'fotografi')) {
                 return 'lotus';
             }
-            if (str_contains($host, 'jeepdieng') || str_contains($host, 'jeep.')) {
+            if (str_contains($host, 'jeep')) {
                 return 'jeep';
             }
-            if (str_contains($host, 'shuttledieng') || str_contains($host, 'shuttle.')) {
+            if (str_contains($host, 'shuttle')) {
                 return 'shuttle';
             }
         }
