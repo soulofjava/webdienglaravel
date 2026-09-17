@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
-use App\Models\VisitorLog;
 use App\Models\VisitorStat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -131,78 +132,56 @@ class HomeController extends Controller
     {
         try {
             $today = Carbon::today()->toDateString();
-            $ip = $request->ip() ?? '127.0.0.1';
-            $ua = $request->userAgent() ?? 'Unknown';
-            $ipHash = hash('sha256', $ip . '|' . substr($ua, 0, 100));
-
-            // Cek session atau cache agar tidak melakukan query blocking ke Aiven Cloud berulang kali
             $sessionKey = 'visited_' . $today;
-            $cacheKey = 'vlog_' . $ipHash . '_' . $today;
 
+            // Jika session user sudah tercatat hari ini, tidak perlu query ke database
             if ($request->hasSession() && $request->session()->has($sessionKey)) {
-                return;
-            }
-            if (\Illuminate\Support\Facades\Cache::has($cacheKey)) {
-                if ($request->hasSession()) {
-                    $request->session()->put($sessionKey, true);
-                }
                 return;
             }
 
             if ($request->hasSession()) {
                 $request->session()->put($sessionKey, true);
             }
-            \Illuminate\Support\Facades\Cache::put($cacheKey, true, now()->endOfDay());
 
-            $isNewVisitToday = false;
-            $existingLog = VisitorLog::where('ip_hash', $ipHash)
-                ->where('visit_date', $today)
-                ->first();
-
-            if (!$existingLog) {
-                VisitorLog::create([
-                    'ip_hash' => $ipHash,
-                    'visit_date' => $today,
-                    'user_agent' => substr($ua, 0, 255),
-                ]);
-                $isNewVisitToday = true;
-            }
-
-            $stat = VisitorStat::firstOrCreate(
-                ['date' => $today],
-                ['total_visits' => 0, 'unique_visitors' => 0]
-            );
-
-            $stat->increment('total_visits');
-            if ($isNewVisitToday) {
-                $stat->increment('unique_visitors');
-            }
+            // Cukup 1 query atomic upsert/increment ke visitor_stats (clustered PK date)
+            DB::statement("
+                INSERT INTO visitor_stats (`date`, `total_visits`, `unique_visitors`, `created_at`, `updated_at`)
+                VALUES (?, 1, 1, NOW(), NOW())
+                ON DUPLICATE KEY UPDATE 
+                    `total_visits` = `total_visits` + 1,
+                    `unique_visitors` = `unique_visitors` + 1,
+                    `updated_at` = NOW()
+            ", [$today]);
         } catch (\Throwable $e) {
-            // Silently continue if DB logging hits concurrency issue
+            // Silently continue jika database cloud sedang mengalami latensi sesaat
         }
     }
 
     private function getStats(): array
     {
-        return \Illuminate\Support\Facades\Cache::remember('visitor_stats_summary', 60, function () {
+        return Cache::remember('visitor_stats_summary', 300, function () {
             $today = Carbon::today()->toDateString();
             $yesterday = Carbon::yesterday()->toDateString();
             $sevenDaysAgo = Carbon::today()->subDays(6)->toDateString();
             $startOfMonth = Carbon::today()->startOfMonth()->toDateString();
 
-            $todayStat = VisitorStat::where('date', $today)->first();
-            $yesterdayStat = VisitorStat::where('date', $yesterday)->first();
-
-            $weekUnique = VisitorStat::whereBetween('date', [$sevenDaysAgo, $today])->sum('unique_visitors');
-            $monthUnique = VisitorStat::whereBetween('date', [$startOfMonth, $today])->sum('unique_visitors');
-            $grandTotal = VisitorStat::sum('total_visits');
+            // Konsolidasi 5 query terpisah menjadi 1 query tunggal berkecepatan tinggi
+            $result = DB::selectOne("
+                SELECT 
+                    COALESCE(SUM(CASE WHEN `date` = ? THEN `total_visits` ELSE 0 END), 0) as today,
+                    COALESCE(SUM(CASE WHEN `date` = ? THEN `total_visits` ELSE 0 END), 0) as yesterday,
+                    COALESCE(SUM(CASE WHEN `date` >= ? THEN `total_visits` ELSE 0 END), 0) as this_week,
+                    COALESCE(SUM(CASE WHEN `date` >= ? THEN `total_visits` ELSE 0 END), 0) as this_month,
+                    COALESCE(SUM(`total_visits`), 0) as total
+                FROM visitor_stats
+            ", [$today, $yesterday, $sevenDaysAgo, $startOfMonth]);
 
             return [
-                'today' => (int) ($todayStat->unique_visitors ?? 1),
-                'yesterday' => (int) ($yesterdayStat->unique_visitors ?? 0),
-                'this_week' => (int) ($weekUnique ?: 1),
-                'this_month' => (int) ($monthUnique ?: 1),
-                'total' => (int) ($grandTotal ?: 1),
+                'today' => max(1, (int) ($result->today ?? 1)),
+                'yesterday' => (int) ($result->yesterday ?? 0),
+                'this_week' => max(1, (int) ($result->this_week ?? 1)),
+                'this_month' => max(1, (int) ($result->this_month ?? 1)),
+                'total' => max(1, (int) ($result->total ?? 1)),
                 'online' => rand(4, 9),
             ];
         });

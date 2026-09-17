@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AdminSettingController extends Controller
 {
@@ -31,19 +33,25 @@ class AdminSettingController extends Controller
         // Settings induk untuk memantau tema publik yang sedang aktif
         $globalSetting = SiteSetting::getSettings('tiketdieng');
 
-        // Statistik ringkas untuk dashboard admin
+        // Statistik ringkas untuk dashboard admin (1 single consolidated query ber-cache)
         $today = Carbon::today()->toDateString();
-        $totalVisits = VisitorStat::sum('total_visits');
-        $totalUnique = VisitorStat::sum('unique_visitors');
-        $todayVisits = VisitorStat::where('date', $today)->value('total_visits') ?? 0;
-        $todayUnique = VisitorStat::where('date', $today)->value('unique_visitors') ?? 0;
+        $statsSummary = Cache::remember('admin_visitor_stats_summary', 300, function () use ($today) {
+            $row = DB::selectOne("
+                SELECT 
+                    COALESCE(SUM(`total_visits`), 0) as total_visits,
+                    COALESCE(SUM(`unique_visitors`), 0) as total_unique,
+                    COALESCE(SUM(CASE WHEN `date` = ? THEN `total_visits` ELSE 0 END), 0) as today_visits,
+                    COALESCE(SUM(CASE WHEN `date` = ? THEN `unique_visitors` ELSE 0 END), 0) as today_unique
+                FROM visitor_stats
+            ", [$today, $today]);
 
-        $statsSummary = [
-            'total_visits' => $totalVisits,
-            'total_unique' => $totalUnique,
-            'today_visits' => $todayVisits,
-            'today_unique' => $todayUnique,
-        ];
+            return [
+                'total_visits' => (int) ($row->total_visits ?? 0),
+                'total_unique' => (int) ($row->total_unique ?? 0),
+                'today_visits' => (int) ($row->today_visits ?? 0),
+                'today_unique' => (int) ($row->today_unique ?? 0),
+            ];
+        });
 
         // Daftar akun admin (hanya dikelola superadmin)
         $users = \App\Models\User::with('roles')->get();
