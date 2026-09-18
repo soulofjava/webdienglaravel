@@ -19,8 +19,8 @@
                 <div class="lg:col-span-7 space-y-6">
                     <!-- Pilihan Paket -->
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">1. Pilih Paket Wisata (Estimasi Dasar)</label>
-                        <select id="calcPkg" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
+                        <label for="calcPkg" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">1. Pilih Paket Wisata (Estimasi Dasar)</label>
+                        <select id="calcPkg" name="calcPkg" aria-label="Pilih Paket Wisata" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
                             @foreach ($packages as $pkg)
                                 <option
                                     value="{{ $pkg->slug }}"
@@ -38,10 +38,10 @@
                     <!-- Jumlah Peserta -->
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <label class="text-xs font-bold uppercase tracking-wider text-slate-300">2. Jumlah Peserta</label>
+                            <label for="calcPax" class="text-xs font-bold uppercase tracking-wider text-slate-300">2. Jumlah Peserta</label>
                             <span id="paxDisplay" class="text-xs font-bold text-amber-400">4 Orang</span>
                         </div>
-                        <input id="calcPax" type="range" min="1" max="25" value="4" aria-label="Jumlah Peserta Wisata" class="w-full accent-amber-400 cursor-pointer">
+                        <input id="calcPax" name="calcPax" type="range" min="1" max="25" value="4" aria-label="Jumlah Peserta Wisata" class="w-full accent-amber-400 cursor-pointer">
                         <div class="flex justify-between text-[11px] text-slate-400 mt-1">
                             <span>1 Orang</span>
                             <span>10 Orang (Diskon 10%)</span>
@@ -51,8 +51,8 @@
 
                     <!-- Titik Penjemputan -->
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">3. Lokasi Titik Penjemputan (Meeting Point)</label>
-                        <select id="calcMeeting" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
+                        <label for="calcMeeting" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">3. Lokasi Titik Penjemputan (Meeting Point)</label>
+                        <select id="calcMeeting" name="calcMeeting" aria-label="Lokasi Titik Penjemputan" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
                             <option value="Wonosobo / Terminal Mendolo" data-surcharge="0" selected>Kota Wonosobo / Terminal Mendolo (Gratis / Standar)</option>
                             <option value="Purwokerto (Stasiun / Terminal)" data-surcharge="50000">Purwokerto — Stasiun / Terminal Bulupitu (+Rp 50.000/org)</option>
                             <option value="Yogyakarta (Stasiun Tugu / Lempuyangan / YIA)" data-surcharge="100000">Yogyakarta — Stasiun Tugu / Lempuyangan / Bandara YIA (+Rp 100.000/org)</option>
@@ -63,21 +63,21 @@
                     <!-- Rencana Tanggal & Nama -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Tanggal Perjalanan</label>
+                            <label for="calcDate" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Tanggal Perjalanan</label>
                             <div class="relative">
-                                <input id="calcDate" type="text" placeholder="Pilih tanggal keberangkatan..." readonly class="w-full p-3 pl-3.5 pr-10 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none cursor-pointer placeholder:text-slate-500">
+                                <input id="calcDate" name="calcDate" type="text" placeholder="Pilih tanggal keberangkatan..." readonly class="w-full p-3 pl-3.5 pr-10 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none cursor-pointer placeholder:text-slate-500">
                                 <i data-lucide="calendar" class="w-4 h-4 text-amber-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Nama Pemesan</label>
-                            <input id="calcName" type="text" placeholder="Contoh: Bpk. Kurniawan" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
+                            <label for="calcName" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Nama Pemesan</label>
+                            <input id="calcName" name="calcName" type="text" placeholder="Contoh: Bpk. Kurniawan" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Catatan Tambahan (Opsional)</label>
-                        <input id="calcNotes" type="text" placeholder="Permintaan tipe kamar homestay, menu khusus, dsb." class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
+                        <label for="calcNotes" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Catatan Tambahan (Opsional)</label>
+                        <input id="calcNotes" name="calcNotes" type="text" placeholder="Permintaan tipe kamar homestay, menu khusus, dsb." class="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none">
                     </div>
                 </div>
 

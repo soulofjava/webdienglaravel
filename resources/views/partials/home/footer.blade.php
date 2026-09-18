@@ -5,7 +5,7 @@
                 <!-- Col 1: Brand & Legalitas -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-9 w-auto object-contain brightness-110">
+                        <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" width="146" height="36" class="h-9 w-auto object-contain brightness-110">
                     </div>
                     <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
                         {{ $settings->site_tagline }}. Bagian resmi dari <strong class="text-white">{{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}</strong>. Menghadirkan kemudahan reservasi akomodasi, sewa jeep, shuttle, dokumentasi sinematik, dan outbound profesional di Dieng.
@@ -109,7 +109,7 @@
             </div>
 
             <!-- Bottom credit -->
-            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
                 <p>© {{ date('Y') }} {{ $settings->site_name }}. Hak cipta dilindungi undang-undang.</p>
                 <div class="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px]">
                     <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>

@@ -60,8 +60,8 @@
     <!-- Production Compiled Vite Assets (Super Fast, No Runtime Compiler) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Lucide Icons (Deferred for non-blocking page render) -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
 
     <style>
         body {
@@ -143,9 +143,13 @@
         }
     </style>
 
-    <!-- Flatpickr CSS (Dark theme) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    <!-- Flatpickr CSS (Dark theme - Asynchronously loaded for zero render blocking) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    </noscript>
     @stack('styles')
 </head>
 <body class="antialiased selection:bg-amber-500/30 selection:text-amber-200">

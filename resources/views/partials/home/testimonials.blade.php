@@ -24,7 +24,7 @@
                 <div class="flex items-center gap-3 pt-4 border-t border-white/10">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=75" alt="Dr. Amanda" width="44" height="44" loading="lazy" decoding="async" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
                     <div>
-                        <h4 class="font-bold text-xs sm:text-sm text-white">Dr. Amanda Saraswati</h4>
+                        <h3 class="font-bold text-xs sm:text-sm text-white">Dr. Amanda Saraswati</h3>
                         <p class="text-[11px] text-slate-400">Jakarta Selatan • <span class="text-amber-300">Paket 2D1N</span></p>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="flex items-center gap-3 pt-4 border-t border-white/10">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=75" alt="Rizky Ramadhan" width="44" height="44" loading="lazy" decoding="async" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
                     <div>
-                        <h4 class="font-bold text-xs sm:text-sm text-white">Rizky Ramadhan & Rekan</h4>
+                        <h3 class="font-bold text-xs sm:text-sm text-white">Rizky Ramadhan & Rekan</h3>
                         <p class="text-[11px] text-slate-400">Surabaya • <span class="text-amber-300">Safari Jip 4x4</span></p>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                 <div class="flex items-center gap-3 pt-4 border-t border-white/10">
                     <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=75" alt="Clara & Michael" width="44" height="44" loading="lazy" decoding="async" class="w-11 h-11 rounded-full object-cover border border-amber-400/40">
                     <div>
-                        <h4 class="font-bold text-xs sm:text-sm text-white">Clara & Michael</h4>
+                        <h3 class="font-bold text-xs sm:text-sm text-white">Clara & Michael</h3>
                         <p class="text-[11px] text-slate-400">Melbourne, Australia • <span class="text-amber-300">Paket 3D2N</span></p>
                     </div>
                 </div>
