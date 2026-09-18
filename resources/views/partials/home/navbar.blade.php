@@ -4,7 +4,7 @@
             <div class="flex items-center justify-between">
                 <!-- Brand Logo -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-8 sm:h-9 w-auto object-contain brightness-110 drop-shadow">
+                    <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" width="146" height="36" class="h-8 sm:h-9 w-auto object-contain brightness-110 drop-shadow">
                 </a>
 
                 <!-- Desktop Nav Links -->
