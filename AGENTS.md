@@ -17,7 +17,7 @@
   - **Live Domains:**
     - Induk: `https://webdieng.vercel.app`
     - Lotus: `https://lotusfotografi.vercel.app`
-    - Jeep: `https://readyjeepdieng.vercel.app` & `https://jeepdieng.vercel.app`
+    - Jeep: `https://jeepdieng.vercel.app`
   - Runtime: Serverless Laravel via `vercel.json` (`vercel-php@0.7.3`).
   - Vercel CLI Token: Tersimpan aman di `~/.config/codex-private/vercel-token.txt` (User: `soulofjava`, Team: `isa-s-projects16`).
   - Vercel mendukung multi-project / preview URL untuk simulasi web anak menggunakan database Aiven yang sama.
