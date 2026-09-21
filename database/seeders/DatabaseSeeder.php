@@ -52,6 +52,17 @@ class DatabaseSeeder extends Seeder
         );
         $lotusAdmin->syncRoles([$adminRole]);
 
+        // 4. Akun Administrator Ready Jeep Dieng
+        $jeepAdmin = User::updateOrCreate(
+            ['email' => 'admin@jeepdieng.com'],
+            [
+                'name' => 'Admin Ready Jeep Dieng',
+                'password' => Hash::make('ReadyJeep@2026#'),
+                'email_verified_at' => now(),
+            ]
+        );
+        $jeepAdmin->syncRoles([$adminRole]);
+
         // 2. Pengaturan Default Situs
         SiteSetting::getSettings();
 
