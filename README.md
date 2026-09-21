@@ -1,26 +1,37 @@
-# TiketDieng.com — Portal Biro Wisata Resmi (Laravel 13 & MySQL)
+# TiketDieng.com — Multi-Site & Multi-Theme Portal (Laravel 13 & MySQL)
 
-Proyek ini merupakan porting mandiri dari portal biro wisata sinematik TiketDieng ke dalam ekosistem **Laravel 13** dan **MySQL**, yang dirancang khusus agar dapat di-hosting dengan sangat mudah, stabil, dan terjangkau di **Hostinger Shared Hosting** atau cPanel manapun **tanpa memerlukan Vercel maupun Supabase**.
-
----
-
-## 🚀 Keunggulan Versi Laravel
-
-1. **Ukuran Sangat Ringan:** Hanya ~70 MB (bandingkan dengan Next.js yang mencapai 864 MB).
-2. **Mandiri & Bebas Pihak Ketiga:**
-   - Database MySQL lokal (`webdieng`).
-   - Autentikasi Admin bawaan sesi Laravel.
-   - Penyimpanan gambar di storage lokal (`public/uploads`).
-   - Visitor tracking lokal dengan hashing IP unik harian.
-3. **100% Ramah Shared Hosting:** Sekali upload ke cPanel/hPanel Hostinger, langsung jalan tanpa butuh Node.js SSR runtime daemon.
+Proyek ini merupakan portal pariwisata multi-site, multi-tema, dan single database untuk seluruh unit usaha di bawah naungan **PT. GOTRIP ASIA TRAVELINDO** (Wonosobo).
 
 ---
 
-## 🔑 Kredensial Login Administrator
+## 🏢 Status 4 Unit Bisnis (Multi-Site)
+
+| Unit Bisnis | Domain | Status Implementasi | Deskripsi & Konsep |
+| :--- | :--- | :---: | :--- |
+| **TiketDieng** | `tiketdieng.com` | ✅ **SELESAI** | Portal Induk: Paket tour lengkap all-inclusive, homestay, itinerary, dan simulator biaya. |
+| **Lotus Creative** | `lotuscreative.id` | ✅ **SELESAI** | Studio Visual: Travel photography, cinematic video reels & aerial drone 4K Dieng. |
+| **Ready Jeep Dieng** | `jeepdieng.com` | ✅ **SELESAI** | Petualangan Offroad 4x4 (All In): 5 Paket Tur 1 Hari & 5 Paket Sunrise Safari (Jeep, BBM, Driver, Tiket Masuk, Dokumentasi HP). |
+| **Shuttle Dieng** | `shuttledieng.com` | ⏳ **BELUM DIBUAT**<br>*(Pending Data)* | Transportasi Mikrobus 15 Seat. **Status: Belum ada data resmi paket/rute/tarif & tampilan publik Blade belum dibuat.** |
+
+---
+
+## 🚀 Keunggulan Sistem Multi-Site
+
+1. **Single Database, Multi-View:** Satu database MySQL melayani 4 domain/tema independen.
+2. **Distinct Homepage:** Setiap tema memiliki desain, atmosfer warna, dan layout publik tersendiri di `resources/views/themes/{tiketdieng,lotus,jeep,shuttle}/`.
+3. **Role Scoping (Spatie):** Admin operasional masing-masing unit hanya dapat mengelola paket dan profil situs unitnya sendiri.
+4. **Favicon Dinamis:** Masing-masing web otomatis memuat favicon ikon resmi per tema (Tiket, Lotus, Ready Jeep Dieng).
+
+---
+
+## 🔑 Kredensial Login Administrator Panel (`/admin`)
 
 * **URL Login:** `http://localhost:8000/admin/login`
-* **Email:** `admin@tiketdieng.com`
-* **Password:** `admin123`
+* **Superadmin:** `isamaulanatantra@gmail.com` (Akses Penuh / Ganti Tema)
+* **Admin TiketDieng:** `admin@tiketdieng.com` (Operasional Tour & Homestay)
+* **Admin Lotus Creative:** `admin@lotuscreative.id` (Operasional Foto & Drone)
+* **Admin Ready Jeep Dieng:** `admin@jeepdieng.com` (Operasional Safari Jeep 4x4 All In)
+* **Admin Shuttle Dieng:** *(Pending - Menunggu implementasi web shuttle)*
 
 ---
 

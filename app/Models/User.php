@@ -109,7 +109,17 @@ class User extends Authenticatable
                 ->toArray();
         }
 
-        // Sub-web lain jika ada (misal jeep, shuttle)
+        if ($scope === 'jeep') {
+            return Comcode::whereIn('code_group', ['package_category', 'category'])
+                ->where('site_scope', 'jeep')
+                ->pluck('code_value')
+                ->merge(['Jeep Safari', 'Sunrise Safari', 'Jeep Tour'])
+                ->unique()
+                ->values()
+                ->toArray();
+        }
+
+        // Sub-web lain jika ada (misal shuttle)
         return Comcode::whereIn('code_group', ['package_category', 'category'])
             ->where('site_scope', $scope)
             ->pluck('code_value')
@@ -137,6 +147,11 @@ class User extends Authenticatable
                 ->toArray();
 
             return in_array($package->category, $lotusCategories, true);
+        }
+
+        if ($scope === 'jeep') {
+            $jeepCategories = $this->getAllowedPackageCategories() ?? ['Jeep Safari', 'Sunrise Safari', 'Jeep Tour'];
+            return in_array($package->category, $jeepCategories, true);
         }
 
         if ($scope === 'tiketdieng') {

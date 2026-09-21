@@ -169,6 +169,13 @@ class SiteSetting extends Model
             return '/images/favicon-lotus.png';
         }
 
+        if ($this->id === 'jeep') {
+            if (!empty($value) && $value !== '/favicon.png' && $value !== '/favicon.ico') {
+                return $value;
+            }
+            return '/images/favicon-jeep.png';
+        }
+
         return $value ?: '/favicon.png';
     }
 
@@ -233,16 +240,16 @@ class SiteSetting extends Model
                 'facebook_url' => 'https://www.facebook.com/share/1Hj4SzNUzH/',
             ],
             'jeep' => [
-                'site_name' => 'JEEP DIENG ADVENTURE',
-                'site_tagline' => 'Sewa Jeep Wisata Offroad 4x4 Dataran Tinggi Dieng',
+                'site_name' => 'READY JEEP DIENG',
+                'site_tagline' => 'Sewa Jeep Wisata Offroad 4x4 Dataran Tinggi Dieng (All In)',
                 'active_theme' => 'jeep',
-                'company_name' => 'PT. GOTRIP ASIA TRAVELINDO (Jeep Adventure Unit)',
-                'about_us' => 'Jeep Dieng Adventure menyediakan armada sewa mobil Jeep 4x4 tangguh untuk menaklukkan medan ekstrem pegunungan Dieng. Nikmati perjalanan seru berburu sunrise di puncak Bukit Sikunir, menjelajahi kawah vulkanik, savana, dan telaga tersembunyi.',
+                'company_name' => 'PT. GOTRIP ASIA TRAVELINDO (Ready Jeep Dieng)',
+                'about_us' => 'Ready Jeep Dieng menyediakan armada sewa mobil Jeep 4x4 tangguh (Daihatsu Feroza & Suzuki Katana) dengan konsep All-In untuk menaklukkan medan ekstrem pegunungan Dieng. Nikmati perjalanan seru berburu sunrise di puncak Bukit Sikunir, menjelajahi kawah vulkanik, savana, dan telaga tersembunyi.',
                 'company_history' => 'Didirikan untuk memberikan pengalaman petualangan alam terbuka yang aman dan mendebarkan di dataran tinggi vulkanik Dieng sejak 2022.',
                 'company_vision' => 'Menjadi operator penyewaan jeep offroad wisata terpercaya dengan standar keselamatan dan pelayanan terbaik di Jawa Tengah.',
                 'company_mission' => 'Menyediakan unit 4x4 prima, driver lokal terlatih dan bersertifikasi, serta rute tour petualangan yang kaya cerita geologi dan budaya.',
-                'whatsapp_number' => '0816675404',
-                'phone_number' => '+62 816-675-404',
+                'whatsapp_number' => '081325631952',
+                'phone_number' => '+62 813-2563-1952',
                 'email' => 'jeep@tiketdieng.com',
                 'address' => 'Jl. Dieng Km. 03, Tieng, Kejajar, Wonosobo 56354',
                 'bank_name' => 'BNI Cabang Wonosobo',
@@ -250,11 +257,11 @@ class SiteSetting extends Model
                 'bank_account_name' => 'PT. GOTRIP ASIA TRAVELINDO',
                 'legal_nib' => 'NIB: 1294801928472 (PT. GOTRIP ASIA TRAVELINDO)',
                 'hpi_badge' => 'Paguyuban Driver Jeep Wisata Dieng',
-                'favicon_url' => '/favicon.png',
-                'seo_title' => 'Jeep Dieng Adventure — Sewa Jeep Wisata Offroad 4x4 Dataran Tinggi Dieng',
-                'seo_description' => 'Sewa Jeep Dieng 4x4 resmi. Paket sunrise hunter Sikunir, kawah Sikidang, Telaga Dringo, Savana Pangonan. Driver ramah, unit tangguh & BBM all-in.',
-                'seo_keywords' => 'jeep dieng, sewa jeep dieng, offroad dieng, jeep sikunir, tarif jeep dieng, paket jeep 4x4 dieng',
-                'og_image_url' => 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop',
+                'favicon_url' => '/images/favicon-jeep.png',
+                'seo_title' => 'Ready Jeep Dieng — Sewa Jeep Wisata Offroad 4x4 Dataran Tinggi Dieng (All In)',
+                'seo_description' => 'Sewa Ready Jeep Dieng 4x4 resmi All In. Paket sunrise Sikunir, kawah Sikidang, Candi Dieng, Telaga Menjer. Termasuk Jeep, driver, BBM, parkir, tiket masuk & dokumentasi HP.',
+                'seo_keywords' => 'ready jeep dieng, jeep dieng, sewa jeep dieng all in, tarif jeep dieng 2026, jeep sikunir, offroad 4x4 dieng',
+                'og_image_url' => '/images/ready-jeep-dieng-logo.jpeg',
                 'instagram_url' => 'https://www.instagram.com/jeepdiengadventure',
                 'tiktok_url' => 'https://tiktok.com/@jeepdieng',
                 'facebook_url' => 'https://www.facebook.com/share/1Hj4SzNUzH/',

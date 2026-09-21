@@ -55,14 +55,14 @@ Seluruh unit bisnis bernaung di bawah legalitas resmi **PT. GOTRIP ASIA TRAVELIN
 └──────────────────┘          └──────────────────┘          └──────────────────┘
 ```
 
-### Rincian Profil Setiap Web:
+### Rincian Profil & Status Setiap Web:
 
-| No | Web | Brand / Layanan | Karakteristik Produk & Target | Kontak & Identitas |
-|:--:|---|---|---|---|
-| **1** | **Web Induk** | **`tiketdieng.com`** *(Tiket Wisata Dieng)* | **Portal All-in-One**: Paket tour lengkap (1D, 2D1N, 3D2N), akomodasi homestay/villa, simulator biaya wisata (kalkulator), dan etalase induk seluruh sub-layanan. | WA: `0816675404`<br>Email: `tiket.wisatadieng@gmail.com`<br>Tema: *Cinematic Parallax Dark & Gold* |
-| **2** | **Sub-Web 1** | **Shuttle Dieng** | **Transportasi Rombongan**: Sewa mikrobus (kapasitas 15 orang dewasa), antar-jemput stasiun/bandara, tour keliling Dieng untuk keluarga/instansi (Paket 1–5). | WA: `0816675404`<br>Tema: *Clean, Reliable & Professional Travel* |
-| **3** | **Sub-Web 2** | **Jeep Dieng** *(Dieng Travelbuddies)* | **Safari 4x4 & Adrenalin**: Armada Jeep offroad Feroza/Katana (4 pax), rute Sunrise (Sikunir, Pintu Langit) dan rute ekstrem (Sikarim, Dringo, Bedakah). | WA: `0816675404`<br>Tema: *Adventurous, Bold & Earthy (Orange/Amber)* |
-| **4** | **Sub-Web 3** | **Dokumentasi Dieng** *(Lotus Creative)* | **Fotografi & Videografi Wisata**: Fotografer pro DSLR/mirrorless, reels cinematic, dan drone 4K (Paket 1–5, Rp 500rb s/d Rp 2.5jt). Studio: Tieng, Kejajar. | WA: `08164211196`<br>Email: `lotuscreative465@gmail.com`<br>Rekening: BNI 8166754042<br>Tema: *Visual Studio (Cyan & Rose)* |
+| No | Web | Status Proyek | Brand / Layanan | Karakteristik Produk & Target | Kontak & Identitas |
+|:--:|---|:---:|---|---|---|
+| **1** | **Web Induk** | ✅ **SELESAI** | **`tiketdieng.com`** *(Tiket Wisata Dieng)* | **Portal All-in-One**: Paket tour lengkap (1D, 2D1N, 3D2N), akomodasi homestay/villa, simulator biaya wisata (kalkulator), dan etalase induk seluruh sub-layanan. | WA: `0816675404`<br>Email: `tiket.wisatadieng@gmail.com`<br>Tema: *Cinematic Parallax Dark & Gold* |
+| **2** | **Sub-Web 1** | ✅ **SELESAI** | **Lotus Creative** (`lotuscreative.id`) | **Fotografi & Videografi Wisata**: Fotografer pro DSLR/mirrorless, reels cinematic, dan drone 4K (Paket 1–5, Rp 500rb s/d Rp 2.5jt). Studio: Tieng, Kejajar. Favicon dinamis terintegrasi. | WA: `08164211196`<br>Email: `halo@lotuscreative.id`<br>Rekening: BNI 8166754042<br>Tema: *Visual Studio (Cyan & Rose)* |
+| **3** | **Sub-Web 2** | ✅ **SELESAI** | **Ready Jeep Dieng** (`jeepdieng.com`) | **Safari 4x4 & Adrenalin (ALL IN)**: Armada Jeep offroad Feroza/Katana tangguh, 5 Paket 1 Hari + 5 Paket Sunrise Safari All-In (termasuk Jeep, BBM, driver, parkir, tiket wisata, dokumentasi HP). Favicon RD dinamis terintegrasi. | WA: `081325631952`<br>Email: `jeep@tiketdieng.com`<br>Basecamp: Tieng, Kejajar<br>Tema: *Bold Offroad Chrome & Ruby Red* |
+| **4** | **Sub-Web 3** | ⏳ **BELUM DIBUAT**<br>*(Pending Data)* | **Shuttle Dieng** (`shuttledieng.com`) | **Transportasi Mikrobus 15 Seat**: Sewa armada AC, antar-jemput stasiun Purwokerto / bandara YIA Jogja / Semarang ke Dieng. **STATUS: Belum ada data resmi paket/rute/tarif & tampilan publik belum dibuat.** | WA: *(Menunggu data)*<br>Email: `shuttle@tiketdieng.com`<br>Tema: *(Desain Shuttle Belum Dibuat)* |
 
 ---
 
@@ -70,29 +70,30 @@ Seluruh unit bisnis bernaung di bawah legalitas resmi **PT. GOTRIP ASIA TRAVELIN
 
 ### A. Konsep Beranda (`/`)
 Ketika pengunjung mengakses URL beranda (`http://localhost:8000/` atau domain live), **tampilannya benar-benar website yang berbeda total**, bukan sekadar sub-halaman:
-- Mode **TiketDieng**: Beranda adalah portal biro wisata all-inclusive.
-- Mode **Lotus Creative**: Beranda adalah website studio dokumentasi & drone Lotus Creative seutuhnya.
-- Mode **Jeep**: Beranda adalah website armada rental jeep wisata offroad.
-- Mode **Shuttle**: Beranda adalah website sewa mikrobus 15 kursi.
+- Mode **TiketDieng**: Beranda adalah portal biro wisata all-inclusive. *(✅ Selesai)*
+- Mode **Lotus Creative**: Beranda adalah website studio dokumentasi & drone Lotus Creative seutuhnya. *(✅ Selesai)*
+- Mode **Jeep**: Beranda adalah website armada rental jeep wisata offroad Ready Jeep Dieng All In. *(✅ Selesai)*
+- Mode **Shuttle**: Beranda adalah website sewa mikrobus 15 kursi. *(⏳ BELUM DIBUAT / TO DO)*
 
-### B. Struktur Folder Views (`resources/views/themes/`)
+### B. Status Folder Views (`resources/views/themes/`)
 ```text
 resources/views/
 ├── themes/
-│   ├── tiketdieng/               <-- Web Induk (TiketDieng)
+│   ├── tiketdieng/               <-- ✅ SELESAI: Web Induk (TiketDieng)
 │   │   ├── layouts/app.blade.php
 │   │   ├── home.blade.php
 │   │   ├── package-detail.blade.php
 │   │   └── partials/
-│   ├── lotus/                    <-- Web Lotus Creative
+│   ├── lotus/                    <-- ✅ SELESAI: Web Lotus Creative
 │   │   ├── layouts/app.blade.php
 │   │   ├── home.blade.php
 │   │   ├── package-detail.blade.php
 │   │   └── partials/
-│   ├── jeep/                     <-- Web Jeep Dieng
-│   │   └── home.blade.php
-│   └── shuttle/                  <-- Web Shuttle Dieng
-│       └── home.blade.php
+│   ├── jeep/                     <-- ✅ SELESAI: Web Ready Jeep Dieng
+│   │   ├── home.blade.php
+│   │   └── package-detail.blade.php
+│   └── shuttle/                  <-- ⏳ BELUM DIBUAT (TO DO: Menunggu data resmi)
+│       └── (belum diimplementasikan)
 ├── admin/                        <-- Single Master CMS Dashboard
 └── shared/                       <-- Komponen bersama (modal WA, scripts)
 ```
@@ -114,8 +115,10 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
 | Role | Scope Unit | Email Akun | Wewenang & Batasan Akses |
 | :--- | :--- | :--- | :--- |
 | 👑 **`superadmin`** | **Global (Semua Unit)** | `isamaulanatantra@gmail.com` | **Full Bypass & Master Access**:<br>• Akses seluruh 29 paket wisata & dokumentasi tanpa batasan.<br>• Mengatur mode multi-situs dan beralih tema aktif (tiketdieng, lotus, jeep, shuttle).<br>• Mengatur legalitas PT, rekening bank resmi, dan manajemen user pengelola.<br>• Mengakses seluruh tab pengaturan situs. |
-| 👤 **`admin`** | **TiketDieng** (`tiketdieng`) | `admin@tiketdieng.com` | **Operasional Tur & Paket Wisata**:<br>• Hanya dapat mengelola paket tur wisata (kategori non-`Dokumentasi`).<br>• Hanya dapat mengakses tab Pengaturan Situs TiketDieng.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit atau memanipulasi paket Lotus Creative / pengaturan unit lain. |
-| 👤 **`admin`** | **Lotus Creative** (`lotus`) | `admin@lotuscreative.id` | **Operasional Fotografi & Dokumentasi**:<br>• Hanya dapat mengelola paket foto/video/drone (kategori `Dokumentasi`).<br>• Hanya dapat mengakses tab Pengaturan Situs Lotus Creative.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit atau memanipulasi paket tur TiketDieng / pengaturan unit lain. |
+| 👤 **`admin`** | **TiketDieng** (`tiketdieng`) | `admin@tiketdieng.com` | **Operasional Tur & Paket Wisata**:<br>• Hanya dapat mengelola paket tur wisata (kategori non-`Dokumentasi`, non-`Jeep Safari`).<br>• Hanya dapat mengakses tab Pengaturan Situs TiketDieng.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit unit lain. |
+| 👤 **`admin`** | **Lotus Creative** (`lotus`) | `admin@lotuscreative.id` | **Operasional Fotografi & Dokumentasi**:<br>• Hanya dapat mengelola paket foto/video/drone (kategori `Dokumentasi`).<br>• Hanya dapat mengakses tab Pengaturan Situs Lotus Creative.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit unit lain. |
+| 👤 **`admin`** | **Ready Jeep Dieng** (`jeep`) | `admin@jeepdieng.com` | **Operasional Safari 4x4 Offroad All In**:<br>• Mengelola paket jeep offroad (kategori `Jeep Safari` & `Sunrise Safari`).<br>• Mengakses tab Pengaturan Situs Ready Jeep Dieng.<br>• Ditolak (`403 Forbidden`) jika mencoba mengedit unit lain. |
+| 👤 **`admin`** | **Shuttle Dieng** (`shuttle`) | *(Pending / To Do)* | *(Belum diimplementasikan)*:<br>• Disiapkan saat pengerjaan sub-web Shuttle dimulai setelah data resmi armada/paket diterima. |
 
 ### Mekanisme Keamanan Scoping:
 1. **Model Scope Helper (`app/Models/User.php`)**:
@@ -198,3 +201,8 @@ Aplikasi menerapkan kontrol hak akses bertingkat dengan pemisahan wewenang opera
 * **Akun Admin Lotus Creative (Scope Dokumentasi/Fotografi):**
   * Email: `admin@lotuscreative.id`
   * Role: `admin` (Standard Enterprise Security Password)
+* **Akun Admin Ready Jeep Dieng (Scope Safari 4x4 All In):**
+  * Email: `admin@jeepdieng.com`
+  * Role: `admin` (Standard Enterprise Security Password)
+* **Sub-Web Shuttle Dieng (Status: PENDING / TO DO):**
+  * ⚠️ *Belum dibuat karena menunggu data resmi armada, paket shuttle, rute & tarif.*

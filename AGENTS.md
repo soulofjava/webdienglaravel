@@ -30,20 +30,28 @@
   1. 👑 **`superadmin`** (User: `isamaulanatantra@gmail.com`):
      - Memiliki seluruh permissions: `manage_themes`, `manage_settings`, `manage_users`, `manage_packages`, `manage_comcodes`.
      - Berhak mengubah tema/mode aktif, nomor rekening bank resmi, legalitas PT, dan manajemen user admin.
-  2. 👤 **`admin`** (User: `admin@tiketdieng.com`):
-     - Memiliki permissions: `manage_packages`, `manage_comcodes`.
-     - Akses terbatas operasional (input paket tour, edit itinerary, cek master comcodes). Dilarang ganti tema atau rekening.
+  2. 👤 **`admin`** (Operasional Unit Bisnis Ter-scoped):
+     - `admin@tiketdieng.com` (TiketDieng): Operasional paket tour wisata reguler Dieng.
+     - `admin@lotuscreative.id` (Lotus Creative): Operasional paket foto, video reels & drone 4K.
+     - `admin@jeepdieng.com` (Ready Jeep Dieng): Operasional paket safari Jeep 4x4 All In.
+     - *(Pending)* `admin@shuttledieng.com`: Disiapkan jika web shuttle mulai dikerjakan.
+     - Memiliki permissions: `manage_packages`, `manage_comcodes` yang di-scoped per unit. Dilarang ganti tema atau rekening global.
 - Middleware Spatie terdaftar di `bootstrap/app.php`: `role`, `permission`, `role_or_permission`.
 
 ## 🎨 MULTI-TEMA & MULTI-SITUS (1 DATABASE, MULTI-VIEWS)
 - Seluruh unit usaha bernaung di bawah **PT. GOTRIP ASIA TRAVELINDO**:
-  1. **`tiketdieng`** (`tiketdieng.com`): Portal Wisata All-in-One, Homestay, Kalkulator.
-  2. **`lotus`** (`lotuscreative.id`): Lotus Creative — Travel Photography & Aerial Drone 4K (Tieng Kejajar, WA: `08164211196`, BNI: `8166754042`).
-  3. **`jeep`** (`jeepdieng.com`): Sewa Jeep Wisata 4x4 Offroad Safari.
-  4. **`shuttle`** (`shuttledieng.com`): Sewa Armada Mikrobus 15 Seat.
+  1. ✅ **`tiketdieng`** (`tiketdieng.com`) — **SELESAI**: Portal Wisata All-in-One, Homestay, Kalkulator biaya, itinerary sinematik.
+  2. ✅ **`lotus`** (`lotuscreative.id`) — **SELESAI**: Lotus Creative — Travel Photography & Aerial Drone 4K (Tieng Kejajar, WA: `08164211196`, BNI: `8166754042`, favicon dinamis).
+  3. ✅ **`jeep`** (`jeepdieng.com`) — **SELESAI**: Ready Jeep Dieng — Sewa Jeep Wisata 4x4 Offroad Safari All In (WA: `081325631952`, tema merah rubi/chrome, favicon RD dinamis, paket 1D & Sunrise All In).
+  4. ⏳ **`shuttle`** (`shuttledieng.com`) — **BELUM DIBUAT (PENDING / TO DO)**: Layanan Transportasi Mikrobus 15 Seat. **Belum ada data resmi paket/rute/tarif dan tampilan publik Blade belum dibuat**.
 - **Konsep Tampilan Beranda (`/`):**
   - Saat dibuka di `/`, halaman berwujud 100% sebagai website yang berbeda sesuai tema aktif (bukan sekadar sub-halaman).
   - Views diisolasi per tema di `resources/views/themes/{tiketdieng,lotus,jeep,shuttle}/`.
+  - **Status Blade View Saat Ini:**
+    - `themes/tiketdieng/`: Lengkap (`home.blade.php`, `package-detail.blade.php`, partials).
+    - `themes/lotus/`: Lengkap (`home.blade.php`, `package-detail.blade.php`, partials).
+    - `themes/jeep/`: Lengkap (`home.blade.php`, `package-detail.blade.php`).
+    - `themes/shuttle/`: ❌ **Belum dibuat** (hanya placeholder).
   - **Mode Resolver:**
     - Live / Produksi: Otomatis mendeteksi domain (`$request->getHost()`).
     - Lokal / Staging: Dapat diubah langsung dari **Database** oleh `superadmin` di panel CMS, atau via parameter query `?theme={code}`.
