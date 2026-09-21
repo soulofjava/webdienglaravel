@@ -55,7 +55,7 @@
 @endsection
 
 @section('content')
-<div class="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col font-sans">
+<main class="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col font-sans">
     @php
         $jeepWaRaw = $settings->whatsapp_number ?: '081325631952';
         $jeepWaInt = preg_replace('/[^0-9]/', '', $jeepWaRaw);
@@ -71,7 +71,7 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="{{ url('/?theme=jeep') }}" class="flex items-center gap-3 group shrink-0">
                 <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden group-hover:border-red-400 transition-colors">
-                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" class="h-10 w-auto max-w-full object-contain">
+                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" width="40" height="40" class="h-10 w-auto max-w-full object-contain">
                 </div>
                 <div>
                     <div class="flex items-center gap-1.5">
@@ -246,5 +246,5 @@
     <footer class="border-t border-slate-800 bg-[#0f172a] py-8 text-center text-xs text-slate-400">
         <p>&copy; {{ date('Y') }} Ready Jeep Dieng &bull; Unit Bisnis PT. GOTRIP ASIA TRAVELINDO</p>
     </footer>
-</div>
+</main>
 @endsection

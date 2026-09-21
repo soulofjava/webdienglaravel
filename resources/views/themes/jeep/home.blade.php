@@ -74,7 +74,7 @@
         $jeepWaInt = '62' . substr($jeepWaInt, 1);
     }
 
-    // Filter dinamis paket tour khusus kategori Jeep dari database (Kecuali ID 4 paket umum jika ingin spesifik rute 1-5)
+    // Filter dinamis paket tour khusus kategori Jeep dari database
     $jeepPackages = $packages->filter(fn($p) => in_array($p->category, ['Jeep Safari', 'Sunrise Safari', 'Jeep Tour']) && $p->id != 4)
                              ->sortBy('sort_order')
                              ->values();
@@ -84,7 +84,7 @@
     $firstPkgPrice = $firstPkg ? (int) $firstPkg->price : 850000;
 @endphp
 
-<div class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-red-500 selection:text-white antialiased relative overflow-x-hidden jeep-light-mesh"
+<main class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-red-500 selection:text-white antialiased relative overflow-x-hidden jeep-light-mesh"
      x-data="{ 
          activeTab: 'all',
          selectedPackage: '{{ addslashes($firstPkgTitle) }}',
@@ -143,10 +143,10 @@
     <!-- HEADER / NAVIGATION BAR READY JEEP DIENG (LIGHT THEME) -->
     <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/95 border-b border-slate-200/90 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo & Identity (Putih Bersih & Tajam) -->
+            <!-- Brand Logo & Identity -->
             <a href="{{ url('/?theme=jeep') }}" class="flex items-center gap-3 group shrink-0">
                 <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden group-hover:border-red-400 transition-colors">
-                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" class="h-10 w-auto max-w-full object-contain">
+                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" width="40" height="40" class="h-10 w-auto max-w-full object-contain">
                 </div>
                 <div>
                     <div class="flex items-center gap-1.5">
@@ -215,7 +215,7 @@
                         Rasakan serunya sensasi off-road menembus kabut dingin pegunungan vulkanik Dieng Plateau. Berburu Golden Sunrise Sikunir, menjelajahi Kawah Sikidang, Candi Arjuna, hingga panorama magis Telaga Menjer dengan sistem tarif <strong class="text-slate-900 font-extrabold underline decoration-red-500 underline-offset-4">100% ALL IN Transparan</strong> tanpa biaya tersembunyi.
                     </p>
 
-                    <!-- Feature Badges (Kartu Putih Halus) -->
+                    <!-- Feature Badges -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
                         <div class="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm flex items-center gap-2.5">
                             <i data-lucide="check-circle-2" class="w-5 h-5 text-red-600 shrink-0"></i>
@@ -244,12 +244,12 @@
                     </div>
                 </div>
 
-                <!-- Sisi Kanan: Logo Badge & Quick Card (Putih Bersih & Menyatu) -->
+                <!-- Sisi Kanan: Logo Badge & Quick Card -->
                 <div class="lg:col-span-5 relative">
                     <div class="relative mx-auto max-w-md rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-xl shadow-slate-200/70 text-center">
                         <!-- Box Logo Putih Menyatu -->
                         <div class="w-44 h-32 mx-auto rounded-2xl bg-white border border-slate-200 p-2 shadow-sm flex items-center justify-center overflow-hidden group">
-                            <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo RD Ready Jeep Dieng" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500">
+                            <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo RD Ready Jeep Dieng" width="176" height="128" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500">
                         </div>
 
                         <div class="mt-6 space-y-2">
@@ -270,7 +270,7 @@
                             </div>
                             <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
                                 <span class="text-[10px] text-slate-500 font-bold block uppercase">Rute Sunrise</span>
-                                <span class="text-lg font-black text-amber-600">Pukul 03.00</span>
+                                <span class="text-lg font-black text-amber-800">Pukul 03.00</span>
                                 <span class="text-[9px] text-slate-500 block font-medium">Dini hari langsung jemput</span>
                             </div>
                         </div>
@@ -348,7 +348,7 @@
         </div>
     </section>
 
-    <!-- SECTION DAFTAR PAKET JEEP 1-5 & SUNRISE SAFARI (DYNAMIC DARI DATABASE) -->
+    <!-- SECTION DAFTAR PAKET JEEP 1-5 & SUNRISE SAFARI -->
     <section id="paket-wisata" class="py-20 bg-slate-50/70 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 border-b border-slate-200">
@@ -482,7 +482,7 @@
         </div>
     </section>
 
-    <!-- SECTION ESTIMASI BIAYA & SIMULATOR BOOKING INTERAKTIF (LIGHT THEME) -->
+    <!-- SECTION ESTIMASI BIAYA & SIMULATOR BOOKING INTERAKTIF -->
     <section id="kalkulator" class="py-20 bg-white border-y border-slate-200/80 relative">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
@@ -504,10 +504,12 @@
                     <div class="space-y-5">
                         <!-- Pilih Paket Wisata -->
                         <div>
-                            <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
+                            <label for="packageSelect" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
                                 Pilih Paket Jeep All-In
                             </label>
-                            <select x-model="selectedPackage"
+                            <select id="packageSelect"
+                                    name="packageSelect"
+                                    x-model="selectedPackage"
                                     @change="
                                         let selectedOption = $event.target.selectedOptions[0];
                                         packagePrice = parseInt(selectedOption.getAttribute('data-price') || 0);
@@ -523,18 +525,18 @@
 
                         <!-- Tanggal Tour -->
                         <div>
-                            <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
+                            <label for="tripDateInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
                                 Rencana Tanggal Keberangkatan
                             </label>
-                            <input type="date" x-model="tripDate" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm font-semibold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 shadow-sm">
+                            <input id="tripDateInput" name="tripDateInput" type="date" x-model="tripDate" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm font-semibold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 shadow-sm">
                         </div>
 
                         <!-- Jumlah Peserta -->
                         <div>
-                            <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
+                            <label for="paxRangeInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
                                 Jumlah Peserta (<span x-text="paxCount"></span> Orang)
                             </label>
-                            <input type="range" min="1" max="4" x-model="paxCount" class="w-full accent-red-600 cursor-pointer">
+                            <input id="paxRangeInput" name="paxRangeInput" type="range" min="1" max="4" x-model="paxCount" class="w-full accent-red-600 cursor-pointer">
                             <span class="text-[11px] text-slate-500 mt-1 block font-medium">
                                 *Satu unit armada Jeep berkapasitas maksimal 4 penumpang dewasa + 1 driver.
                             </span>
@@ -542,10 +544,10 @@
 
                         <!-- Dokumentasi Tambahan -->
                         <div>
-                            <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
+                            <label for="docSelect" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
                                 Opsi Dokumentasi Tambahan (Opsional)
                             </label>
-                            <select x-model="docOption" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm font-semibold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 shadow-sm">
+                            <select id="docSelect" name="docSelect" x-model="docOption" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm font-semibold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 shadow-sm">
                                 <option value="none">Gratis Foto HP Driver (Bawaan Paket)</option>
                                 <option value="camera">Jasa Fotografer DSLR Pro (+Rp 500.000)</option>
                                 <option value="drone">Jasa Pilot Drone 4K Sinematik (+Rp 750.000)</option>
@@ -566,7 +568,7 @@
                         </div>
                     </div>
 
-                    <!-- Ringkasan Sisi Kanan (Total Harga & Booking WA) -->
+                    <!-- Ringkasan Sisi Kanan -->
                     <div class="rounded-2xl bg-gradient-to-br from-red-600 via-red-700 to-slate-900 p-6 sm:p-8 text-white flex flex-col justify-between shadow-xl shadow-red-700/25">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between border-b border-white/20 pb-4">
@@ -618,7 +620,7 @@
         </div>
     </section>
 
-    <!-- SECTION SPOT DESTINASI POPULER JEEP (LIGHT THEME) -->
+    <!-- SECTION SPOT DESTINASI POPULER JEEP -->
     <section id="destinasi" class="py-20 bg-slate-50/70 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto space-y-3 mb-14">
@@ -637,13 +639,13 @@
                 <!-- Spot 1 -->
                 <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
                     <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" alt="Puncak Sikunir Golden Sunrise" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" alt="Puncak Sikunir Golden Sunrise" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
                             2.463 MDPL
                         </span>
                     </div>
                     <div class="p-5 space-y-2">
-                        <h4 class="text-base font-extrabold text-slate-900">Puncak Sikunir</h4>
+                        <h3 class="text-base font-extrabold text-slate-900">Puncak Sikunir</h3>
                         <p class="text-xs text-slate-600 font-medium leading-relaxed">
                             Spot berburu Golden Sunrise terbaik di Asia Tenggara dengan latar belakang Gunung Sindoro, Sumbing, Merbabu, dan Merapi.
                         </p>
@@ -653,13 +655,13 @@
                 <!-- Spot 2 -->
                 <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
                     <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop" alt="Kawah Sikidang Vulkanik" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop" alt="Kawah Sikidang Vulkanik" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
                             VULKANIK AKTIF
                         </span>
                     </div>
                     <div class="p-5 space-y-2">
-                        <h4 class="text-base font-extrabold text-slate-900">Kawah Sikidang</h4>
+                        <h3 class="text-base font-extrabold text-slate-900">Kawah Sikidang</h3>
                         <p class="text-xs text-slate-600 font-medium leading-relaxed">
                             Kawah belerang vulkanik aktif yang dapat didekati langsung melalui jembatan kayu estetik dan spot foto mobil jeep.
                         </p>
@@ -669,13 +671,13 @@
                 <!-- Spot 3 -->
                 <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
                     <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop" alt="Batu Ratapan Angin & Telaga Warna" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop" alt="Batu Ratapan Angin & Telaga Warna" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
                             VIEW DARI ATAS
                         </span>
                     </div>
                     <div class="p-5 space-y-2">
-                        <h4 class="text-base font-extrabold text-slate-900">Batu Ratapan Angin</h4>
+                        <h3 class="text-base font-extrabold text-slate-900">Batu Ratapan Angin</h3>
                         <p class="text-xs text-slate-600 font-medium leading-relaxed">
                             Dua tebing batu tinggi di atas bukit dengan pemandangan magis gradasi warna hijau toska Telaga Warna dan Telaga Pengilon.
                         </p>
@@ -685,13 +687,13 @@
                 <!-- Spot 4 -->
                 <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
                     <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" alt="Telaga Menjer Danau Alami" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" alt="Telaga Menjer Danau Alami" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
                             DANAU VULKANIK
                         </span>
                     </div>
                     <div class="p-5 space-y-2">
-                        <h4 class="text-base font-extrabold text-slate-900">Telaga Menjer & Kahyangan</h4>
+                        <h3 class="text-base font-extrabold text-slate-900">Telaga Menjer & Kahyangan</h3>
                         <p class="text-xs text-slate-600 font-medium leading-relaxed">
                             Danau alami terluas di kaki pegunungan Dieng dengan air tenang dan spot dermaga bambu berlatar tebing hijau berkabut.
                         </p>
@@ -701,7 +703,7 @@
         </div>
     </section>
 
-    <!-- SECTION FAQ (FREQUENTLY ASKED QUESTIONS) -->
+    <!-- SECTION FAQ -->
     <section id="faq" class="py-20 bg-white border-t border-slate-200/80 relative" x-data="{ openFaq: 1 }">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center space-y-3 mb-14">
@@ -764,15 +766,15 @@
         </div>
     </section>
 
-    <!-- FOOTER READY JEEP DIENG (DARK CHARCOAL SPORTY ACCENT) -->
-    <footer class="bg-[#0f172a] text-slate-400 border-t border-slate-800 pt-16 pb-12">
+    <!-- FOOTER READY JEEP DIENG -->
+    <footer class="bg-[#0f172a] text-slate-300 border-t border-slate-800 pt-16 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
                 <!-- Kolom 1: Brand Info -->
                 <div class="lg:col-span-4 space-y-4">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 rounded-xl bg-white border border-slate-300 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden">
-                            <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo RD Footer" class="h-10 w-auto max-w-full object-contain">
+                            <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo RD Footer" width="40" height="40" class="h-10 w-auto max-w-full object-contain">
                         </div>
                         <div>
                             <div class="flex items-center gap-1.5">
@@ -784,18 +786,18 @@
                             </span>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
+                    <p class="text-xs text-slate-300 leading-relaxed">
                         Operator resmi penyewaan armada Jeep Wisata 4x4 Dataran Tinggi Dieng berbasis All In. Solusi petualangan aman, nyaman, dan transparan untuk seluruh wisatawan.
                     </p>
-                    <div class="text-[11px] text-slate-500">
-                        <p class="font-semibold text-slate-400">Unit Usaha Resmi:</p>
+                    <div class="text-[11px] text-slate-400">
+                        <p class="font-semibold text-slate-300">Unit Usaha Resmi:</p>
                         <p>PT. GOTRIP ASIA TRAVELINDO &bull; Wonosobo</p>
                     </div>
                 </div>
 
                 <!-- Kolom 2: Navigasi Cepat -->
                 <div class="lg:col-span-2 space-y-3">
-                    <h4 class="text-xs font-black uppercase tracking-wider text-white">Eksplorasi</h4>
+                    <span class="text-xs font-black uppercase tracking-wider text-white block">Eksplorasi</span>
                     <ul class="space-y-2 text-xs">
                         <li><a href="#paket-wisata" class="hover:text-red-400 transition-colors">Paket Tur 1 Hari</a></li>
                         <li><a href="#paket-wisata" class="hover:text-red-400 transition-colors">Paket Sunrise Safari</a></li>
@@ -807,7 +809,7 @@
 
                 <!-- Kolom 3: Kontak & Basecamp -->
                 <div class="lg:col-span-3 space-y-3">
-                    <h4 class="text-xs font-black uppercase tracking-wider text-white">Kontak Basecamp</h4>
+                    <span class="text-xs font-black uppercase tracking-wider text-white block">Kontak Basecamp</span>
                     <ul class="space-y-2.5 text-xs">
                         <li class="flex items-start gap-2">
                             <i data-lucide="map-pin" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
@@ -826,7 +828,7 @@
 
                 <!-- Kolom 4: Rekening Resmi Pembayaran -->
                 <div class="lg:col-span-3 space-y-3">
-                    <h4 class="text-xs font-black uppercase tracking-wider text-white">Rekening Resmi (DP)</h4>
+                    <span class="text-xs font-black uppercase tracking-wider text-white block">Rekening Resmi (DP)</span>
                     <div class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-black text-white">{{ $settings->bank_name ?: 'BANK BNI' }}</span>
@@ -843,15 +845,15 @@
             </div>
 
             <!-- Bottom Copyright & Switcher -->
-            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                 <p>&copy; {{ date('Y') }} Ready Jeep Dieng &bull; PT. GOTRIP ASIA TRAVELINDO. All rights reserved.</p>
                 <div class="flex items-center gap-4 text-[11px]">
-                    <a href="{{ url('/') }}" class="hover:text-red-400 transition-colors">Portal TiketDieng</a>
+                    <a href="{{ url('/') }}" class="text-slate-400 hover:text-red-300 transition-colors">Portal TiketDieng</a>
                     <span>&bull;</span>
-                    <a href="{{ url('/?theme=lotus') }}" class="hover:text-red-400 transition-colors">Lotus Creative (Foto & Drone)</a>
+                    <a href="{{ url('/?theme=lotus') }}" class="text-slate-400 hover:text-red-300 transition-colors">Lotus Creative (Foto & Drone)</a>
                 </div>
             </div>
         </div>
     </footer>
-</div>
+</main>
 @endsection
