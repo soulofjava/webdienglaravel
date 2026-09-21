@@ -12,7 +12,10 @@
   * `main` : Branch produksi tunggal (*single production branch*) yang dideploy ke hosting.
 * **Platform Hosting / Deployment:**
   * **Vercel** (Serverless Laravel via runtime `vercel-php@0.7.3` & file konfigurasi `vercel.json`).
-  * Production URL: `https://webdieng.vercel.app`
+  * **Domain Live Vercel:**
+    * Web Induk TiketDieng: `https://webdieng.vercel.app`
+    * Sub-Web Lotus Creative: `https://lotusfotografi.vercel.app`
+    * Sub-Web Ready Jeep Dieng: `https://readyjeepdieng.vercel.app` & `https://jeepdieng.vercel.app`
   * Vercel Account: `soulofjava`, Active Team: `isa-s-projects16 (isa's projects)`.
   * Token Akses Vercel CLI tersimpan aman di `~/.config/codex-private/vercel-token.txt`.
   * Aset frontend dibuild menggunakan **Vite** (`npm run build` -> `public/build/`).
