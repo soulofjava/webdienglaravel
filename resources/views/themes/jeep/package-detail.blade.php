@@ -67,30 +67,31 @@
     @endphp
 
     <!-- Header Navigation (Light Theme) -->
-    <header class="sticky top-0 z-50 backdrop-blur-xl bg-white/95 border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="{{ url('/?theme=jeep') }}" class="flex items-center gap-3 group shrink-0">
-                <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden group-hover:border-red-400 transition-colors">
-                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" width="40" height="40" class="h-10 w-auto max-w-full object-contain">
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-white/95 border-b border-slate-200/90 px-3.5 sm:px-6 lg:px-8 py-3 sm:py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+            <a href="{{ url('/?theme=jeep') }}" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden group-hover:border-red-400 transition-colors">
+                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" width="40" height="40" class="h-8 sm:h-10 w-auto max-w-full object-contain">
                 </div>
-                <div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-sm font-black tracking-wider text-slate-900 uppercase">READY JEEP</span>
-                        <span class="text-sm font-black tracking-wider text-red-600 uppercase">DIENG</span>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1 sm:gap-1.5 leading-tight">
+                        <span class="text-sm sm:text-base font-black tracking-wider text-slate-900 uppercase">READY JEEP</span>
+                        <span class="text-sm sm:text-base font-black tracking-wider text-red-600 uppercase">DIENG</span>
                     </div>
-                    <span class="text-[10px] text-slate-500 font-mono tracking-wider uppercase block font-semibold">OFFICIAL 4X4 ALL-IN</span>
+                    <span class="text-[9px] sm:text-[10px] text-slate-500 font-mono tracking-wider uppercase block font-semibold truncate">OFFICIAL 4X4 ALL-IN</span>
                 </div>
             </a>
 
-            <div class="flex items-center gap-3 sm:gap-4">
+            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
                 <a href="{{ url('/?theme=jeep#paket-wisata') }}" class="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-red-600 transition-colors">
                     <i data-lucide="arrow-left" class="w-4 h-4 text-red-600"></i>
-                    <span>Kembali ke Semua Paket</span>
+                    <span>Kembali</span>
                 </a>
 
-                <a href="{{ $waUrl }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 shadow-md shadow-red-600/20 transition-all hover:scale-105">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>Tanya Booking (WA)</span>
+                <a href="{{ $waUrl }}" target="_blank" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 shadow-md shadow-red-600/20 transition-all hover:scale-105 shrink-0">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                    <span class="hidden sm:inline">Tanya Booking (WA)</span>
+                    <span class="sm:hidden">Booking</span>
                 </a>
             </div>
         </div>

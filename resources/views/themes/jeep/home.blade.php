@@ -120,47 +120,46 @@
      }">
 
     <!-- TOP PROMO BANNER ALL-IN -->
-    <aside aria-label="Pengumuman Konsep All In" class="bg-gradient-to-r from-red-600 via-red-600 to-red-700 text-white text-xs font-semibold py-2.5 px-4 shadow-sm border-b border-red-700/50">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2 truncate">
-                <span class="bg-white text-red-700 font-black uppercase text-[10px] tracking-wider px-2 py-0.5 rounded shadow-sm">
-                    KONSEP ALL IN
+    <aside aria-label="Pengumuman Konsep All In" class="bg-gradient-to-r from-red-600 via-red-600 to-red-700 text-white text-xs font-semibold py-2 px-3 sm:px-4 shadow-sm border-b border-red-700/50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <span class="bg-white text-red-700 font-black uppercase text-[9px] sm:text-[10px] tracking-wider px-1.5 sm:px-2 py-0.5 rounded shadow-sm shrink-0">
+                    ALL IN
                 </span>
-                <span class="text-white font-medium hidden sm:inline">
-                    Semua Paket Wisata Jeep sudah termasuk Unit 4x4, BBM, Parkir, Driver, Tiket Masuk Objek Wisata Rp 100k/pax & Dokumentasi HP!
-                </span>
-                <span class="text-white font-medium sm:hidden">
-                    Paket All In: BBM, Driver, Parkir & Tiket Wisata Rp 100k/pax!
+                <span class="text-white font-medium text-[11px] sm:text-xs truncate">
+                    <span class="hidden sm:inline">Semua Paket Wisata Jeep sudah termasuk Unit 4x4, BBM, Parkir, Driver, Tiket Wisata Rp 100k & Dokumentasi HP!</span>
+                    <span class="sm:hidden">Unit 4x4 + BBM + Tiket Wisata Rp 100k</span>
                 </span>
             </div>
-            <a href="https://wa.me/{{ $jeepWaInt }}?text=Halo%20Ready%20Jeep%20Dieng%2C%20saya%20mau%20tanya%20paket%20All%20In%20Jeep%20Wisata" target="_blank" class="text-amber-200 hover:text-white font-bold inline-flex items-center gap-1 transition-colors shrink-0">
-                <span>Hubungi: {{ $jeepWaRaw }}</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            <a href="https://wa.me/{{ $jeepWaInt }}?text=Halo%20Ready%20Jeep%20Dieng%2C%20saya%20mau%20tanya%20paket%20All%20In%20Jeep%20Wisata" target="_blank" class="text-amber-200 hover:text-white font-bold text-[11px] sm:text-xs inline-flex items-center gap-1 transition-colors shrink-0">
+                <span class="hidden sm:inline">Hubungi: {{ $jeepWaRaw }}</span>
+                <span class="sm:hidden">WA Admin</span>
+                <i data-lucide="arrow-right" class="w-3 h-3"></i>
             </a>
         </div>
     </aside>
 
     <!-- HEADER / NAVIGATION BAR READY JEEP DIENG (LIGHT THEME) -->
-    <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/95 border-b border-slate-200/90 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/95 border-b border-slate-200/90 shadow-sm" x-data="{ mobileNavOpen: false }">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
             <!-- Brand Logo & Identity -->
-            <a href="{{ url('/?theme=jeep') }}" class="flex items-center gap-3 group shrink-0">
-                <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden group-hover:border-red-400 transition-colors">
-                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" width="40" height="40" class="h-10 w-auto max-w-full object-contain">
+            <a href="{{ url('/?theme=jeep') }}" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm shrink-0 overflow-hidden group-hover:border-red-400 transition-colors">
+                    <img src="{{ asset('images/ready-jeep-dieng-logo.png') }}" alt="Logo Ready Jeep Dieng" width="40" height="40" class="h-8 sm:h-10 w-auto max-w-full object-contain">
                 </div>
-                <div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-base sm:text-lg font-black tracking-wider text-slate-900 font-sans uppercase">READY JEEP</span>
-                        <span class="text-base sm:text-lg font-black tracking-wider text-red-600 font-sans uppercase">DIENG</span>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1 sm:gap-1.5 leading-tight">
+                        <span class="text-sm sm:text-lg font-black tracking-wider text-slate-900 font-sans uppercase">READY JEEP</span>
+                        <span class="text-sm sm:text-lg font-black tracking-wider text-red-600 font-sans uppercase">DIENG</span>
                     </div>
-                    <span class="text-[10px] text-slate-500 font-mono tracking-wider uppercase block font-semibold">
-                        Official 4x4 All-In &bull; PT. GoTrip Asia
+                    <span class="text-[9px] sm:text-[10px] text-slate-500 font-mono tracking-wider uppercase block font-semibold truncate">
+                        Official 4x4 All-In<span class="hidden sm:inline"> &bull; PT. GoTrip Asia</span>
                     </span>
                 </div>
             </a>
 
             <!-- Navigation Links Desktop -->
-            <nav class="hidden lg:flex items-center gap-7 text-xs font-bold text-slate-600">
+            <nav class="hidden lg:flex items-center gap-6 xl:gap-7 text-xs font-bold text-slate-600">
                 <a href="#paket-wisata" class="hover:text-red-600 transition-colors flex items-center gap-1.5">
                     <i data-lucide="compass" class="w-4 h-4 text-red-600"></i>
                     <span>Daftar Paket All In</span>
@@ -184,10 +183,69 @@
             </nav>
 
             <!-- Actions Header -->
-            <div class="flex items-center gap-3">
-                <a href="https://wa.me/{{ $jeepWaInt }}?text=Halo%20Ready%20Jeep%20Dieng%2C%20saya%20ingin%20booking%20Jeep%20Wisata%20All%20In" target="_blank" class="px-4 sm:px-5 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 via-red-600 to-red-700 hover:from-red-500 hover:to-red-600 transition-all shadow-md shadow-red-600/25 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>Booking Jeep (WA)</span>
+            <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <a href="https://wa.me/{{ $jeepWaInt }}?text=Halo%20Ready%20Jeep%20Dieng%2C%20saya%20ingin%20booking%20Jeep%20Wisata%20All%20In" target="_blank" class="px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 via-red-600 to-red-700 hover:from-red-500 hover:to-red-600 transition-all shadow-md shadow-red-600/25 flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95 shrink-0">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                    <span class="hidden sm:inline">Booking Jeep (WA)</span>
+                    <span class="sm:hidden">Booking</span>
+                </a>
+
+                <!-- Hamburger Mobile Toggle -->
+                <button 
+                    @click="mobileNavOpen = !mobileNavOpen" 
+                    type="button" 
+                    class="lg:hidden p-2 rounded-xl text-slate-700 hover:text-red-600 hover:bg-slate-100 transition-colors shrink-0 focus:outline-none" 
+                    aria-label="Toggle Menu Navigasi"
+                >
+                    <svg x-show="!mobileNavOpen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                    <svg x-show="mobileNavOpen" style="display: none;" class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div 
+            x-show="mobileNavOpen" 
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-2"
+            style="display: none;"
+            class="lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-5 shadow-xl"
+        >
+            <nav class="flex flex-col space-y-1 text-sm font-bold text-slate-700">
+                <a href="#paket-wisata" @click="mobileNavOpen = false" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition-colors">
+                    <i data-lucide="compass" class="w-4 h-4 text-red-600"></i>
+                    <span>Daftar Paket All In</span>
+                </a>
+                <a href="#keunggulan" @click="mobileNavOpen = false" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition-colors">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-red-600"></i>
+                    <span>Fasilitas All-In</span>
+                </a>
+                <a href="#kalkulator" @click="mobileNavOpen = false" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition-colors">
+                    <i data-lucide="calculator" class="w-4 h-4 text-red-600"></i>
+                    <span>Estimasi Biaya Sewa</span>
+                </a>
+                <a href="#destinasi" @click="mobileNavOpen = false" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition-colors">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-red-600"></i>
+                    <span>Spot Foto & Destinasi</span>
+                </a>
+                <a href="#faq" @click="mobileNavOpen = false" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition-colors">
+                    <i data-lucide="help-circle" class="w-4 h-4 text-red-600"></i>
+                    <span>FAQ Tanya Jawab</span>
+                </a>
+            </nav>
+
+            <div class="mt-3 pt-3 border-t border-slate-100 flex flex-col gap-2">
+                <a href="https://wa.me/{{ $jeepWaInt }}?text=Halo%20Ready%20Jeep%20Dieng%2C%20saya%20ingin%20konsultasi%20rute%20dan%20ketersediaan%20Jeep" target="_blank" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-center text-white bg-gradient-to-r from-red-600 to-red-700 shadow-md shadow-red-600/20 flex items-center justify-center gap-2">
+                    <i data-lucide="phone-call" class="w-4 h-4"></i>
+                    <span>Hubungi WA: {{ $jeepWaRaw }}</span>
                 </a>
             </div>
         </div>
@@ -202,9 +260,9 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <!-- Sisi Kiri: Headline & CTA -->
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
-                        <span class="uppercase tracking-wider">UNIT RESMI 4X4 DAIHATSU FEROZA & SUZUKI KATANA</span>
+                    <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-700 text-[10px] sm:text-xs font-bold shadow-sm max-w-full">
+                        <span class="w-2 h-2 rounded-full bg-red-600 animate-ping shrink-0"></span>
+                        <span class="uppercase tracking-wider leading-snug">UNIT RESMI 4X4 DAIHATSU FEROZA & SUZUKI KATANA</span>
                     </div>
 
                     <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.15]">
