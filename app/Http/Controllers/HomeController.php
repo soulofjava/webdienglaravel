@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PickupLocation;
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
 use App\Models\VisitorStat;
@@ -25,7 +26,7 @@ class HomeController extends Controller
         $visitorStats = $this->getStats();
 
         // Mengambil paket tour wisata aktif (di-cache 10 menit untuk respon instan)
-        $packages = \Illuminate\Support\Facades\Cache::remember('home_tour_packages', 600, function () {
+        $packages = Cache::remember('home_tour_packages', 600, function () {
             return TourPackage::where('is_active', true)
                 ->where('category', '!=', 'Dokumentasi')
                 ->orderBy('sort_order', 'asc')
@@ -34,19 +35,28 @@ class HomeController extends Controller
         });
 
         // Mengambil paket dokumentasi foto & drone resmi Lotus Creative (di-cache 10 menit)
-        $docPackages = \Illuminate\Support\Facades\Cache::remember('home_doc_packages', 600, function () {
+        $docPackages = Cache::remember('home_doc_packages', 600, function () {
             return TourPackage::where('is_active', true)
                 ->where('category', 'Dokumentasi')
                 ->orderBy('sort_order', 'asc')
                 ->get();
         });
 
-        // Mengambil titik penjemputan kalkulator aktif (di-cache 10 menit)
-        $pickupLocations = \Illuminate\Support\Facades\Cache::remember('home_pickup_locations', 600, function () {
-            return \App\Models\PickupLocation::where('is_active', true)
+        // Mengambil titik penjemputan kalkulator aktif (di-cache 10 menit sebagai stdClass)
+        $pickupLocations = Cache::remember('home_pickup_locations_v2', 600, function () {
+            return PickupLocation::where('is_active', true)
                 ->orderBy('sort_order', 'asc')
                 ->orderBy('id', 'asc')
-                ->get();
+                ->get()
+                ->map(function ($loc) {
+                    return (object) [
+                        'id' => $loc->id,
+                        'name' => $loc->name,
+                        'description' => $loc->description ?? '',
+                        'surcharge_per_pax' => (int) $loc->surcharge_per_pax,
+                    ];
+                })
+                ->all();
         });
 
         $themeView = "themes.{$activeTheme}.home";
