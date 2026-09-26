@@ -45,12 +45,16 @@ class SiteSetting extends Model
     {
         parent::boot();
 
-        static::saved(function () {
+        static::saved(function ($model) {
             Cache::forget('api_v1_site_info');
+            Cache::forget("site_settings_{$model->id}");
+            self::clearCache($model->id);
         });
 
-        static::deleted(function () {
+        static::deleted(function ($model) {
             Cache::forget('api_v1_site_info');
+            Cache::forget("site_settings_{$model->id}");
+            self::clearCache($model->id);
         });
     }
 

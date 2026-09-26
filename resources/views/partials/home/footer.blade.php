@@ -11,12 +11,14 @@
                         {{ $settings->site_tagline }}. Bagian resmi dari <strong class="text-white">{{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}</strong>. Menghadirkan kemudahan reservasi akomodasi, sewa jeep, shuttle, dokumentasi sinematik, dan outbound profesional di Dieng.
                     </p>
                     <div class="flex flex-wrap items-center gap-2 pt-2">
-                        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] text-amber-300 font-semibold">
-                            {{ $settings->legal_nib }}
-                        </span>
-                        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] text-emerald-300 font-semibold">
-                            {{ $settings->hpi_badge }}
-                        </span>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold shadow-sm">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                            <span>{{ $settings->legal_nib }}</span>
+                        </div>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">
+                            <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
+                            <span>{{ $settings->hpi_badge ?? 'Lisensi Resmi HPI Dieng' }}</span>
+                        </div>
                     </div>
 
                     <!-- Rekening Resmi Perusahaan -->
@@ -110,7 +112,7 @@
 
             <!-- Bottom credit -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
-                <p>© {{ date('Y') }} {{ $settings->site_name }}. Hak cipta dilindungi undang-undang.</p>
+                <p>© {{ date('Y') }} {{ $settings->site_name }} • {{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }} • <span class="text-slate-300 font-medium">{{ $settings->legal_nib }}</span>. Hak cipta dilindungi undang-undang.</p>
                 <div class="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px]">
                     <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
                 </div>
