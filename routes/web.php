@@ -85,6 +85,17 @@ Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(functi
         'destroy' => 'admin.comcodes.destroy',
     ]);
 
+    // CRUD Titik Penjemputan (Meeting Point) untuk Kalkulator
+    Route::patch('pickup-locations/{pickupLocation}/toggle', [\App\Http\Controllers\AdminPickupLocationController::class, 'toggleStatus'])->name('admin.pickup-locations.toggle');
+    Route::resource('pickup-locations', \App\Http\Controllers\AdminPickupLocationController::class)->names([
+        'index' => 'admin.pickup-locations.index',
+        'create' => 'admin.pickup-locations.create',
+        'store' => 'admin.pickup-locations.store',
+        'edit' => 'admin.pickup-locations.edit',
+        'update' => 'admin.pickup-locations.update',
+        'destroy' => 'admin.pickup-locations.destroy',
+    ]);
+
     // Kembali dari mode Impersonate (dapat diakses saat sedang impersonate sebagai admin biasa)
     Route::post('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate'])->name('admin.users.leave-impersonate');
     Route::get('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate']);

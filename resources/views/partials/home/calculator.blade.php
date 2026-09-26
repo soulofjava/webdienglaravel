@@ -53,10 +53,18 @@
                     <div>
                         <label for="calcMeeting" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">3. Lokasi Titik Penjemputan (Meeting Point)</label>
                         <select id="calcMeeting" name="calcMeeting" aria-label="Lokasi Titik Penjemputan" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
-                            <option value="Wonosobo / Terminal Mendolo" data-surcharge="0" selected>Kota Wonosobo / Terminal Mendolo (Gratis / Standar)</option>
-                            <option value="Purwokerto (Stasiun / Terminal)" data-surcharge="50000">Purwokerto — Stasiun / Terminal Bulupitu (+Rp 50.000/org)</option>
-                            <option value="Yogyakarta (Stasiun Tugu / Lempuyangan / YIA)" data-surcharge="100000">Yogyakarta — Stasiun Tugu / Lempuyangan / Bandara YIA (+Rp 100.000/org)</option>
-                            <option value="Semarang (Stasiun Tawang / Bandara)" data-surcharge="100000">Semarang — Stasiun Tawang / Bandara Ahmad Yani (+Rp 100.000/org)</option>
+                            @if(isset($pickupLocations) && count($pickupLocations) > 0)
+                                @foreach($pickupLocations as $loc)
+                                    <option value="{{ $loc->name }}" data-surcharge="{{ $loc->surcharge_per_pax }}" {{ $loop->first ? 'selected' : '' }}>
+                                        {{ $loc->name }}{{ !empty($loc->description) ? ' — ' . $loc->description : '' }}{{ $loc->surcharge_per_pax > 0 ? ' (+Rp ' . number_format($loc->surcharge_per_pax, 0, ',', '.') . '/org)' : ' (Gratis / Standar)' }}
+                                    </option>
+                                @endforeach
+                            @else
+                                <option value="Wonosobo / Terminal Mendolo" data-surcharge="0" selected>Kota Wonosobo / Terminal Mendolo (Gratis / Standar)</option>
+                                <option value="Purwokerto (Stasiun / Terminal)" data-surcharge="50000">Purwokerto — Stasiun / Terminal Bulupitu (+Rp 50.000/org)</option>
+                                <option value="Yogyakarta (Stasiun Tugu / Lempuyangan / YIA)" data-surcharge="100000">Yogyakarta — Stasiun Tugu / Lempuyangan / Bandara YIA (+Rp 100.000/org)</option>
+                                <option value="Semarang (Stasiun Tawang / Bandara)" data-surcharge="100000">Semarang — Stasiun Tawang / Bandara Ahmad Yani (+Rp 100.000/org)</option>
+                            @endif
                         </select>
                     </div>
 
