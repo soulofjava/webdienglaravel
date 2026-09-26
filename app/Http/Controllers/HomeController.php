@@ -41,13 +41,21 @@ class HomeController extends Controller
                 ->get();
         });
 
+        // Mengambil titik penjemputan kalkulator aktif (di-cache 10 menit)
+        $pickupLocations = \Illuminate\Support\Facades\Cache::remember('home_pickup_locations', 600, function () {
+            return \App\Models\PickupLocation::where('is_active', true)
+                ->orderBy('sort_order', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+        });
+
         $themeView = "themes.{$activeTheme}.home";
         if (!view()->exists($themeView)) {
             $themeView = view()->exists('home') ? 'home' : 'themes.tiketdieng.home';
         }
 
         return response()
-            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme'))
+            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme', 'pickupLocations'))
             ->header('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     }
 

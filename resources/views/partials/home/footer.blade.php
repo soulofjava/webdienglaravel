@@ -58,8 +58,8 @@
                 <div>
                     <h4 class="font-bold text-white uppercase tracking-wider text-xs mb-4">Informasi & Navigasi</h4>
                     <ul class="space-y-2.5">
-                        <li><a href="#dokumentasi" class="text-cyan-300 font-semibold hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="camera" class="w-3.5 h-3.5 text-cyan-400"></i><span>Foto & Drone (Lotus Creative)</span></a></li>
-                        <li><a href="#profil" class="text-amber-300 font-semibold hover:text-amber-400 transition-colors flex items-center gap-1.5"><i data-lucide="compass" class="w-3.5 h-3.5 text-amber-400"></i><span>Profil & Visi Misi</span></a></li>
+                        <li><a href="#dokumentasi" class="hover:text-amber-400 transition-colors">Foto & Drone (Lotus Creative)</a></li>
+                        <li><a href="#profil" class="hover:text-amber-400 transition-colors">Profil & Visi Misi</a></li>
                         <li><a href="#paket" class="hover:text-amber-400 transition-colors">Paket Wisata Pilihan</a></li>
                         <li><a href="#sikunir" class="hover:text-amber-400 transition-colors">Golden Sunrise Sikunir</a></li>
                         <li><a href="#sikidang" class="hover:text-amber-400 transition-colors">Kawah Sikidang Purba</a></li>

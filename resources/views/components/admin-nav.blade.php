@@ -83,6 +83,12 @@
             'icon' => 'compass',
         ],
         [
+            'name' => 'Titik Jemput',
+            'route' => 'admin.pickup-locations.index',
+            'active' => request()->routeIs('admin.pickup-locations.*'),
+            'icon' => 'map-pin',
+        ],
+        [
             'name' => 'Master Kode',
             'route' => 'admin.comcodes.index',
             'active' => request()->routeIs('admin.comcodes.*'),

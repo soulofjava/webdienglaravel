@@ -28,6 +28,11 @@ class SiteInfoController extends Controller
                 'email' => $setting->email ?? 'tiket.wisatadieng@gmail.com',
                 'address' => $setting->address ?? 'Tieng, Kejajar, Wonosobo, Jawa Tengah 56354',
                 'legal_nib' => $setting->legal_nib ?? '0220108920194',
+                'social_media' => [
+                    'instagram' => $setting->instagram_url ?? 'https://www.instagram.com/tiketwisatadieng',
+                    'tiktok' => $setting->tiktok_url ?? 'https://tiktok.com/@tiketdieng.com',
+                    'facebook' => $setting->facebook_url ?? 'https://www.facebook.com/share/1Hj4SzNUzH/',
+                ],
                 'bank_official' => [
                     'bank' => $setting->bank_name ?? 'BNI (Bank Negara Indonesia)',
                     'account_number' => $setting->bank_account_number ?? '8166754042',

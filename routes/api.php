@@ -30,4 +30,7 @@ Route::prefix('v1')->group(function () {
 
     // 4. Informasi Platform, Kontak CS, dan Unit Bisnis
     Route::get('/site-info', [SiteInfoController::class, 'index']);
+
+    // 5. Lokasi Titik Penjemputan Dinamis (Meeting Point Kalkulator)
+    Route::get('/pickup-locations', [\App\Http\Controllers\Api\V1\PickupLocationController::class, 'index']);
 });
