@@ -19,15 +19,26 @@ class SiteInfoController extends Controller
         $cacheKey = 'api_v1_site_info';
         $data = Cache::rememberForever($cacheKey, function () {
             $setting = SiteSetting::find('tiketdieng');
+            $rawNib = $setting->legal_nib ?? '';
+            preg_match('/\d{10,16}/', $rawNib, $matches);
+            $nibNumber = $matches[0] ?? '1294801928472';
+            $companyName = $setting->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO';
+
+            if (empty($rawNib) || $rawNib === 'Legalitas NIB Resmi' || empty($matches)) {
+                $legalNib = "NIB: {$nibNumber} ({$companyName})";
+            } else {
+                $legalNib = $rawNib;
+            }
 
             return [
                 'app_name' => 'TiketDieng Mobile',
-                'company_name' => $setting->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO',
+                'company_name' => $companyName,
                 'tagline' => $setting->site_tagline ?? 'Portal Resmi Wisata Dieng Plateau',
                 'whatsapp' => $setting->whatsapp_number ?? '0816675404',
                 'email' => $setting->email ?? 'tiket.wisatadieng@gmail.com',
                 'address' => $setting->address ?? 'Tieng, Kejajar, Wonosobo, Jawa Tengah 56354',
-                'legal_nib' => $setting->legal_nib ?? 'NIB: 1294801928472 (PT. GOTRIP ASIA TRAVELINDO)',
+                'legal_nib' => $legalNib,
+                'nib_number' => $nibNumber,
                 'hpi_badge' => $setting->hpi_badge ?? 'Lisensi Resmi HPI Dieng',
                 'social_media' => [
                     'instagram' => $setting->instagram_url ?? 'https://www.instagram.com/tiketwisatadieng',
@@ -67,7 +78,7 @@ class SiteInfoController extends Controller
         if ($request->header('If-None-Match') === $etag) {
             return response()->json(null, 304, [
                 'ETag' => $etag,
-                'Cache-Control' => 'public, max-age=86400, stale-while-revalidate=604800',
+                'Cache-Control' => 'public, max-age=60, s-maxage=120, stale-while-revalidate=600',
             ]);
         }
 
@@ -77,7 +88,7 @@ class SiteInfoController extends Controller
             'data' => $data,
         ], 200, [
             'ETag' => $etag,
-            'Cache-Control' => 'public, max-age=86400, stale-while-revalidate=604800',
+            'Cache-Control' => 'public, max-age=60, s-maxage=120, stale-while-revalidate=600',
         ]);
     }
 }
