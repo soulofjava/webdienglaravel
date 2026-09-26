@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Route;
 
 // Halaman Publik
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/debug-error', function () {
+    try {
+        $req = request();
+        $ctrl = new \App\Http\Controllers\HomeController();
+        return $ctrl->index($req);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => explode("\n", $e->getTraceAsString()),
+        ], 500);
+    }
+});
 Route::get('/paket/{slug}', [HomeController::class, 'showPackage'])->name('package.detail');
 Route::get('/dokumentasi', [HomeController::class, 'documentation'])->name('documentation');
 Route::get('/photography', fn () => redirect()->route('documentation'));
