@@ -51,16 +51,37 @@ class TourPackage extends Model
         });
 
         static::saved(function () {
-            \Illuminate\Support\Facades\Cache::forget('home_tour_packages');
-            \Illuminate\Support\Facades\Cache::forget('home_doc_packages');
-            \Illuminate\Support\Facades\Cache::forget('lotus_doc_packages');
+            self::clearAllPackageCaches();
         });
 
         static::deleted(function () {
-            \Illuminate\Support\Facades\Cache::forget('home_tour_packages');
-            \Illuminate\Support\Facades\Cache::forget('home_doc_packages');
-            \Illuminate\Support\Facades\Cache::forget('lotus_doc_packages');
+            self::clearAllPackageCaches();
         });
+    }
+
+    /**
+     * Mengambil versi timestamp rilis paket saat ini untuk cache-busting
+     */
+    public static function getVersion(): string
+    {
+        return (string) \Illuminate\Support\Facades\Cache::rememberForever('api_packages_version', function () {
+            $latest = self::max('updated_at');
+            return $latest ? (string) strtotime($latest) : (string) time();
+        });
+    }
+
+    /**
+     * Menghapus seluruh cache paket wisata saat Admin melakukan CRUD
+     */
+    public static function clearAllPackageCaches(): void
+    {
+        // 1. Naikkan versi cache agar seluruh instance dan edge CDN langsung menganggap cache lama usang
+        \Illuminate\Support\Facades\Cache::forever('api_packages_version', (string) time());
+
+        // 2. Bersihkan cache web portal
+        \Illuminate\Support\Facades\Cache::forget('home_tour_packages');
+        \Illuminate\Support\Facades\Cache::forget('home_doc_packages');
+        \Illuminate\Support\Facades\Cache::forget('lotus_doc_packages');
     }
 
     public function getFormattedPriceAttribute(): string

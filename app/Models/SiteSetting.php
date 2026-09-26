@@ -41,6 +41,19 @@ class SiteSetting extends Model
         'facebook_url',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function () {
+            Cache::forget('api_v1_site_info');
+        });
+
+        static::deleted(function () {
+            Cache::forget('api_v1_site_info');
+        });
+    }
+
     /**
      * Daftar situs sub-unit resmi yang didukung
      */
