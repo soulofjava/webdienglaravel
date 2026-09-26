@@ -55,8 +55,13 @@
                         <select id="calcMeeting" name="calcMeeting" aria-label="Lokasi Titik Penjemputan" class="w-full p-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors cursor-pointer">
                             @if(isset($pickupLocations) && count($pickupLocations) > 0)
                                 @foreach($pickupLocations as $loc)
-                                    <option value="{{ $loc->name }}" data-surcharge="{{ $loc->surcharge_per_pax }}" {{ $loop->first ? 'selected' : '' }}>
-                                        {{ $loc->name }}{{ !empty($loc->description) ? ' — ' . $loc->description : '' }}{{ $loc->surcharge_per_pax > 0 ? ' (+Rp ' . number_format($loc->surcharge_per_pax, 0, ',', '.') . '/org)' : ' (Gratis / Standar)' }}
+                                    @php
+                                        $locName = is_array($loc) ? ($loc['name'] ?? '') : ($loc->name ?? '');
+                                        $locDesc = is_array($loc) ? ($loc['description'] ?? '') : ($loc->description ?? '');
+                                        $locSurcharge = (int) (is_array($loc) ? ($loc['surcharge_per_pax'] ?? 0) : ($loc->surcharge_per_pax ?? 0));
+                                    @endphp
+                                    <option value="{{ $locName }}" data-surcharge="{{ $locSurcharge }}" {{ $loop->first ? 'selected' : '' }}>
+                                        {{ $locName }}{{ !empty($locDesc) ? ' — ' . $locDesc : '' }}{{ $locSurcharge > 0 ? ' (+Rp ' . number_format($locSurcharge, 0, ',', '.') . '/org)' : ' (Gratis / Standar)' }}
                                     </option>
                                 @endforeach
                             @else

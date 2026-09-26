@@ -42,21 +42,21 @@ class HomeController extends Controller
                 ->get();
         });
 
-        // Mengambil titik penjemputan kalkulator aktif (di-cache 10 menit sebagai stdClass)
-        $pickupLocations = Cache::remember('home_pickup_locations_v2', 600, function () {
+        // Mengambil titik penjemputan kalkulator aktif (di-cache 10 menit sebagai plain array murni)
+        $pickupLocations = Cache::remember('home_pickup_locations_v3', 600, function () {
             return PickupLocation::where('is_active', true)
                 ->orderBy('sort_order', 'asc')
                 ->orderBy('id', 'asc')
                 ->get()
                 ->map(function ($loc) {
-                    return (object) [
-                        'id' => $loc->id,
-                        'name' => $loc->name,
-                        'description' => $loc->description ?? '',
+                    return [
+                        'id' => (int) $loc->id,
+                        'name' => (string) $loc->name,
+                        'description' => (string) ($loc->description ?? ''),
                         'surcharge_per_pax' => (int) $loc->surcharge_per_pax,
                     ];
                 })
-                ->all();
+                ->toArray();
         });
 
         $themeView = "themes.{$activeTheme}.home";
