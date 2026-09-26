@@ -27,7 +27,8 @@ class SiteInfoController extends Controller
                 'whatsapp' => $setting->whatsapp_number ?? '0816675404',
                 'email' => $setting->email ?? 'tiket.wisatadieng@gmail.com',
                 'address' => $setting->address ?? 'Tieng, Kejajar, Wonosobo, Jawa Tengah 56354',
-                'legal_nib' => $setting->legal_nib ?? '0220108920194',
+                'legal_nib' => $setting->legal_nib ?? 'NIB: 1294801928472 (PT. GOTRIP ASIA TRAVELINDO)',
+                'hpi_badge' => $setting->hpi_badge ?? 'Lisensi Resmi HPI Dieng',
                 'social_media' => [
                     'instagram' => $setting->instagram_url ?? 'https://www.instagram.com/tiketwisatadieng',
                     'tiktok' => $setting->tiktok_url ?? 'https://tiktok.com/@tiketdieng.com',
