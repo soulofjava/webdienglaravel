@@ -17,6 +17,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->group(function () {
+    // Debugging route untuk memeriksa render HomeController@index
+    Route::get('/debug-home', function () {
+        try {
+            $req = request();
+            $ctrl = new \App\Http\Controllers\HomeController();
+            $resp = $ctrl->index($req);
+            return response()->json([
+                'status' => 'success',
+                'status_code' => $resp->getStatusCode(),
+                'content_length' => strlen($resp->getContent()),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => array_slice(explode("\n", $e->getTraceAsString()), 0, 15),
+            ], 500);
+        }
+    });
+
     // 1. Katalog & Detail Paket Wisata
     Route::get('/packages', [PackageController::class, 'index']);
     Route::get('/packages/categories', [PackageController::class, 'categories']);
