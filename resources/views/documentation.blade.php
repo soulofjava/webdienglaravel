@@ -730,7 +730,7 @@
             Jalan Dieng KM 18 Rt 01/02 Tieng, Kejajar, Wonosobo 56354 • WhatsApp: 0816-4211-196
         </p>
         <p class="text-[10px] text-slate-400">
-            © {{ date('Y') }} PT. GOTRIP ASIA TRAVELINDO. All rights reserved.
+            © {{ date('Y') }} PT. GOTRIP ASIA TRAVELINDO. All rights reserved. • Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-amber-400 underline underline-offset-2 transition-colors">soulofjava labs</a>
         </p>
     </footer>
 
