@@ -439,7 +439,7 @@
             <div class="flex flex-wrap items-center justify-center gap-2">
                 <span>© {{ date('Y') }} Hak Cipta Dilindungi Undang-Undang</span>
                 <span>•</span>
-                <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
+                <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">soulofjava labs</a></span>
             </div>
         </div>
     </footer>

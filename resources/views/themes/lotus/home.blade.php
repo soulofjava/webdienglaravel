@@ -782,8 +782,11 @@
     </section>
 
     <!-- FOOTER CERAH & BERSIH -->
-    <footer class="py-8 bg-slate-100 border-t border-slate-200 text-center text-xs text-slate-500">
-        <p>&copy; {{ date('Y') }} Lotus Creative &bull; Travel Photography & Drone 4K &bull; Seluruh hak cipta dilindungi.</p>
+    <footer class="py-8 bg-slate-100 border-t border-slate-200 text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <p>&copy; {{ date('Y') }} Lotus Creative &bull; Travel Photography & Drone 4K &bull; Seluruh hak cipta dilindungi.</p>
+            <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-indigo-600 font-medium underline underline-offset-2 decoration-indigo-500/30 hover:decoration-indigo-600 transition-colors">soulofjava labs</a></span>
+        </div>
     </footer>
 
     <!-- FLOATING WHATSAPP BUTTON (CERAH & MENONJOL) -->

@@ -114,7 +114,7 @@
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
                 <p>© {{ date('Y') }} {{ $settings->site_name }} • {{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }} • <span class="text-slate-300 font-medium">{{ $settings->legal_nib }}</span>. Hak cipta dilindungi undang-undang.</p>
                 <div class="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px]">
-                    <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">Isa Maulana</a></span>
+                    <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 font-medium underline underline-offset-2 decoration-amber-500/30 hover:decoration-amber-400 transition-colors">soulofjava labs</a></span>
                 </div>
             </div>
         </div>

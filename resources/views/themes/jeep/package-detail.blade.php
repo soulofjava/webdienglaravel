@@ -245,7 +245,10 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-800 bg-[#0f172a] py-8 text-center text-xs text-slate-400">
-        <p>&copy; {{ date('Y') }} Ready Jeep Dieng &bull; Unit Bisnis PT. GOTRIP ASIA TRAVELINDO</p>
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
+            <p>&copy; {{ date('Y') }} Ready Jeep Dieng &bull; Unit Bisnis PT. GOTRIP ASIA TRAVELINDO</p>
+            <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-red-400 font-medium underline underline-offset-2 decoration-red-500/30 hover:decoration-red-400 transition-colors">soulofjava labs</a></span>
+        </div>
     </footer>
 </main>
 @endsection

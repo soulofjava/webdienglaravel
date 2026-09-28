@@ -905,10 +905,14 @@
             <!-- Bottom Copyright & Switcher -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                 <p>&copy; {{ date('Y') }} Ready Jeep Dieng &bull; PT. GOTRIP ASIA TRAVELINDO. All rights reserved.</p>
-                <div class="flex items-center gap-4 text-[11px]">
-                    <a href="{{ url('/') }}" class="text-slate-400 hover:text-red-300 transition-colors">Portal TiketDieng</a>
-                    <span>&bull;</span>
-                    <a href="{{ url('/?theme=lotus') }}" class="text-slate-400 hover:text-red-300 transition-colors">Lotus Creative (Foto & Drone)</a>
+                <div class="flex flex-wrap items-center justify-center sm:justify-end gap-3 text-[11px]">
+                    <div class="flex items-center gap-3">
+                        <a href="{{ url('/') }}" class="text-slate-400 hover:text-red-300 transition-colors">Portal TiketDieng</a>
+                        <span>&bull;</span>
+                        <a href="{{ url('/?theme=lotus') }}" class="text-slate-400 hover:text-red-300 transition-colors">Lotus Creative (Foto & Drone)</a>
+                    </div>
+                    <span class="hidden sm:inline text-slate-600">&bull;</span>
+                    <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-red-400 font-medium underline underline-offset-2 decoration-red-500/30 hover:decoration-red-400 transition-colors">soulofjava labs</a></span>
                 </div>
             </div>
         </div>
