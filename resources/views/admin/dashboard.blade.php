@@ -1142,6 +1142,54 @@
     inputSeoDesc?.addEventListener('input', syncLivePreviews);
     inputOgUrl?.addEventListener('input', syncLivePreviews);
 
+    async function compressImageIfNeeded(file, maxDimension = 1920, quality = 0.85) {
+        if (!file || !file.type.startsWith('image/') || file.type === 'image/svg+xml' || file.type === 'image/x-icon') {
+            return file;
+        }
+        if (file.size < 1.5 * 1024 * 1024) {
+            return file;
+        }
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > maxDimension || height > maxDimension) {
+                        if (width > height) {
+                            height = Math.round((height * maxDimension) / width);
+                            width = maxDimension;
+                        } else {
+                            width = Math.round((width * maxDimension) / height);
+                            height = maxDimension;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const outputType = 'image/jpeg';
+                    canvas.toBlob((blob) => {
+                        if (blob && blob.size < file.size) {
+                            const newName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                            const newFile = new File([blob], newName, { type: outputType, lastModified: Date.now() });
+                            resolve(newFile);
+                        } else {
+                            resolve(file);
+                        }
+                    }, outputType, quality);
+                };
+                img.onerror = () => resolve(file);
+                img.src = e.target.result;
+            };
+            reader.onerror = () => resolve(file);
+            reader.readAsDataURL(file);
+        });
+    }
+
     // 2. Favicon Upload Ajax Handler
     const fileFavicon = document.getElementById('fileFavicon');
     const faviconPreview = document.getElementById('faviconPreview');
@@ -1151,19 +1199,34 @@
 
     fileFavicon?.addEventListener('change', async (e) => {
         if (!e.target.files || !e.target.files[0]) return;
-        const file = e.target.files[0];
+        let file = e.target.files[0];
 
         faviconBtnText.innerText = 'Mengunggah...';
-        const formData = new FormData();
-        formData.append('favicon', file);
-        formData.append('site_key', '{{ $selectedSite }}');
-        formData.append('_token', '{{ csrf_token() }}');
 
         try {
+            file = await compressImageIfNeeded(file, 512, 0.9);
+            const formData = new FormData();
+            formData.append('favicon', file);
+            formData.append('site_key', '{{ $selectedSite }}');
+            formData.append('_token', '{{ csrf_token() }}');
+
             const res = await fetch('{{ route('admin.upload.favicon') }}', {
                 method: 'POST',
                 body: formData,
             });
+
+            if (!res.ok) {
+                const errText = await res.text();
+                let errMsg = 'Gagal mengunggah favicon (Status: ' + res.status + ')';
+                try {
+                    const parsed = JSON.parse(errText);
+                    if (parsed.message) errMsg = parsed.message;
+                    if (parsed.errors && parsed.errors.favicon) errMsg = parsed.errors.favicon[0];
+                } catch(e) {}
+                alert(errMsg);
+                return;
+            }
+
             const data = await res.json();
             if (data.success) {
                 faviconPreview.src = data.url;
@@ -1174,7 +1237,7 @@
                 alert(data.message || 'Gagal mengunggah favicon.');
             }
         } catch (err) {
-            alert('Terjadi kesalahan saat mengunggah berkas.');
+            alert('Terjadi kesalahan saat mengunggah berkas: ' + err.message);
         } finally {
             faviconBtnText.innerText = 'Unggah Berkas Baru';
         }
@@ -1187,19 +1250,34 @@
 
     fileOg?.addEventListener('change', async (e) => {
         if (!e.target.files || !e.target.files[0]) return;
-        const file = e.target.files[0];
+        let file = e.target.files[0];
 
-        ogBtnText.innerText = 'Mengunggah...';
-        const formData = new FormData();
-        formData.append('og_image', file);
-        formData.append('site_key', '{{ $selectedSite }}');
-        formData.append('_token', '{{ csrf_token() }}');
+        ogBtnText.innerText = 'Mengoptimasi & Mengunggah...';
 
         try {
+            file = await compressImageIfNeeded(file, 1920, 0.85);
+            const formData = new FormData();
+            formData.append('og_image', file);
+            formData.append('site_key', '{{ $selectedSite }}');
+            formData.append('_token', '{{ csrf_token() }}');
+
             const res = await fetch('{{ route('admin.upload.og') }}', {
                 method: 'POST',
                 body: formData,
             });
+
+            if (!res.ok) {
+                const errText = await res.text();
+                let errMsg = 'Gagal mengunggah banner (Status: ' + res.status + ')';
+                try {
+                    const parsed = JSON.parse(errText);
+                    if (parsed.message) errMsg = parsed.message;
+                    if (parsed.errors && parsed.errors.og_image) errMsg = parsed.errors.og_image[0];
+                } catch(e) {}
+                alert(errMsg);
+                return;
+            }
+
             const data = await res.json();
             if (data.success) {
                 inputOgUrl.value = data.url;
@@ -1211,7 +1289,7 @@
                 alert(data.message || 'Gagal mengunggah banner.');
             }
         } catch (err) {
-            alert('Terjadi kesalahan saat mengunggah berkas.');
+            alert('Terjadi kesalahan saat mengunggah berkas: ' + err.message);
         } finally {
             ogBtnText.innerText = 'Unggah Banner Baru';
         }

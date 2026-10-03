@@ -519,6 +519,63 @@
                 }
             }
         });
+
+        // Kompresi otomatis berkas gambar besar sebelum dikirim
+        const imageFileInput = document.querySelector('input[name="image_file"]');
+        imageFileInput?.addEventListener('change', async function () {
+            if (!this.files || !this.files[0]) return;
+            const file = this.files[0];
+            if (file.size > 1.5 * 1024 * 1024 && file.type.startsWith('image/')) {
+                const hint = document.createElement('span');
+                hint.id = 'compressHint';
+                hint.className = 'text-[11px] text-amber-400 block mt-1';
+                hint.innerText = 'Mengoptimasi ukuran foto resolusi tinggi...';
+                this.parentNode.appendChild(hint);
+
+                const compressed = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            let width = img.width, height = img.height;
+                            const maxDim = 1920;
+                            if (width > maxDim || height > maxDim) {
+                                if (width > height) {
+                                    height = Math.round((height * maxDim) / width);
+                                    width = maxDim;
+                                } else {
+                                    width = Math.round((width * maxDim) / height);
+                                    height = maxDim;
+                                }
+                            }
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            canvas.toBlob((blob) => {
+                                if (blob && blob.size < file.size) {
+                                    const newName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                                    resolve(new File([blob], newName, { type: 'image/jpeg', lastModified: Date.now() }));
+                                } else {
+                                    resolve(file);
+                                }
+                            }, 'image/jpeg', 0.85);
+                        };
+                        img.onerror = () => resolve(file);
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = () => resolve(file);
+                    reader.readAsDataURL(file);
+                });
+
+                const dt = new DataTransfer();
+                dt.items.add(compressed);
+                this.files = dt.files;
+                hint.className = 'text-[11px] text-emerald-400 block mt-1';
+                hint.innerText = `✓ Foto dioptimasi (${(file.size / (1024*1024)).toFixed(1)}MB → ${(compressed.size / 1024).toFixed(0)}KB)`;
+            }
+        });
     });
 </script>
 @endsection
