@@ -320,13 +320,22 @@ class SiteSetting extends Model
      */
     public static function clearCache(?string $siteKey = null): void
     {
-        if ($siteKey) {
-            Cache::forget("site_settings_{$siteKey}");
-        } else {
-            foreach (['tiketdieng', 'lotus', 'jeep', 'shuttle', 'default'] as $k) {
-                Cache::forget("site_settings_{$k}");
+        $keys = $siteKey ? ["site_settings_{$siteKey}"] : ['site_settings_tiketdieng', 'site_settings_lotus', 'site_settings_jeep', 'site_settings_shuttle', 'site_settings_default'];
+
+        foreach ($keys as $k) {
+            Cache::forget($k);
+            try {
+                Cache::store('database')->forget($k);
+            } catch (\Throwable $e) {
+                // Abaikan jika tabel cache database belum siap
             }
         }
+
         Cache::forget('site_settings_attributes');
+        try {
+            Cache::store('database')->forget('site_settings_attributes');
+        } catch (\Throwable $e) {
+            // Abaikan
+        }
     }
 }
