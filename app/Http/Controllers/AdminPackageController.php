@@ -8,7 +8,9 @@ use App\Models\TourPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Services\ImageOptimizerService;
 
 class AdminPackageController extends Controller
 {
@@ -90,7 +92,7 @@ class AdminPackageController extends Controller
             'price_note' => 'required|string|max:100',
             'badge' => 'nullable|string|max:50',
             'image_url' => 'nullable|string|max:500',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
             'summary' => 'required|string',
             'itinerary_names' => 'nullable|array',
             'itinerary_destinations' => 'nullable|array',
@@ -119,12 +121,17 @@ class AdminPackageController extends Controller
         $imageUrl = $validated['image_url'] ?? null;
         if ($request->hasFile('image_file')) {
             try {
-                $disk = config('filesystems.default');
-                $path = $request->file('image_file')->store('uploads/packages', $disk);
-                $imageUrl = Storage::disk($disk)->url($path);
+                $opt = ImageOptimizerService::optimizeAndStore(
+                    $request->file('image_file'),
+                    'uploads/packages',
+                    'pkg_' . $slug . '_' . time(),
+                    1920,
+                    82
+                );
+                $imageUrl = $opt['url'];
             } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::error('Package image upload error: ' . $e->getMessage());
-                return back()->withInput()->withErrors(['image_file' => 'Gagal mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
+                Log::error('Package image upload error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                return back()->withInput()->withErrors(['image_file' => 'Gagal mengoptimasi dan mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
             }
         }
 
@@ -210,7 +217,7 @@ class AdminPackageController extends Controller
             'price_note' => 'required|string|max:100',
             'badge' => 'nullable|string|max:50',
             'image_url' => 'nullable|string|max:500',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
             'summary' => 'required|string',
             'itinerary_names' => 'nullable|array',
             'itinerary_destinations' => 'nullable|array',
@@ -233,23 +240,22 @@ class AdminPackageController extends Controller
         $imageUrl = $validated['image_url'] ?? $package->image_url;
         if ($request->hasFile('image_file')) {
             try {
-                $disk = config('filesystems.default');
-
-                // Hapus berkas gambar lama jika sebelumnya berupa file upload lokal/R2
+                // Hapus berkas gambar lama jika sebelumnya berupa file upload
                 if ($package->image_url) {
-                    $oldPath = ltrim(parse_url($package->image_url, PHP_URL_PATH), '/');
-                    if (Str::startsWith($oldPath, 'uploads/packages/')) {
-                        if (Storage::disk($disk)->exists($oldPath)) {
-                            Storage::disk($disk)->delete($oldPath);
-                        }
-                    }
+                    ImageOptimizerService::deleteOldImage($package->image_url, 'uploads/packages');
                 }
 
-                $path = $request->file('image_file')->store('uploads/packages', $disk);
-                $imageUrl = Storage::disk($disk)->url($path);
+                $opt = ImageOptimizerService::optimizeAndStore(
+                    $request->file('image_file'),
+                    'uploads/packages',
+                    'pkg_' . ($package->slug ?: Str::slug($validated['title'])) . '_' . time(),
+                    1920,
+                    82
+                );
+                $imageUrl = $opt['url'];
             } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::error('Package image update error: ' . $e->getMessage());
-                return back()->withInput()->withErrors(['image_file' => 'Gagal mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
+                Log::error('Package image update error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                return back()->withInput()->withErrors(['image_file' => 'Gagal mengoptimasi dan mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
             }
         }
 
@@ -305,18 +311,7 @@ class AdminPackageController extends Controller
 
         // Hapus file gambar dari Cloudflare R2 jika merupakan berkas upload
         if ($package->image_url) {
-            $parsedPath = parse_url($package->image_url, PHP_URL_PATH);
-            $relativePath = ltrim($parsedPath, '/');
-            if (Str::startsWith($relativePath, 'uploads/packages/')) {
-                try {
-                    $disk = config('filesystems.default');
-                    if (Storage::disk($disk)->exists($relativePath)) {
-                        Storage::disk($disk)->delete($relativePath);
-                    }
-                } catch (\Throwable $e) {
-                    \Illuminate\Support\Facades\Log::warning('Gagal menghapus gambar paket dari storage: ' . $e->getMessage());
-                }
-            }
+            ImageOptimizerService::deleteOldImage($package->image_url, 'uploads/packages');
         }
 
         $package->delete();
