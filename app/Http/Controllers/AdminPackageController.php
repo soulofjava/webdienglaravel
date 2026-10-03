@@ -118,8 +118,9 @@ class AdminPackageController extends Controller
 
         $imageUrl = $validated['image_url'] ?? null;
         if ($request->hasFile('image_file')) {
-            $path = $request->file('image_file')->store('uploads/packages', 'public');
-            $imageUrl = Storage::url($path);
+            $disk = config('filesystems.default');
+            $path = $request->file('image_file')->store('uploads/packages', $disk);
+            $imageUrl = Storage::disk($disk)->url($path);
         }
 
         // Parsing Itinerary Options
@@ -226,8 +227,9 @@ class AdminPackageController extends Controller
 
         $imageUrl = $validated['image_url'] ?? $package->image_url;
         if ($request->hasFile('image_file')) {
-            $path = $request->file('image_file')->store('uploads/packages', 'public');
-            $imageUrl = Storage::url($path);
+            $disk = config('filesystems.default');
+            $path = $request->file('image_file')->store('uploads/packages', $disk);
+            $imageUrl = Storage::disk($disk)->url($path);
         }
 
         // Parsing Itinerary Options

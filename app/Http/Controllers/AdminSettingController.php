@@ -155,23 +155,32 @@ class AdminSettingController extends Controller
         ]);
 
         if ($request->hasFile('favicon')) {
-            $file = $request->file('favicon');
-            $filename = 'favicon_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/favicons', $filename, 'public');
+            try {
+                $file = $request->file('favicon');
+                $filename = 'favicon_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $disk = config('filesystems.default');
+                $path = $file->storeAs('uploads/favicons', $filename, $disk);
 
-            $url = Storage::url($path);
+                $url = Storage::disk($disk)->url($path);
 
-            $settingRecord = SiteSetting::find($siteKey);
-            if ($settingRecord) {
-                $settingRecord->update(['favicon_url' => $url]);
+                $settingRecord = SiteSetting::find($siteKey);
+                if ($settingRecord) {
+                    $settingRecord->update(['favicon_url' => $url]);
+                }
+                SiteSetting::clearCache($siteKey);
+
+                return response()->json([
+                    'success' => true,
+                    'url' => $url,
+                    'message' => 'Favicon berhasil diunggah.',
+                ]);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Favicon upload error: ' . $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengunggah berkas: ' . $e->getMessage(),
+                ], 500);
             }
-            SiteSetting::clearCache($siteKey);
-
-            return response()->json([
-                'success' => true,
-                'url' => $url,
-                'message' => 'Favicon berhasil diunggah.',
-            ]);
         }
 
         return response()->json(['success' => false, 'message' => 'Gagal mengunggah berkas.'], 400);
@@ -191,23 +200,32 @@ class AdminSettingController extends Controller
         ]);
 
         if ($request->hasFile('og_image')) {
-            $file = $request->file('og_image');
-            $filename = 'og_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/og-images', $filename, 'public');
+            try {
+                $file = $request->file('og_image');
+                $filename = 'og_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $disk = config('filesystems.default');
+                $path = $file->storeAs('uploads/og-images', $filename, $disk);
 
-            $url = Storage::url($path);
+                $url = Storage::disk($disk)->url($path);
 
-            $settingRecord = SiteSetting::find($siteKey);
-            if ($settingRecord) {
-                $settingRecord->update(['og_image_url' => $url]);
+                $settingRecord = SiteSetting::find($siteKey);
+                if ($settingRecord) {
+                    $settingRecord->update(['og_image_url' => $url]);
+                }
+                SiteSetting::clearCache($siteKey);
+
+                return response()->json([
+                    'success' => true,
+                    'url' => $url,
+                    'message' => 'Banner gambar media sosial berhasil diunggah.',
+                ]);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('OG Image upload error: ' . $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengunggah berkas: ' . $e->getMessage(),
+                ], 500);
             }
-            SiteSetting::clearCache($siteKey);
-
-            return response()->json([
-                'success' => true,
-                'url' => $url,
-                'message' => 'Banner gambar media sosial berhasil diunggah.',
-            ]);
         }
 
         return response()->json(['success' => false, 'message' => 'Gagal mengunggah berkas.'], 400);
