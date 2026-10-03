@@ -118,9 +118,14 @@ class AdminPackageController extends Controller
 
         $imageUrl = $validated['image_url'] ?? null;
         if ($request->hasFile('image_file')) {
-            $disk = config('filesystems.default');
-            $path = $request->file('image_file')->store('uploads/packages', $disk);
-            $imageUrl = Storage::disk($disk)->url($path);
+            try {
+                $disk = config('filesystems.default');
+                $path = $request->file('image_file')->store('uploads/packages', $disk);
+                $imageUrl = Storage::disk($disk)->url($path);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Package image upload error: ' . $e->getMessage());
+                return back()->withInput()->withErrors(['image_file' => 'Gagal mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
+            }
         }
 
         // Parsing Itinerary Options
@@ -227,9 +232,25 @@ class AdminPackageController extends Controller
 
         $imageUrl = $validated['image_url'] ?? $package->image_url;
         if ($request->hasFile('image_file')) {
-            $disk = config('filesystems.default');
-            $path = $request->file('image_file')->store('uploads/packages', $disk);
-            $imageUrl = Storage::disk($disk)->url($path);
+            try {
+                $disk = config('filesystems.default');
+
+                // Hapus berkas gambar lama jika sebelumnya berupa file upload lokal/R2
+                if ($package->image_url) {
+                    $oldPath = ltrim(parse_url($package->image_url, PHP_URL_PATH), '/');
+                    if (Str::startsWith($oldPath, 'uploads/packages/')) {
+                        if (Storage::disk($disk)->exists($oldPath)) {
+                            Storage::disk($disk)->delete($oldPath);
+                        }
+                    }
+                }
+
+                $path = $request->file('image_file')->store('uploads/packages', $disk);
+                $imageUrl = Storage::disk($disk)->url($path);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Package image update error: ' . $e->getMessage());
+                return back()->withInput()->withErrors(['image_file' => 'Gagal mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
+            }
         }
 
         // Parsing Itinerary Options
@@ -280,6 +301,22 @@ class AdminPackageController extends Controller
         $user = Auth::user();
         if ($user && !$user->canManagePackage($package)) {
             abort(403, 'Akses ditolak: Anda tidak memiliki hak akses untuk menghapus paket unit bisnis lain.');
+        }
+
+        // Hapus file gambar dari Cloudflare R2 jika merupakan berkas upload
+        if ($package->image_url) {
+            $parsedPath = parse_url($package->image_url, PHP_URL_PATH);
+            $relativePath = ltrim($parsedPath, '/');
+            if (Str::startsWith($relativePath, 'uploads/packages/')) {
+                try {
+                    $disk = config('filesystems.default');
+                    if (Storage::disk($disk)->exists($relativePath)) {
+                        Storage::disk($disk)->delete($relativePath);
+                    }
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning('Gagal menghapus gambar paket dari storage: ' . $e->getMessage());
+                }
+            }
         }
 
         $package->delete();

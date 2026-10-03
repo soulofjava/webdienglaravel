@@ -159,11 +159,21 @@ class AdminSettingController extends Controller
                 $file = $request->file('favicon');
                 $filename = 'favicon_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $disk = config('filesystems.default');
-                $path = $file->storeAs('uploads/favicons', $filename, $disk);
-
-                $url = Storage::disk($disk)->url($path);
 
                 $settingRecord = SiteSetting::find($siteKey);
+                // Hapus berkas favicon lama jika ada di uploads/favicons/
+                if ($settingRecord && $settingRecord->favicon_url) {
+                    $oldFav = ltrim(parse_url($settingRecord->favicon_url, PHP_URL_PATH), '/');
+                    if (Str::startsWith($oldFav, 'uploads/favicons/')) {
+                        if (Storage::disk($disk)->exists($oldFav)) {
+                            Storage::disk($disk)->delete($oldFav);
+                        }
+                    }
+                }
+
+                $path = $file->storeAs('uploads/favicons', $filename, $disk);
+                $url = Storage::disk($disk)->url($path);
+
                 if ($settingRecord) {
                     $settingRecord->update(['favicon_url' => $url]);
                 }
@@ -204,11 +214,21 @@ class AdminSettingController extends Controller
                 $file = $request->file('og_image');
                 $filename = 'og_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $disk = config('filesystems.default');
-                $path = $file->storeAs('uploads/og-images', $filename, $disk);
-
-                $url = Storage::disk($disk)->url($path);
 
                 $settingRecord = SiteSetting::find($siteKey);
+                // Hapus berkas banner lama jika ada di uploads/og-images/
+                if ($settingRecord && $settingRecord->og_image_url) {
+                    $oldOg = ltrim(parse_url($settingRecord->og_image_url, PHP_URL_PATH), '/');
+                    if (Str::startsWith($oldOg, 'uploads/og-images/')) {
+                        if (Storage::disk($disk)->exists($oldOg)) {
+                            Storage::disk($disk)->delete($oldOg);
+                        }
+                    }
+                }
+
+                $path = $file->storeAs('uploads/og-images', $filename, $disk);
+                $url = Storage::disk($disk)->url($path);
+
                 if ($settingRecord) {
                     $settingRecord->update(['og_image_url' => $url]);
                 }
