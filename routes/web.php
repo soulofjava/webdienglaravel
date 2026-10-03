@@ -122,5 +122,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Media Proxy (Melayani file Cloudflare R2 secara langsung tanpa terhambat DNS ISP)
+Route::get('/media/{path}', [\App\Http\Controllers\MediaProxyController::class, 'show'])
+    ->where('path', '.*')
+    ->name('media.proxy');
+
 // Paket Rute Autentikasi Breeze (Login, Throttling, Logout)
 require __DIR__.'/auth.php';

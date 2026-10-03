@@ -38,7 +38,7 @@ class ImageOptimizerService
             $ext = $file->getClientOriginalExtension() ?: 'ico';
             $safeName = ($filename ?: Str::random(20)) . '.' . $ext;
             $path = $file->storeAs($directory, $safeName, $diskName);
-            $url = $disk->url($path);
+            $url = self::getPublicUrl($path);
 
             Log::info("Penyimpanan berkas ikon [{$originalName}]: {$path} (Ukuran: " . round($originalSize / 1024, 1) . " KB)");
 
@@ -139,7 +139,7 @@ class ImageOptimizerService
                 throw new \RuntimeException("Gagal menulis berkas ke penyimpanan Cloud Storage ({$diskName}).");
             }
 
-            $url = $disk->url($targetPath);
+            $url = self::getPublicUrl($targetPath);
             $hematPersen = $originalSize > 0 ? round((1 - ($finalSize / $originalSize)) * 100, 1) : 0;
 
             Log::info("Optimasi Gambar Berhasil [{$originalName}]: {$targetPath} | Ukuran: " . round($originalSize / 1024, 1) . "KB -> " . round($finalSize / 1024, 1) . "KB (Hemat {$hematPersen}%) | URL: {$url}");
@@ -157,7 +157,7 @@ class ImageOptimizerService
             $ext = $file->getClientOriginalExtension() ?: 'jpg';
             $safeName = ($filename ?: Str::random(24)) . '.' . $ext;
             $path = $file->storeAs($directory, $safeName, $diskName);
-            $url = $disk->url($path);
+            $url = self::getPublicUrl($path);
 
             Log::info("Fallback unggah berhasil [{$originalName}]: {$path} | URL: {$url}");
 
@@ -168,6 +168,22 @@ class ImageOptimizerService
                 'optimized_size' => $originalSize,
             ];
         }
+    }
+
+    /**
+     * Dapatkan URL publik untuk berkas media.
+     * Otomatis mengarahkan ke rute proxy internal jika domain r2.dev terblokir ISP.
+     */
+    public static function getPublicUrl(string $path): string
+    {
+        $customDomain = config('filesystems.disks.s3.url');
+
+        // Jika domain S3 masih r2.dev (sering terblokir ISP lokal) atau /media, layani via proxy internal
+        if (empty($customDomain) || Str::contains($customDomain, '.r2.dev') || $customDomain === '/media') {
+            return url('/media/' . ltrim($path, '/'));
+        }
+
+        return rtrim($customDomain, '/') . '/' . ltrim($path, '/');
     }
 
     /**
@@ -186,6 +202,11 @@ class ImageOptimizerService
         try {
             $parsed = parse_url($urlOrPath, PHP_URL_PATH);
             $relPath = ltrim($parsed, '/');
+
+            // Tangani URL proxy yang diawali media/
+            if (Str::startsWith($relPath, 'media/')) {
+                $relPath = substr($relPath, 6);
+            }
 
             if (Str::startsWith($relPath, trim($prefixFolder, '/') . '/')) {
                 $disk = Storage::disk(config('filesystems.default'));
