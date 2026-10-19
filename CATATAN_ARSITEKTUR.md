@@ -13,7 +13,7 @@
 * **Platform Hosting / Deployment:**
   * **Vercel** (Serverless Laravel via runtime `vercel-php@0.7.3` & file konfigurasi `vercel.json`).
   * **Domain Resmi & Live Vercel:**
-    * **Web Induk TiketDieng:** `https://tiketdieng.com` & `https://www.tiketdieng.com` (Domain resmi aktif dibeli via **DomaiNesia**, CNAME / DNS records telah disetup dan terhubung ke Vercel) | Fallback Vercel URL: `https://webdieng.vercel.app`
+    * **Web Induk TiketDieng:** `https://tiketdieng.com` & `https://www.tiketdieng.com` (Domain resmi aktif dibeli via **DomaiNesia**, masa aktif s/d **19 Oktober 2027**, CNAME / DNS records telah disetup dan terhubung ke Vercel) | Fallback Vercel URL: `https://webdieng.vercel.app`
     * Sub-Web Lotus Creative: `https://lotusfotografi.vercel.app`
     * Sub-Web Ready Jeep Dieng: `https://jeepdieng.vercel.app`
   * Vercel Account: `soulofjava`, Active Team: `isa-s-projects16 (isa's projects)`.
