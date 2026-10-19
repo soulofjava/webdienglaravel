@@ -28,13 +28,27 @@
     <link rel="canonical" href="@yield('canonical', url()->current())">
 
     <!-- Open Graph (Facebook, WhatsApp, Telegram, LinkedIn) -->
+    @php
+        $rawOgImage = $siteSettings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop';
+        // Pastikan URL OG Image selalu menggunakan absolute URL domain yang sedang diakses (mencegah redirect antar domain)
+        if (str_starts_with($rawOgImage, '/')) {
+            $defaultOgImage = url($rawOgImage);
+        } else {
+            $parsedOg = parse_url($rawOgImage);
+            if (isset($parsedOg['path']) && str_starts_with($parsedOg['path'], '/media/')) {
+                $defaultOgImage = url($parsedOg['path'] . (isset($parsedOg['query']) ? '?' . $parsedOg['query'] : ''));
+            } else {
+                $defaultOgImage = $rawOgImage;
+            }
+        }
+    @endphp
     <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:site_name" content="{{ $siteSettings->site_name }}">
     <meta property="og:title" content="@yield('title', ($siteSettings->seo_title ?: $siteSettings->site_name))">
     <meta property="og:description" content="@yield('meta_description', ($siteSettings->seo_description ?: $siteSettings->site_tagline))">
     <meta property="og:url" content="@yield('canonical', url()->current())">
-    <meta property="og:image" content="@yield('og_image', ($siteSettings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop'))">
+    <meta property="og:image" content="@yield('og_image', $defaultOgImage)">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -42,7 +56,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', ($siteSettings->seo_title ?: $siteSettings->site_name))">
     <meta name="twitter:description" content="@yield('meta_description', ($siteSettings->seo_description ?: $siteSettings->site_tagline))">
-    <meta name="twitter:image" content="@yield('og_image', ($siteSettings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop'))">
+    <meta name="twitter:image" content="@yield('og_image', $defaultOgImage)">
 
     <!-- Schema.org JSON-LD Structured Data Slot -->
     @yield('schema_json')
