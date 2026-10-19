@@ -21,6 +21,7 @@
   - Runtime: Serverless Laravel via `vercel.json` (`vercel-php@0.7.3`).
   - Vercel CLI Token: Tersimpan aman di `~/.config/codex-private/vercel-token.txt` (User: `soulofjava`, Team: `isa-s-projects16`).
   - Vercel mendukung multi-project / preview URL untuk simulasi web anak menggunakan database Aiven yang sama.
+- **Object Storage:** Cloudflare R2 Bucket (S3-compatible driver via `league/flysystem-aws-s3-v3` untuk upload foto paket wisata, galeri, dan aset dinamis).
 - **Optimasi Caching & Latensi:**
   - `SESSION_DRIVER=file` (lokal) / `cookie` (Vercel).
   - `CACHE_STORE=file` (lokal) / `array` (Vercel).

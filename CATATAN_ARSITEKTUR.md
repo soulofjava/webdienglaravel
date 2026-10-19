@@ -19,6 +19,10 @@
   * Vercel Account: `soulofjava`, Active Team: `isa-s-projects16 (isa's projects)`.
   * Token Akses Vercel CLI tersimpan aman di `~/.config/codex-private/vercel-token.txt`.
   * Aset frontend dibuild menggunakan **Vite** (`npm run build` -> `public/build/`).
+* **Object Storage (Media & Assets):**
+  * **Cloudflare R2 Bucket Storage** (S3-compatible driver via `league/flysystem-aws-s3-v3`).
+  * Digunakan untuk penyimpanan foto paket wisata, galeri dokumentasi, banner, dan upload media dinamis tanpa membebani disk serverless Vercel.
+  * Terintegrasi dengan `ImageOptimizerService` untuk delivery gambar optimal dan rute proxy aman.
 * **Database Server:**
   * **Aiven Cloud MySQL**
   * **Host:** `mysql-2c7456c1-isamaulanatantra-d020.c.aivencloud.com`
