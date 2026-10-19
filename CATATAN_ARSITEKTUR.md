@@ -12,13 +12,17 @@
   * `main` : Branch produksi tunggal (*single production branch*) yang dideploy ke hosting.
 * **Platform Hosting / Deployment:**
   * **Vercel** (Serverless Laravel via runtime `vercel-php@0.7.3` & file konfigurasi `vercel.json`).
-  * **Domain Live Vercel:**
-    * Web Induk TiketDieng: `https://webdieng.vercel.app`
+  * **Domain Resmi & Live Vercel:**
+    * **Web Induk TiketDieng:** `https://tiketdieng.com` & `https://www.tiketdieng.com` (Domain resmi aktif dibeli via **DomaiNesia**, masa aktif s/d **19 Oktober 2027**, CNAME / DNS records telah disetup dan terhubung ke Vercel) | Fallback Vercel URL: `https://webdieng.vercel.app`
     * Sub-Web Lotus Creative: `https://lotusfotografi.vercel.app`
     * Sub-Web Ready Jeep Dieng: `https://jeepdieng.vercel.app`
   * Vercel Account: `soulofjava`, Active Team: `isa-s-projects16 (isa's projects)`.
   * Token Akses Vercel CLI tersimpan aman di `~/.config/codex-private/vercel-token.txt`.
   * Aset frontend dibuild menggunakan **Vite** (`npm run build` -> `public/build/`).
+* **Object Storage (Media & Assets):**
+  * **Cloudflare R2 Bucket Storage** (S3-compatible driver via `league/flysystem-aws-s3-v3`).
+  * Digunakan untuk penyimpanan foto paket wisata, galeri dokumentasi, banner, dan upload media dinamis tanpa membebani disk serverless Vercel.
+  * Terintegrasi dengan `ImageOptimizerService` untuk delivery gambar optimal dan rute proxy aman.
 * **Database Server:**
   * **Aiven Cloud MySQL**
   * **Host:** `mysql-2c7456c1-isamaulanatantra-d020.c.aivencloud.com`

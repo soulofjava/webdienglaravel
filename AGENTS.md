@@ -13,14 +13,15 @@
   - **Host:** `mysql-2c7456c1-isamaulanatantra-d020.c.aivencloud.com`
   - **Port:** `12339` | **DB:** `defaultdb` | **User:** `avnadmin`
   - **Region:** **Asia Pacific** (IP: `168.144.93.27`, Ping latency ~62ms).
-- **Deployment Platform:** Vercel (`https://webdieng.vercel.app`)
-  - **Live Domains:**
-    - Induk: `https://webdieng.vercel.app`
+- **Deployment Platform:** Vercel (Production Custom Domain: `https://tiketdieng.com`, Vercel URL: `https://webdieng.vercel.app`)
+  - **Domains:**
+    - Induk: `https://tiketdieng.com` (Registrar DomaiNesia, aktif s/d 19-10-2027, CNAME/A record ke Vercel) / `https://webdieng.vercel.app`
     - Lotus: `https://lotusfotografi.vercel.app`
     - Jeep: `https://jeepdieng.vercel.app`
   - Runtime: Serverless Laravel via `vercel.json` (`vercel-php@0.7.3`).
   - Vercel CLI Token: Tersimpan aman di `~/.config/codex-private/vercel-token.txt` (User: `soulofjava`, Team: `isa-s-projects16`).
   - Vercel mendukung multi-project / preview URL untuk simulasi web anak menggunakan database Aiven yang sama.
+- **Object Storage:** Cloudflare R2 Bucket (S3-compatible driver via `league/flysystem-aws-s3-v3` untuk upload foto paket wisata, galeri, dan aset dinamis).
 - **Optimasi Caching & Latensi:**
   - `SESSION_DRIVER=file` (lokal) / `cookie` (Vercel).
   - `CACHE_STORE=file` (lokal) / `array` (Vercel).

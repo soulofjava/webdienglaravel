@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use App\Services\ImageOptimizerService;
 
 class AdminSettingController extends Controller
 {
@@ -151,30 +154,54 @@ class AdminSettingController extends Controller
         }
 
         $request->validate([
-            'favicon' => 'required|file|mimes:ico,png,svg,webp,jpg,jpeg|max:2048',
+            'favicon' => 'required|file|mimes:ico,png,svg,webp,jpg,jpeg|max:10240',
         ]);
 
         if ($request->hasFile('favicon')) {
-            $file = $request->file('favicon');
-            $filename = 'favicon_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/favicons', $filename, 'public');
+            try {
+                $file = $request->file('favicon');
+                $settingRecord = SiteSetting::find($siteKey);
 
-            $url = Storage::url($path);
+                // Hapus berkas favicon lama jika ada di R2 / disk
+                if ($settingRecord && $settingRecord->favicon_url) {
+                    ImageOptimizerService::deleteOldImage($settingRecord->favicon_url, 'uploads/favicons');
+                }
 
-            $settingRecord = SiteSetting::find($siteKey);
-            if ($settingRecord) {
-                $settingRecord->update(['favicon_url' => $url]);
+                // Kompres / simpan ikon
+                $result = ImageOptimizerService::optimizeAndStore(
+                    $file,
+                    'uploads/favicons',
+                    'favicon_' . $siteKey . '_' . time(),
+                    512,
+                    90
+                );
+
+                $url = $result['url'];
+
+                if ($settingRecord) {
+                    $settingRecord->update(['favicon_url' => $url]);
+                }
+                SiteSetting::clearCache($siteKey);
+
+                Log::info("Favicon [{$siteKey}] berhasil diperbarui: {$url}");
+
+                return response()->json([
+                    'success' => true,
+                    'url' => $url,
+                    'message' => 'Favicon berhasil dioptimasi & diunggah ke Cloud Storage.',
+                ]);
+            } catch (\Throwable $e) {
+                Log::error("Favicon upload error [{$siteKey}]: " . $e->getMessage(), [
+                    'trace' => $e->getTraceAsString(),
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengunggah berkas: ' . $e->getMessage(),
+                ], 500);
             }
-            SiteSetting::clearCache($siteKey);
-
-            return response()->json([
-                'success' => true,
-                'url' => $url,
-                'message' => 'Favicon berhasil diunggah.',
-            ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Gagal mengunggah berkas.'], 400);
+        return response()->json(['success' => false, 'message' => 'Berkas tidak ditemukan atau rusak.'], 400);
     }
 
     public function uploadOgImage(Request $request)
@@ -187,30 +214,58 @@ class AdminSettingController extends Controller
         }
 
         $request->validate([
-            'og_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'og_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:25600',
         ]);
 
         if ($request->hasFile('og_image')) {
-            $file = $request->file('og_image');
-            $filename = 'og_' . $siteKey . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/og-images', $filename, 'public');
+            try {
+                $file = $request->file('og_image');
+                $settingRecord = SiteSetting::find($siteKey);
 
-            $url = Storage::url($path);
+                // Hapus berkas banner lama jika ada di R2 / disk
+                if ($settingRecord && $settingRecord->og_image_url) {
+                    ImageOptimizerService::deleteOldImage($settingRecord->og_image_url, 'uploads/og-images');
+                }
 
-            $settingRecord = SiteSetting::find($siteKey);
-            if ($settingRecord) {
-                $settingRecord->update(['og_image_url' => $url]);
+                // Kompres gambar otomatis ke WebP hemat storage Cloudflare R2
+                $result = ImageOptimizerService::optimizeAndStore(
+                    $file,
+                    'uploads/og-images',
+                    'og_' . $siteKey . '_' . time(),
+                    1920,
+                    82
+                );
+
+                $url = $result['url'];
+
+                if ($settingRecord) {
+                    $settingRecord->update(['og_image_url' => $url]);
+                }
+                SiteSetting::clearCache($siteKey);
+
+                $kbAsli = round($result['original_size'] / 1024, 1);
+                $kbHemat = round($result['optimized_size'] / 1024, 1);
+                $persen = $result['original_size'] > 0 ? round((1 - ($result['optimized_size'] / $result['original_size'])) * 100, 1) : 0;
+
+                Log::info("OG Image [{$siteKey}] berhasil dioptimasi & diunggah: {$kbAsli}KB -> {$kbHemat}KB (Hemat {$persen}%) | URL: {$url}");
+
+                return response()->json([
+                    'success' => true,
+                    'url' => $url,
+                    'message' => "Banner media sosial berhasil dioptimasi & disimpan ke Cloud Storage (Ukuran {$kbAsli} KB dipadatkan menjadi {$kbHemat} KB, hemat {$persen}%).",
+                ]);
+            } catch (\Throwable $e) {
+                Log::error("OG Image upload error [{$siteKey}]: " . $e->getMessage(), [
+                    'trace' => $e->getTraceAsString(),
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengunggah berkas: ' . $e->getMessage(),
+                ], 500);
             }
-            SiteSetting::clearCache($siteKey);
-
-            return response()->json([
-                'success' => true,
-                'url' => $url,
-                'message' => 'Banner gambar media sosial berhasil diunggah.',
-            ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Gagal mengunggah berkas.'], 400);
+        return response()->json(['success' => false, 'message' => 'Berkas tidak ditemukan atau rusak.'], 400);
     }
 
     public function resetDefault(Request $request)
