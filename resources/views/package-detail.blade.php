@@ -50,8 +50,18 @@
     <header class="sticky top-0 z-50 transition-all duration-300 px-4 sm:px-6 lg:px-8 py-4 bg-[#090d16]/90 backdrop-blur-md border-b border-white/10">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <!-- Brand Logo -->
-            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <img src="{{ asset('images/logo-tiketdieng-transparent.png') }}?v=2" alt="{{ $settings->site_name }}" class="h-8 w-auto object-contain brightness-110">
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5 group shrink-0 focus:outline-none" aria-label="{{ $settings->site_name ?? 'TiketDieng' }}">
+                <img 
+                    src="{{ asset('images/logo-tiketdieng-blue-text.png') }}" 
+                    alt="{{ $settings->site_name ?? 'TiketDieng' }}" 
+                    class="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+                    onerror="this.style.display='none'; var fb = document.getElementById('rootBrandFallback'); if(fb){ fb.classList.remove('hidden'); fb.classList.add('flex'); }"
+                >
+                <div id="rootBrandFallback" class="hidden items-center gap-1.5 font-sans font-extrabold text-xl tracking-tight text-[#0064D2]">
+                    <span>tiket</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#FEDD00] shadow-sm inline-block"></span>
+                    <span class="text-slate-800">Dieng</span>
+                </div>
             </a>
 
             <!-- Desktop Links & WhatsApp CTA -->

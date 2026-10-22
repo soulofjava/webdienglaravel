@@ -3,6 +3,7 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class', // non-aktifkan deteksi dark mode otomatis OS (hanya aktif jika class 'dark' disetel manual di html)
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -18,12 +19,17 @@ export default {
                 cinzel: ['"Cinzel"', 'serif'],
             },
             colors: {
-                dieng: {
-                    dark: '#07090e',
-                    card: '#0c111d',
-                    border: 'rgba(255, 255, 255, 0.08)',
-                    gold: '#fbbf24',
-                    emerald: '#10b981',
+                tiket: {
+                    blue: '#0064D2',
+                    'blue-dark': '#0051A8',
+                    'blue-light': '#E8F3FF',
+                    yellow: '#FEDD00',
+                    'yellow-hover': '#F5D300',
+                    orange: '#F89C1D',
+                    surface: '#F4F7FB',
+                    dark: '#1A202C',
+                    gray: '#687176',
+                    border: '#E4EBF2',
                 }
             },
             animation: {
