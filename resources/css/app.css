@@ -2,33 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ==========================================================
-   SWEETALERT2 CUSTOM DARK CINEMATIC THEME (TIKETDIENG.COM)
-   ========================================================== */
+/* Utilitas Scrollbar Tersembunyi (Mobile-First Scrolling) */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 div:where(.swal2-container) {
     z-index: 99999 !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    background: rgba(15, 23, 42, 0.4) !important;
 }
 
 div:where(.swal2-container) .swal2-popup {
-    background: #090d16 !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 1.25rem !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 1.5rem !important;
     padding: 1.75rem !important;
-    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(245, 158, 11, 0.05) !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 100, 210, 0.12), 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
 }
 
 div:where(.swal2-container) .swal2-title {
-    color: #ffffff !important;
-    font-family: "Playfair Display", serif !important;
-    font-size: 1.35rem !important;
-    font-weight: 700 !important;
+    color: #1e293b !important;
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
     margin-bottom: 0.5rem !important;
 }
 
 div:where(.swal2-container) .swal2-html-container {
-    color: #cbd5e1 !important;
+    color: #64748b !important;
     font-size: 0.875rem !important;
     line-height: 1.5 !important;
     margin: 0 !important;
@@ -43,57 +49,50 @@ div:where(.swal2-container) .swal2-actions {
     width: 100% !important;
 }
 
-/* Tombol Konfirmasi YES / Hapus / Keluar - Selalu Tampil Jelas & Terlihat */
 div:where(.swal2-container) button.swal2-confirm {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: linear-gradient(135deg, #e11d48, #be123c) !important;
+    background: #0064d2 !important;
     color: #ffffff !important;
-    border: 1px solid rgba(244, 63, 94, 0.5) !important;
-    padding: 0.65rem 1.35rem !important;
-    border-radius: 0.75rem !important;
-    font-size: 0.75rem !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 9999px !important;
+    font-size: 0.875rem !important;
     font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35) !important;
+    letter-spacing: 0.025em !important;
+    box-shadow: 0 4px 12px rgba(0, 100, 210, 0.25) !important;
     cursor: pointer !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    transition: all 0.2s ease !important;
 }
 
 div:where(.swal2-container) button.swal2-confirm:hover {
-    background: linear-gradient(135deg, #f43f5e, #e11d48) !important;
-    border-color: rgba(251, 113, 133, 0.8) !important;
-    box-shadow: 0 6px 22px rgba(244, 63, 94, 0.55) !important;
-    transform: translateY(-1.5px) scale(1.02) !important;
+    background: #0051a8 !important;
+    box-shadow: 0 6px 16px rgba(0, 100, 210, 0.35) !important;
+    transform: translateY(-1px) !important;
 }
 
-div:where(.swal2-container) button.swal2-confirm:active {
-    transform: translateY(0) scale(0.98) !important;
-}
-
-/* Tombol Batal / Cancel */
 div:where(.swal2-container) button.swal2-cancel {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #cbd5e1 !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    padding: 0.65rem 1.25rem !important;
-    border-radius: 0.75rem !important;
-    font-size: 0.75rem !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 9999px !important;
+    font-size: 0.875rem !important;
     font-weight: 600 !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
 }
 
 div:where(.swal2-container) button.swal2-cancel:hover {
-    background: rgba(255, 255, 255, 0.16) !important;
-    color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-    transform: translateY(-1px) !important;
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+div:where(.swal2-container) button.swal2-confirm:active,
+div:where(.swal2-container) button.swal2-cancel:active {
+    transform: translateY(0) scale(0.98) !important;
 }

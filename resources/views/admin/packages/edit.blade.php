@@ -1,56 +1,71 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Paket Wisata')
+@section('title', 'Edit Paket: ' . $package->title . ' — Tiket Partner')
 
 @section('content')
-<div class="min-h-screen bg-[#07090e] text-slate-100 flex flex-col">
-    <!-- Header Panel Pengelola -->
-    <header class="border-b border-white/10 bg-[#090d16]/90 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+<div class="min-h-screen bg-[#F4F7FB] text-slate-800 flex flex-col font-sans">
+    <!-- Header Sticky Pengelola (Tiket Partner Top Bar) -->
+    <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-xs">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <a href="{{ route('admin.packages.index') }}" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors">
+                <a
+                    href="{{ route('admin.packages.index') }}"
+                    class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors shrink-0"
+                    title="Kembali ke Daftar Paket"
+                >
                     <i data-lucide="arrow-left" class="w-5 h-5"></i>
                 </a>
                 <div>
-                    <h1 class="font-serif text-base sm:text-lg font-bold text-white tracking-wide">
-                        Edit Paket: {{ Str::limit($package->title, 40) }}
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-[#0064D2]">Tiket Partner</span>
+                        <span class="text-slate-300">•</span>
+                        <span class="text-xs text-slate-500">Edit Produk</span>
+                    </div>
+                    <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight truncate max-w-md sm:max-w-xl">
+                        {{ $package->title }}
                     </h1>
-                    <p class="text-xs text-slate-400">
-                        Perbarui detail paket tour, jadwal rute, fasilitas, dan tarif
-                    </p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center justify-end gap-2.5">
                 <a
                     href="{{ route('package.detail', $package->slug) }}"
                     target="_blank"
-                    class="px-3 py-2 rounded-xl text-xs font-semibold text-amber-300 hover:text-amber-200 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-colors flex items-center gap-1.5"
+                    class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-[#0064D2] bg-slate-100 hover:bg-blue-50 border border-slate-200 transition-colors flex items-center gap-1.5"
+                    title="Lihat Pratinjau Publik"
                 >
-                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                    <span>Pratinjau Halaman</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-500"></i>
+                    <span class="hidden sm:inline">Pratinjau Web</span>
                 </a>
+
+                <a
+                    href="{{ route('admin.packages.index') }}"
+                    class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors"
+                >
+                    Batal
+                </a>
+
                 <button
                     type="submit"
                     form="package-edit-form"
-                    class="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 transition-all flex items-center gap-1.5"
+                    class="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0064D2] hover:bg-[#0051ab] transition-all shadow-md shadow-blue-500/25 flex items-center gap-2 cursor-pointer"
                 >
-                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <i data-lucide="check" class="w-4 h-4"></i>
                     <span>Simpan Perubahan</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Form Konten -->
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-8 py-8">
+    <!-- Konten Formulir Edit -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 space-y-6">
         @if ($errors->any())
-            <div class="mb-6 p-4 rounded-2xl bg-red-500/15 border border-red-500/40 text-red-300 text-xs sm:text-sm">
-                <div class="font-semibold flex items-center gap-2 mb-2">
-                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                    <span>Terdapat kesalahan pengisian data:</span>
+            <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm shadow-xs">
+                <div class="font-bold flex items-center gap-2 mb-2 text-rose-900">
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600"></i>
+                    <span>Harap periksa kembali isian formulir:</span>
                 </div>
-                <ul class="list-disc list-inside space-y-1 text-slate-300 pl-1">
+                <ul class="list-disc list-inside space-y-1 text-slate-700 pl-1">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -62,67 +77,75 @@
             @csrf
             @method('PUT')
 
-            <!-- 1. Informasi Dasar -->
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 space-y-5">
-                <div class="flex items-center gap-2.5 pb-4 border-b border-white/10 text-amber-400">
-                    <i data-lucide="info" class="w-5 h-5"></i>
-                    <h2 class="font-serif text-base font-bold text-white">1. Informasi Pokok Paket</h2>
+            <!-- 1. INFORMASI POKOK PAKET -->
+            <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0064D2] flex items-center justify-center font-bold text-xs">
+                        1
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Informasi Pokok Paket</h2>
+                        <p class="text-xs text-slate-500">Judul, slug URL, kategori, durasi, titik penjemputan, dan ringkasan paket.</p>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div class="md:col-span-2">
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Nama / Judul Paket Tour <span class="text-amber-400">*</span>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            Nama / Judul Paket Tour <span class="text-rose-500">*</span>
                         </label>
                         <input
                             type="text"
                             name="title"
                             value="{{ old('title', $package->title) }}"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all font-medium"
                         />
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Slug URL <span class="text-amber-400">*</span>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            Slug URL <span class="text-rose-500">*</span>
                         </label>
                         <input
                             type="text"
                             name="slug"
                             value="{{ old('slug', $package->slug) }}"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500 font-mono text-xs"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs font-mono focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all"
                         />
                     </div>
 
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label class="block text-xs font-semibold text-slate-300">
-                                Kategori Tour <span class="text-amber-400">*</span>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                                Kategori Tour <span class="text-rose-500">*</span>
                             </label>
-                            <a href="{{ route('admin.comcodes.index', ['group' => 'package_category']) }}" target="_blank" class="text-[10px] text-sky-400 hover:text-sky-300 flex items-center gap-1">
-                                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
-                                <span>Kelola Kategori</span>
+                            <a href="{{ route('admin.comcodes.index', ['group' => 'package_category']) }}" target="_blank" class="text-[11px] font-semibold text-[#0064D2] hover:underline flex items-center gap-1">
+                                <span>Master Kategori</span>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>
                             </a>
                         </div>
-                        <select
-                            name="category"
-                            required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#090d16] border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none cursor-pointer"
-                        >
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->code_value }}" {{ old('category', $package->category) == $cat->code_value ? 'selected' : '' }}>
-                                    {{ $cat->code_name }} ({{ $cat->code_value }})
-                                </option>
-                            @endforeach
-                        </select>
+                        <div class="relative">
+                            <select
+                                name="category"
+                                required
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none cursor-pointer transition-all font-medium"
+                            >
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->code_value }}" {{ old('category', $package->category) == $cat->code_value ? 'selected' : '' }}>
+                                        {{ $cat->code_name }} ({{ $cat->code_value }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
                     </div>
 
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label class="block text-xs font-semibold text-slate-300">
-                                Durasi Program <span class="text-amber-400">*</span>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                                Durasi Program <span class="text-rose-500">*</span>
                             </label>
                             <span class="text-[10px] text-slate-400">Pilih atau ketik kustom</span>
                         </div>
@@ -133,7 +156,7 @@
                             value="{{ old('duration', $package->duration) }}"
                             placeholder="Pilih dari daftar atau ketik durasi kustom"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all font-medium"
                         />
                         <datalist id="duration_list">
                             @foreach($durations as $dur)
@@ -144,8 +167,8 @@
 
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label class="block text-xs font-semibold text-slate-300">
-                                Titik Penjemputan <span class="text-amber-400">*</span>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                                Titik Penjemputan <span class="text-rose-500">*</span>
                             </label>
                             <span class="text-[10px] text-slate-400">Pilih atau ketik kustom</span>
                         </div>
@@ -156,7 +179,7 @@
                             value="{{ old('pickup_location', $package->pickup_location) }}"
                             placeholder="Pilih dari daftar atau ketik titik penjemputan"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all font-medium"
                         />
                         <datalist id="pickup_list">
                             @foreach($pickupLocations as $loc)
@@ -166,23 +189,91 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Tarif Mulai Dari (Rp) <span class="text-amber-400">*</span>
-                        </label>
-                        <input
-                            type="number"
-                            name="price"
-                            value="{{ old('price', $package->price) }}"
-                            min="0"
-                            step="1000"
-                            required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
-                        />
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                                Badge Label (Opsional)
+                            </label>
+                            <a href="{{ route('admin.comcodes.index', ['group' => 'package_badge']) }}" target="_blank" class="text-[11px] font-semibold text-[#0064D2] hover:underline flex items-center gap-1">
+                                <span>Master Badge</span>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>
+                            </a>
+                        </div>
+                        <div class="relative">
+                            <select
+                                name="badge"
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none cursor-pointer transition-all font-medium"
+                            >
+                                <option value="">-- Tanpa Badge Label --</option>
+                                @foreach($badges as $b)
+                                    <option value="{{ $b->code_value }}" {{ old('badge', $package->badge) == $b->code_value ? 'selected' : '' }}>
+                                        {{ $b->code_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Catatan Skema Tarif & Homestay <span class="text-amber-400">*</span>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            Urutan Tampil (Sort Order)
+                        </label>
+                        <input
+                            type="number"
+                            name="sort_order"
+                            value="{{ old('sort_order', $package->sort_order) }}"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm font-mono focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none transition-all"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                        Ringkasan / Sinopsis Paket <span class="text-rose-500">*</span>
+                    </label>
+                    <textarea
+                        name="summary"
+                        rows="3"
+                        required
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all leading-relaxed"
+                    >{{ old('summary', $package->summary) }}</textarea>
+                </div>
+            </div>
+
+            <!-- 2. HARGA & SKEMA TARIF -->
+            <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0064D2] flex items-center justify-center font-bold text-xs">
+                        2
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Harga & Skema Penawaran</h2>
+                        <p class="text-xs text-slate-500">Nominal dasar tarif, catatan perorangan/rombongan, dan status visibilitas.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            Tarif Mulai Dari (Rp) <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">Rp</span>
+                            <input
+                                type="number"
+                                name="price"
+                                value="{{ old('price', $package->price) }}"
+                                min="0"
+                                step="1000"
+                                required
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm font-mono font-bold focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            Catatan Skema Tarif & Homestay <span class="text-rose-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -190,114 +281,127 @@
                             value="{{ old('price_note', $package->price_note) }}"
                             placeholder="Contoh: / orang (Min. 4 Pax • Konfirmasi via WA)"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
-                        />
-                    </div>
-
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <label class="block text-xs font-semibold text-slate-300">
-                                Badge Label (Opsional)
-                            </label>
-                            <a href="{{ route('admin.comcodes.index', ['group' => 'package_badge']) }}" target="_blank" class="text-[10px] text-sky-400 hover:text-sky-300 flex items-center gap-1">
-                                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
-                                <span>Kelola Badge</span>
-                            </a>
-                        </div>
-                        <select
-                            name="badge"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#090d16] border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none cursor-pointer"
-                        >
-                            <option value="">-- Tanpa Badge Label --</option>
-                            @foreach($badges as $b)
-                                <option value="{{ $b->code_value }}" {{ old('badge', $package->badge) == $b->code_value ? 'selected' : '' }}>
-                                    {{ $b->code_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Urutan Tampil (Sort Order)
-                        </label>
-                        <input
-                            type="number"
-                            name="sort_order"
-                            value="{{ old('sort_order', $package->sort_order) }}"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all font-medium"
                         />
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                        Ringkasan / Sinopsis Paket <span class="text-amber-400">*</span>
+                <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-6">
+                    <label class="inline-flex items-center gap-3 cursor-pointer">
+                        <input type="hidden" name="is_active" value="0">
+                        <input
+                            type="checkbox"
+                            name="is_active"
+                            value="1"
+                            {{ old('is_active', (string)$package->is_active) == '1' ? 'checked' : '' }}
+                            class="w-5 h-5 rounded-lg border-slate-300 text-[#0064D2] focus:ring-[#0064D2] cursor-pointer"
+                        />
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Status Publikasi (Aktif)</span>
+                            <span class="text-[11px] text-slate-500">Tampilkan paket di katalog publik website tiket</span>
+                        </div>
                     </label>
-                    <textarea
-                        name="summary"
-                        rows="3"
-                        required
-                        class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
-                    >{{ old('summary', $package->summary) }}</textarea>
+
+                    <label class="inline-flex items-center gap-3 cursor-pointer">
+                        <input type="hidden" name="is_popular" value="0">
+                        <input
+                            type="checkbox"
+                            name="is_popular"
+                            value="1"
+                            {{ old('is_popular', (string)$package->is_popular) == '1' ? 'checked' : '' }}
+                            class="w-5 h-5 rounded-lg border-slate-300 text-amber-500 focus:ring-amber-400 cursor-pointer"
+                        />
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Paket Populer (Hot Promo)</span>
+                            <span class="text-[11px] text-slate-500">Beri sorotan bintang & tampil di seksi favorit</span>
+                        </div>
+                    </label>
                 </div>
             </div>
 
-            <!-- 2. Media / Banner Foto -->
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 space-y-5">
-                <div class="flex items-center gap-2.5 pb-4 border-b border-white/10 text-amber-400">
-                    <i data-lucide="image" class="w-5 h-5"></i>
-                    <h2 class="font-serif text-base font-bold text-white">2. Foto Cover Paket</h2>
+            <!-- 3. FOTO COVER & MEDIA DROPZONE -->
+            <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0064D2] flex items-center justify-center font-bold text-xs">
+                        3
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Media Cover & Foto Banner</h2>
+                        <p class="text-xs text-slate-500">Perbarui gambar utama paket dengan mengunggah foto baru atau mengganti URL.</p>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            URL Gambar (Unsplash / Eksternal)
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+                    <div class="space-y-3">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                            Unggah Foto Baru
+                        </label>
+                        <div class="border-2 border-dashed border-slate-300 hover:border-[#0064D2] rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-blue-50/20 transition-all cursor-pointer relative group">
+                            <input
+                                type="file"
+                                id="image_file_input"
+                                name="image_file"
+                                accept="image/*"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            <div class="space-y-2 pointer-events-none">
+                                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0064D2] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                                    <i data-lucide="cloud-upload" class="w-6 h-6"></i>
+                                </div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    Klik atau seret file foto baru ke sini
+                                </div>
+                                <p class="text-[11px] text-slate-400">Kosongkan jika ingin mempertahankan foto yang sudah ada.</p>
+                            </div>
+                        </div>
+                        <div id="fileInfoText" class="text-xs font-medium text-slate-600"></div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                            Atau URL Gambar Eksternal
                         </label>
                         <input
                             type="text"
+                            id="image_url_input"
                             name="image_url"
                             value="{{ old('image_url', $package->image_url) }}"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-amber-400 focus:outline-none placeholder:text-slate-500"
+                            placeholder="https://images.unsplash.com/..."
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs font-mono focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none placeholder:text-slate-400 transition-all"
                         />
-                        @if ($package->image_url)
-                            <div class="mt-3 relative rounded-xl overflow-hidden aspect-video border border-white/10 max-w-xs">
-                                <img src="{{ $package->image_url }}" alt="Preview" class="w-full h-full object-cover">
-                                <span class="absolute bottom-1 right-1 bg-black/70 px-2 py-0.5 text-[10px] rounded text-slate-300">Foto Saat Ini</span>
-                            </div>
-                        @endif
-                    </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                            Ganti dengan Unggah Foto Baru (Maks 5MB)
-                        </label>
-                        <input
-                            type="file"
-                            name="image_file"
-                            accept="image/*"
-                            class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20 cursor-pointer bg-white/5 border border-white/10 rounded-xl"
-                        />
-                        <p class="text-[11px] text-slate-400 mt-2">Biarkan kosong jika tetap menggunakan gambar yang sudah ada.</p>
+                        <!-- Live Preview Card -->
+                        <div class="rounded-xl overflow-hidden border border-slate-200 aspect-video bg-slate-100 relative shadow-xs">
+                            <img
+                                id="cover_preview"
+                                src="{{ old('image_url', $package->image_url) }}"
+                                alt="Pratinjau Cover"
+                                class="w-full h-full object-cover"
+                            />
+                            <span class="absolute bottom-2 right-2 bg-slate-900/75 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                                Foto Saat Ini
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. Opsi Jadwal & Rute Kunjungan (Itinerary Dinamis) -->
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 space-y-5">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                    <div class="flex items-center gap-2.5 text-amber-400">
-                        <i data-lucide="map" class="w-5 h-5"></i>
+            <!-- 4. PILIHAN RUTE & ITINERARY DINAMIS -->
+            <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0064D2] flex items-center justify-center font-bold text-xs">
+                            4
+                        </div>
                         <div>
-                            <h2 class="font-serif text-base font-bold text-white">3. Pilihan Rute & Destinasi Itinerary</h2>
-                            <p class="text-xs text-slate-400">Dapat diisi beberapa opsi rute kunjungan</p>
+                            <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Pilihan Rute & Destinasi Itinerary</h2>
+                            <p class="text-xs text-slate-500">Dapat diisi beberapa opsi rute perjalanan yang dapat dipilih wisatawan.</p>
                         </div>
                     </div>
                     <button
                         type="button"
                         id="btn-add-itinerary"
-                        class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 text-xs font-semibold transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+                        class="px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0064D2] border border-blue-200 text-xs font-bold transition-colors flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
                     >
                         <i data-lucide="plus-circle" class="w-4 h-4"></i>
                         <span>Tambah Opsi Rute</span>
@@ -322,43 +426,43 @@
                     @endphp
 
                     @foreach ($itineraries as $index => $item)
-                        <div class="itinerary-row p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 relative">
+                        <div class="itinerary-row p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 relative">
                             <div class="flex items-center justify-between gap-2">
-                                <span class="text-xs font-bold text-amber-300 font-mono tracking-wider rute-number">RUTE #{{ $index + 1 }}</span>
-                                <button type="button" class="btn-remove-row text-slate-500 hover:text-red-400 transition-colors text-xs flex items-center gap-1">
+                                <span class="text-xs font-bold text-[#0064D2] font-mono tracking-wider rute-number">RUTE #{{ $index + 1 }}</span>
+                                <button type="button" class="btn-remove-row text-slate-400 hover:text-rose-600 transition-colors text-xs flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                     <span>Hapus</span>
                                 </button>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nama Opsi Rute</label>
+                                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Opsi Rute</label>
                                     <input
                                         type="text"
                                         name="itinerary_names[]"
                                         value="{{ $item['name'] ?? '' }}"
                                         placeholder="Contoh: Rute 1 - Sikidang & Candi Arjuna"
-                                        class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                        class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none"
                                     />
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-semibold text-slate-400 mb-1">Daftar Destinasi Singkat</label>
+                                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Daftar Destinasi Singkat</label>
                                     <input
                                         type="text"
                                         name="itinerary_destinations[]"
                                         value="{{ $item['destinations'] ?? '' }}"
                                         placeholder="Contoh: Sunrise Sikunir, Kawah Sikidang, Candi Arjuna"
-                                        class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                        class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Rangkaian Jadwal Jam & Catatan Kegiatan</label>
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Rangkaian Jadwal Jam & Catatan Kegiatan</label>
                                 <textarea
                                     name="itinerary_descriptions[]"
                                     rows="2"
                                     placeholder="Rincian jam dan kegiatan..."
-                                    class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
+                                    class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none leading-relaxed"
                                 >{{ $item['description'] ?? '' }}</textarea>
                             </div>
                         </div>
@@ -366,101 +470,73 @@
                 </div>
             </div>
 
-            <!-- 4. Fasilitas & Persiapan (Include, Exclude, Checklist) -->
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 space-y-5">
-                <div class="flex items-center gap-2.5 pb-4 border-b border-white/10 text-amber-400">
-                    <i data-lucide="check-square" class="w-5 h-5"></i>
-                    <h2 class="font-serif text-base font-bold text-white">4. Fasilitas & Checklist Wisata Dieng</h2>
+            <!-- 5. FASILITAS & CHECKLIST WISATA -->
+            <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0064D2] flex items-center justify-center font-bold text-xs">
+                        5
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Fasilitas Termasuk & Perlengkapan</h2>
+                        <p class="text-xs text-slate-500">Transparansi fasilitas included, excluded, dan saran perlengkapan untuk kenyamanan wisatawan.</p>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                     <div>
-                        <label class="block text-xs font-semibold text-emerald-400 mb-1.5 flex items-center gap-1.5">
-                            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1 flex items-center gap-1.5">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
                             <span>Fasilitas Termasuk (Include)</span>
                         </label>
-                        <p class="text-[11px] text-slate-400 mb-2">Tulis satu fasilitas per baris</p>
+                        <p class="text-[11px] text-slate-400 mb-2">Tulis satu item per baris</p>
                         <textarea
                             name="inclusions_text"
                             rows="7"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-emerald-400 focus:outline-none placeholder:text-slate-600 leading-relaxed font-sans"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none leading-relaxed"
                         >{{ old('inclusions_text', is_array($package->inclusions) ? implode("\n", $package->inclusions) : '') }}</textarea>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-rose-400 mb-1.5 flex items-center gap-1.5">
-                            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-rose-700 mb-1 flex items-center gap-1.5">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i>
                             <span>Tidak Termasuk (Exclude)</span>
                         </label>
                         <p class="text-[11px] text-slate-400 mb-2">Tulis satu item per baris</p>
                         <textarea
                             name="exclusions_text"
                             rows="7"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-rose-400 focus:outline-none placeholder:text-slate-600 leading-relaxed font-sans"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs focus:bg-white focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none leading-relaxed"
                         >{{ old('exclusions_text', is_array($package->exclusions) ? implode("\n", $package->exclusions) : '') }}</textarea>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-amber-400 mb-1.5 flex items-center gap-1.5">
-                            <i data-lucide="backpack" class="w-3.5 h-3.5"></i>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 flex items-center gap-1.5">
+                            <i data-lucide="backpack" class="w-4 h-4 text-amber-600"></i>
                             <span>Checklist Persiapan Dieng</span>
                         </label>
                         <p class="text-[11px] text-slate-400 mb-2">Tulis satu saran perlengkapan per baris</p>
                         <textarea
                             name="preparations_text"
                             rows="7"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none placeholder:text-slate-600 leading-relaxed font-sans"
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none leading-relaxed"
                         >{{ old('preparations_text', is_array($package->preparations) ? implode("\n", $package->preparations) : '') }}</textarea>
                     </div>
                 </div>
-            </div>
-
-            <!-- 5. Opsi Visibilitas -->
-            <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-white/10 flex flex-wrap items-center gap-8">
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="hidden" name="is_active" value="0">
-                    <input
-                        type="checkbox"
-                        name="is_active"
-                        value="1"
-                        {{ old('is_active', (string)$package->is_active) == '1' ? 'checked' : '' }}
-                        class="w-4 h-4 rounded bg-white/10 border-white/20 text-amber-500 focus:ring-amber-400 focus:ring-offset-0 cursor-pointer"
-                    />
-                    <div>
-                        <span class="text-xs font-semibold text-white block">Status Aktif</span>
-                        <span class="text-[11px] text-slate-400">Tampilkan paket di halaman publik website</span>
-                    </div>
-                </label>
-
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="hidden" name="is_popular" value="0">
-                    <input
-                        type="checkbox"
-                        name="is_popular"
-                        value="1"
-                        {{ old('is_popular', (string)$package->is_popular) == '1' ? 'checked' : '' }}
-                        class="w-4 h-4 rounded bg-white/10 border-white/20 text-amber-500 focus:ring-amber-400 focus:ring-offset-0 cursor-pointer"
-                    />
-                    <div>
-                        <span class="text-xs font-semibold text-white block">Paket Populer (Hot)</span>
-                        <span class="text-[11px] text-slate-400">Beri tanda bintang / sorotan khusus</span>
-                    </div>
-                </label>
             </div>
 
             <!-- Tombol Aksi Bawah -->
             <div class="flex items-center justify-end gap-3 pt-2">
                 <a
                     href="{{ route('admin.packages.index') }}"
-                    class="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                    class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 transition-colors shadow-xs"
                 >
                     Batal
                 </a>
                 <button
                     type="submit"
-                    class="px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2"
+                    class="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0064D2] hover:bg-[#0051ab] transition-all shadow-md shadow-blue-500/25 flex items-center gap-2 cursor-pointer"
                 >
-                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <i data-lucide="check" class="w-4 h-4"></i>
                     <span>Simpan Perubahan</span>
                 </button>
             </div>
@@ -468,6 +544,7 @@
     </main>
 </div>
 
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('itinerary-container');
@@ -481,123 +558,155 @@
             });
         }
 
-        btnAdd.addEventListener('click', function () {
-            const rowCount = container.querySelectorAll('.itinerary-row').length + 1;
-            const newRow = document.createElement('div');
-            newRow.className = 'itinerary-row p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 relative';
-            newRow.innerHTML = `
-                <div class="flex items-center justify-between gap-2">
-                    <span class="text-xs font-bold text-amber-300 font-mono tracking-wider rute-number">RUTE #${rowCount}</span>
-                    <button type="button" class="btn-remove-row text-slate-500 hover:text-red-400 transition-colors text-xs flex items-center gap-1">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                        <span>Hapus</span>
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nama Opsi Rute</label>
-                        <input
-                            type="text"
-                            name="itinerary_names[]"
-                            placeholder="Contoh: Rute ${rowCount} - Destinasi Favorit"
-                            class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
-                        />
+        if (btnAdd) {
+            btnAdd.addEventListener('click', function () {
+                const rowCount = container.querySelectorAll('.itinerary-row').length + 1;
+                const newRow = document.createElement('div');
+                newRow.className = 'itinerary-row p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 relative';
+                newRow.innerHTML = `
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs font-bold text-[#0064D2] font-mono tracking-wider rute-number">RUTE #${rowCount}</span>
+                        <button type="button" class="btn-remove-row text-slate-400 hover:text-rose-600 transition-colors text-xs flex items-center gap-1 cursor-pointer">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            <span>Hapus</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Opsi Rute</label>
+                            <input
+                                type="text"
+                                name="itinerary_names[]"
+                                placeholder="Contoh: Rute ${rowCount} - Destinasi Favorit"
+                                class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Daftar Destinasi Singkat</label>
+                            <input
+                                type="text"
+                                name="itinerary_destinations[]"
+                                placeholder="Contoh: Sunrise Sikunir, Kawah Sikidang, Telaga Warna"
+                                class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none"
+                            />
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Daftar Destinasi Singkat</label>
-                        <input
-                            type="text"
-                            name="itinerary_destinations[]"
-                            placeholder="Contoh: Sunrise Sikunir, Kawah Sikidang, Telaga Warna"
-                            class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
-                        />
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Rangkaian Jadwal Jam & Catatan Kegiatan</label>
+                        <textarea
+                            name="itinerary_descriptions[]"
+                            rows="2"
+                            placeholder="Rincian jam dan kegiatan..."
+                            class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none leading-relaxed"
+                        ></textarea>
                     </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold text-slate-400 mb-1">Rangkaian Jadwal Jam & Catatan Kegiatan</label>
-                    <textarea
-                        name="itinerary_descriptions[]"
-                        rows="2"
-                        placeholder="Rincian jam dan kegiatan..."
-                        class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:border-amber-400 focus:outline-none"
-                    ></textarea>
-                </div>
-            `;
-            container.appendChild(newRow);
-            if (window.lucide) {
-                window.lucide.createIcons();
-            }
-        });
-
-        container.addEventListener('click', function (e) {
-            const btnRemove = e.target.closest('.btn-remove-row');
-            if (btnRemove) {
-                const rows = container.querySelectorAll('.itinerary-row');
-                if (rows.length > 1) {
-                    btnRemove.closest('.itinerary-row').remove();
-                    updateLabels();
-                } else {
-                    alert('Minimal harus ada 1 opsi rute kunjungan.');
+                `;
+                container.appendChild(newRow);
+                if (window.lucide) {
+                    window.lucide.createIcons();
                 }
-            }
-        });
+            });
+        }
 
-        // Kompresi otomatis berkas gambar besar sebelum dikirim
-        const imageFileInput = document.querySelector('input[name="image_file"]');
-        imageFileInput?.addEventListener('change', async function () {
-            if (!this.files || !this.files[0]) return;
-            const file = this.files[0];
-            if (file.size > 1.5 * 1024 * 1024 && file.type.startsWith('image/')) {
-                const hint = document.createElement('span');
-                hint.id = 'compressHint';
-                hint.className = 'text-[11px] text-amber-400 block mt-1';
-                hint.innerText = 'Mengoptimasi ukuran foto resolusi tinggi...';
-                this.parentNode.appendChild(hint);
+        if (container) {
+            container.addEventListener('click', function (e) {
+                const btnRemove = e.target.closest('.btn-remove-row');
+                if (btnRemove) {
+                    const rows = container.querySelectorAll('.itinerary-row');
+                    if (rows.length > 1) {
+                        btnRemove.closest('.itinerary-row').remove();
+                        updateLabels();
+                    } else {
+                        alert('Minimal harus ada 1 opsi rute kunjungan.');
+                    }
+                }
+            });
+        }
 
-                const compressed = await new Promise((resolve) => {
+        // Live Preview & Image Dropzone handling
+        const urlInput = document.getElementById('image_url_input');
+        const fileInput = document.getElementById('image_file_input');
+        const preview = document.getElementById('cover_preview');
+        const fileInfo = document.getElementById('fileInfoText');
+
+        if (urlInput && preview) {
+            urlInput.addEventListener('input', function () {
+                if (this.value.trim().length > 5) {
+                    preview.src = this.value.trim();
+                }
+            });
+        }
+
+        if (fileInput) {
+            fileInput.addEventListener('change', async function () {
+                if (!this.files || !this.files[0]) return;
+                const file = this.files[0];
+
+                if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            let width = img.width, height = img.height;
-                            const maxDim = 1920;
-                            if (width > maxDim || height > maxDim) {
-                                if (width > height) {
-                                    height = Math.round((height * maxDim) / width);
-                                    width = maxDim;
-                                } else {
-                                    width = Math.round((width * maxDim) / height);
-                                    height = maxDim;
-                                }
-                            }
-                            const canvas = document.createElement('canvas');
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-                            canvas.toBlob((blob) => {
-                                if (blob && blob.size < file.size) {
-                                    const newName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
-                                    resolve(new File([blob], newName, { type: 'image/jpeg', lastModified: Date.now() }));
-                                } else {
-                                    resolve(file);
-                                }
-                            }, 'image/jpeg', 0.85);
-                        };
-                        img.onerror = () => resolve(file);
-                        img.src = e.target.result;
+                        if (preview) preview.src = e.target.result;
                     };
-                    reader.onerror = () => resolve(file);
                     reader.readAsDataURL(file);
-                });
+                }
 
-                const dt = new DataTransfer();
-                dt.items.add(compressed);
-                this.files = dt.files;
-                hint.className = 'text-[11px] text-emerald-400 block mt-1';
-                hint.innerText = `✓ Foto dioptimasi (${(file.size / (1024*1024)).toFixed(1)}MB → ${(compressed.size / 1024).toFixed(0)}KB)`;
-            }
-        });
+                if (file.size > 1.5 * 1024 * 1024 && file.type.startsWith('image/')) {
+                    if (fileInfo) {
+                        fileInfo.className = 'text-xs text-amber-600 font-medium block mt-1';
+                        fileInfo.innerText = 'Mengoptimasi ukuran foto resolusi tinggi...';
+                    }
+
+                    const compressed = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                let width = img.width, height = img.height;
+                                const maxDim = 1920;
+                                if (width > maxDim || height > maxDim) {
+                                    if (width > height) {
+                                        height = Math.round((height * maxDim) / width);
+                                        width = maxDim;
+                                    } else {
+                                        width = Math.round((width * maxDim) / height);
+                                        height = maxDim;
+                                    }
+                                }
+                                const canvas = document.createElement('canvas');
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, width, height);
+                                canvas.toBlob((blob) => {
+                                    if (blob && blob.size < file.size) {
+                                        const newName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                                        resolve(new File([blob], newName, { type: 'image/jpeg', lastModified: Date.now() }));
+                                    } else {
+                                        resolve(file);
+                                    }
+                                }, 'image/jpeg', 0.85);
+                            };
+                            img.onerror = () => resolve(file);
+                            img.src = e.target.result;
+                        };
+                        reader.onerror = () => resolve(file);
+                        reader.readAsDataURL(file);
+                    });
+
+                    const dt = new DataTransfer();
+                    dt.items.add(compressed);
+                    this.files = dt.files;
+                    if (fileInfo) {
+                        fileInfo.className = 'text-xs text-emerald-600 font-medium block mt-1';
+                        fileInfo.innerText = `✓ Foto dioptimasi (${(file.size / (1024*1024)).toFixed(1)}MB → ${(compressed.size / 1024).toFixed(0)}KB)`;
+                    }
+                } else if (fileInfo) {
+                    fileInfo.className = 'text-xs text-emerald-600 font-medium block mt-1';
+                    fileInfo.innerText = `✓ Berkas dipilih: ${file.name} (${(file.size / 1024).toFixed(0)}KB)`;
+                }
+            });
+        }
     });
 </script>
+@endpush
 @endsection

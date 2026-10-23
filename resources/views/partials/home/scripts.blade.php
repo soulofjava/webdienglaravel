@@ -1,13 +1,18 @@
 <script>
-    // 1. Scroll Navbar Effect
+    // 1. Scroll Navbar Effect (tiket.com style crisp elevation)
+    const mainNavbar = document.getElementById('mainNavbar');
     const navContainer = document.getElementById('navContainer');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 40) {
-            navContainer.classList.add('glass-panel', 'shadow-2xl', 'shadow-black/80', 'py-3');
-            navContainer.classList.remove('bg-black/30', 'py-4');
+        if (window.scrollY > 20) {
+            if (mainNavbar) {
+                mainNavbar.classList.add('shadow-md', 'border-slate-200/80');
+                mainNavbar.classList.remove('shadow-sm', 'border-slate-100');
+            }
         } else {
-            navContainer.classList.remove('glass-panel', 'shadow-2xl', 'shadow-black/80', 'py-3');
-            navContainer.classList.add('bg-black/30', 'py-4');
+            if (mainNavbar) {
+                mainNavbar.classList.remove('shadow-md', 'border-slate-200/80');
+                mainNavbar.classList.add('shadow-sm', 'border-slate-100');
+            }
         }
     });
 

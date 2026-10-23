@@ -50,7 +50,7 @@
 @endsection
 
 @section('content')
-<main class="relative min-h-screen bg-[#07090e] text-slate-100 overflow-hidden">
+<main class="relative min-h-screen bg-[#F4F7FB] text-slate-800 overflow-hidden">
 
 
     @include('partials.home.navbar')

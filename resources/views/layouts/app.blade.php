@@ -79,16 +79,16 @@
 
     <style>
         body {
-            background-color: #07090e;
-            color: #f1f5f9;
+            background-color: #F4F7FB;
+            color: #1A202C;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
 
         .glass-panel {
-            background: rgba(12, 17, 29, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
         }
 
         /* Shimmering Skeleton Loader Animations */
@@ -100,7 +100,7 @@
             animation: shimmer 1.6s infinite linear;
         }
         .skeleton-shimmer {
-            background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.02) 75%);
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.02) 25%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.02) 75%);
             background-size: 200% 100%;
             animation: shimmerPulse 1.8s infinite ease-in-out;
         }
@@ -109,88 +109,107 @@
             100% { background-position: -200% 0; }
         }
 
-        /* Custom Flatpickr Dieng Dark Theme */
+        /* Custom Flatpickr tiket.com Modern Theme */
         .flatpickr-calendar {
-            background: #0d1322 !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
-            border-radius: 1.25rem !important;
-            padding: 8px !important;
+            background: #FFFFFF !important;
+            border: 1px solid #E2E8F0 !important;
+            box-shadow: 0 20px 40px -15px rgba(0, 100, 210, 0.15), 0 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+            border-radius: 1rem !important;
+            padding: 10px !important;
+            color: #1A202C !important;
         }
         .flatpickr-calendar .flatpickr-month {
             background: transparent !important;
-            color: #f8fafc !important;
-            fill: #f59e0b !important;
+            color: #1A202C !important;
+            fill: #0064D2 !important;
         }
         .flatpickr-current-month .flatpickr-monthDropdown-months,
         .flatpickr-current-month input.cur-year {
-            color: #fbbf24 !important;
+            color: #0064D2 !important;
             font-weight: 700 !important;
         }
+        .flatpickr-weekdays {
+            border-bottom: 1px solid #F1F5F9 !important;
+            margin-bottom: 4px !important;
+        }
+        span.flatpickr-weekday {
+            color: #64748B !important;
+            font-weight: 600 !important;
+        }
+        .flatpickr-day {
+            color: #334155 !important;
+            border-radius: 0.65rem !important;
+        }
         .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-            background: #f59e0b !important;
-            border-color: #f59e0b !important;
-            color: #090d16 !important;
+            background: #0064D2 !important;
+            border-color: #0064D2 !important;
+            color: #FFFFFF !important;
             font-weight: 800 !important;
-            border-radius: 0.75rem !important;
+            border-radius: 0.65rem !important;
         }
         .flatpickr-day:hover {
-            background: rgba(245, 158, 11, 0.25) !important;
-            border-radius: 0.75rem !important;
+            background: #E8F3FF !important;
+            color: #0064D2 !important;
+            border-radius: 0.65rem !important;
         }
         .flatpickr-day.today {
-            border-color: #f59e0b !important;
+            border-color: #FEDD00 !important;
+            background: #FFFBEB !important;
+            color: #B45309 !important;
+            font-weight: 700 !important;
+        }
+        .flatpickr-day.disabled, .flatpickr-day.disabled:hover {
+            color: #CBD5E1 !important;
         }
 
+        /* Modern tiket.com Clean Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #07090e;
+            background: #F4F7FB;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #CBD5E1;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #d97706;
+            background: #0064D2;
         }
     </style>
 
-    <!-- Flatpickr CSS (Dark theme - Asynchronously loaded for zero render blocking) -->
+    <!-- Flatpickr CSS (Modern Clean Light Theme) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css" media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     </noscript>
     @stack('styles')
 </head>
-<body class="antialiased selection:bg-amber-500/30 selection:text-amber-200">
+<body class="bg-[#F4F7FB] text-[#1A202C] font-sans antialiased selection:bg-[#0064D2]/20 selection:text-[#0064D2] min-h-screen">
     <!-- Sticky Impersonation Alert Banner (Khusus saat Superadmin Login As) -->
     @if(session()->has('impersonator_id'))
         @php
             $impersonator = \App\Models\User::find(session('impersonator_id'));
             $currentUser = Auth::user();
         @endphp
-        <aside aria-label="Notifikasi Mode Impersonasi" class="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white px-4 py-2.5 shadow-2xl border-b border-purple-500/40 sticky top-0 z-50">
+        <aside aria-label="Notifikasi Mode Impersonasi" class="bg-gradient-to-r from-[#003B7E] via-[#0051A8] to-[#0064D2] text-white px-4 py-2.5 shadow-md border-b border-blue-300/30 sticky top-0 z-50">
             <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                 <div class="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
                     <span class="relative flex h-3 w-3 shrink-0">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FEDD00] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-[#FEDD00]"></span>
                     </span>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="font-black uppercase tracking-wider bg-purple-500/30 px-2 py-0.5 rounded text-[10px] border border-purple-400/40 text-purple-200">
+                        <span class="font-black uppercase tracking-wider bg-[#FEDD00] px-2 py-0.5 rounded text-[10px] text-slate-900 shadow-sm">
                             MODE IMPERSONATE
                         </span>
-                        <span class="text-slate-300">Login Sebagai:</span>
-                        <span class="font-extrabold text-white bg-white/10 px-2 py-0.5 rounded border border-white/15">
+                        <span class="text-blue-100">Login Sebagai:</span>
+                        <span class="font-extrabold text-white bg-white/15 px-2 py-0.5 rounded border border-white/20">
                             {{ $currentUser?->name }} ({{ $currentUser?->email }})
                         </span>
                         @if($impersonator)
-                            <span class="text-purple-300 text-[11px] hidden md:inline">
-                                &bull; Superadmin Asli: <strong class="text-amber-300 font-semibold">{{ $impersonator->name }}</strong>
+                            <span class="text-blue-200 text-[11px] hidden md:inline">
+                                &bull; Superadmin Asli: <strong class="text-[#FEDD00] font-semibold">{{ $impersonator->name }}</strong>
                             </span>
                         @endif
                     </div>
@@ -199,10 +218,10 @@
                     @csrf
                     <button
                         type="submit"
-                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/25 hover:scale-105 cursor-pointer"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-xl bg-[#FEDD00] hover:bg-[#F5D300] text-slate-900 font-extrabold text-xs uppercase tracking-wider transition-all shadow-md shadow-amber-500/20 hover:scale-105 cursor-pointer"
                         title="Keluar dari akun staf ini dan kembali ke akun Superadmin"
                     >
-                        <i data-lucide="arrow-left-circle" class="w-4 h-4"></i>
+                        <i data-lucide="arrow-left-circle" class="w-4 h-4 text-slate-900"></i>
                         <span>Kembali ke Superadmin</span>
                     </button>
                 </form>

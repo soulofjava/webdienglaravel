@@ -13,60 +13,64 @@
     if ($isSuper) {
         $panelBrand = 'Control Panel';
         $panelBadge = 'CENTRAL CMS';
-        $panelBadgeClass = 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+        $panelBadgeClass = 'bg-blue-50 text-[#0064D2] border-blue-200';
         $panelIcon = 'layers';
         $panelDefaultSubtitle = 'Pusat Pengelolaan Konten & Multi-Unit Bisnis';
         $webPreviewUrl = route('home');
         $webPreviewLabel = 'Lihat Web';
         $roleLabel = 'SUPERADMIN';
-        $rolePillClass = 'bg-gradient-to-r from-amber-500/25 via-amber-500/15 to-yellow-500/10 border-amber-500/40 text-amber-300 shadow-amber-500/10';
+        $rolePillClass = 'bg-blue-50 border-blue-200 text-[#0064D2]';
         $roleIcon = 'crown';
     } elseif ($userScope === 'lotus') {
         $panelBrand = 'Lotus Creative';
         $panelBadge = 'STUDIO PANEL';
-        $panelBadgeClass = 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30';
+        $panelBadgeClass = 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200';
         $panelIcon = 'camera';
         $panelDefaultSubtitle = 'Pengelolaan Studio Fotografi & Video Dokumentasi';
         $webPreviewUrl = url('/?theme=lotus');
         $webPreviewLabel = 'Lihat Studio';
         $roleLabel = 'ADMIN LOTUS';
-        $rolePillClass = 'bg-fuchsia-500/15 border-fuchsia-500/30 text-fuchsia-300 shadow-fuchsia-500/10';
+        $rolePillClass = 'bg-fuchsia-50 border-fuchsia-200 text-fuchsia-700';
         $roleIcon = 'camera';
     } elseif ($userScope === 'jeep') {
         $panelBrand = 'Jeep Dieng';
         $panelBadge = 'OPERATIONS';
-        $panelBadgeClass = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+        $panelBadgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
         $panelIcon = 'compass';
         $panelDefaultSubtitle = 'Pengelolaan Armada & Paket Safari 4x4';
         $webPreviewUrl = url('/?theme=jeep');
         $webPreviewLabel = 'Lihat Web';
         $roleLabel = 'ADMIN JEEP';
-        $rolePillClass = 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300 shadow-emerald-500/10';
+        $rolePillClass = 'bg-emerald-50 border-emerald-200 text-emerald-700';
         $roleIcon = 'compass';
     } elseif ($userScope === 'shuttle') {
         $panelBrand = 'Shuttle Dieng';
         $panelBadge = 'OPERATIONS';
-        $panelBadgeClass = 'bg-sky-500/20 text-sky-300 border-sky-500/30';
+        $panelBadgeClass = 'bg-sky-50 text-sky-700 border-sky-200';
         $panelIcon = 'bus';
         $panelDefaultSubtitle = 'Pengelolaan Layanan Mikrobus 15 Seat';
         $webPreviewUrl = url('/?theme=shuttle');
         $webPreviewLabel = 'Lihat Web';
         $roleLabel = 'ADMIN SHUTTLE';
-        $rolePillClass = 'bg-sky-500/15 border-sky-500/30 text-sky-300 shadow-sky-500/10';
+        $rolePillClass = 'bg-sky-50 border-sky-200 text-sky-700';
         $roleIcon = 'bus';
     } else {
         // TiketDieng / default admin
         $panelBrand = 'TiketDieng';
-        $panelBadge = 'TRAVEL PANEL';
-        $panelBadgeClass = 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+        $panelBadge = 'PARTNER EXTRANET';
+        $panelBadgeClass = 'bg-blue-50 text-[#0064D2] border-blue-200';
         $panelIcon = 'compass';
         $panelDefaultSubtitle = 'Pengelolaan Paket Wisata & Biro Perjalanan';
         $webPreviewUrl = url('/?theme=tiketdieng');
         $webPreviewLabel = 'Lihat Portal';
-        $roleLabel = 'ADMIN TIKETDIENG';
-        $rolePillClass = 'bg-amber-500/15 border-amber-500/30 text-amber-300 shadow-amber-500/10';
+        $roleLabel = 'ADMIN MITRA';
+        $rolePillClass = 'bg-blue-50 border-blue-200 text-[#0064D2]';
         $roleIcon = 'user';
     }
+
+    // Hitung badge cepat jika tersedia
+    $packageCount = \Illuminate\Support\Facades\Schema::hasTable('tour_packages') ? \App\Models\TourPackage::count() : null;
+    $pickupCount = \Illuminate\Support\Facades\Schema::hasTable('pickup_locations') ? \App\Models\PickupLocation::count() : null;
 
     // Menu navigasi admin terpusat
     $navMenus = [
@@ -75,24 +79,28 @@
             'route' => 'admin.index',
             'active' => request()->routeIs('admin.index') || request()->routeIs('admin.settings.*'),
             'icon' => 'sliders-horizontal',
+            'badge' => null,
         ],
         [
             'name' => 'Paket Wisata',
             'route' => 'admin.packages.index',
             'active' => request()->routeIs('admin.packages.*'),
             'icon' => 'compass',
+            'badge' => $packageCount,
         ],
         [
             'name' => 'Titik Jemput',
             'route' => 'admin.pickup-locations.index',
             'active' => request()->routeIs('admin.pickup-locations.*'),
             'icon' => 'map-pin',
+            'badge' => $pickupCount,
         ],
         [
             'name' => 'Master Kode',
             'route' => 'admin.comcodes.index',
             'active' => request()->routeIs('admin.comcodes.*'),
             'icon' => 'database',
+            'badge' => null,
         ],
     ];
 
@@ -102,28 +110,33 @@
             'route' => 'admin.users.index',
             'active' => request()->routeIs('admin.users.*'),
             'icon' => 'users',
+            'badge' => null,
         ];
     }
 @endphp
 
-<header class="border-b border-white/10 bg-[#090d16]/95 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-3">
+<!-- Tiket.com Partner Extranet Topbar Navigation -->
+<header class="border-b border-slate-200/90 bg-white/95 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-2.5 shadow-xs">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
-        <!-- Sisi Kiri: Identitas Brand & Subtitle -->
+        <!-- Sisi Kiri: Brand tiket.com Partner & Subtitle -->
         <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
             <a href="{{ route('admin.index') }}" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform flex-shrink-0">
-                    <i data-lucide="{{ $panelIcon }}" class="w-4 h-4"></i>
+                <!-- Tiket Blue Mark with Happiness Yellow Dot -->
+                <div class="relative w-10 h-10 rounded-2xl bg-[#0064D2] flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:bg-[#0051A8] transition-all flex-shrink-0">
+                    <i data-lucide="{{ $panelIcon }}" class="w-5 h-5"></i>
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#FEDD00] border-2 border-white rounded-full"></span>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-serif text-sm sm:text-base font-bold text-white tracking-wide">
+                        <span class="font-sans text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center">
                             {{ $title ?? $panelBrand }}
+                            <span class="text-[#0064D2] ml-0.5">.</span>
                         </span>
-                        <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider {{ $panelBadgeClass }}">
+                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider border {{ $panelBadgeClass }}">
                             {{ $panelBadge }}
                         </span>
                     </div>
-                    <p class="text-[10px] text-slate-400">
+                    <p class="text-[11px] text-slate-500 font-medium hidden sm:block">
                         {{ $subtitle ?? $panelDefaultSubtitle }}
                     </p>
                 </div>
@@ -131,61 +144,71 @@
 
             <!-- Mobile View: Quick Actions -->
             <div class="flex items-center gap-1.5 md:hidden">
-                <a href="{{ $webPreviewUrl }}" target="_blank" class="p-2 rounded-lg bg-white/5 text-slate-300 hover:text-white border border-white/10" title="{{ $webPreviewLabel }}">
-                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <a href="{{ $webPreviewUrl }}" target="_blank" class="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" title="{{ $webPreviewLabel }}">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
                 </a>
                 <form action="{{ route('logout') }}" method="POST" onsubmit="return window.confirmLogout ? window.confirmLogout(event) : confirm('Keluar dari sesi pengelola?');">
                     @csrf
-                    <button type="submit" class="p-2 rounded-xl bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 border border-rose-500/20 transition-colors" title="Keluar">
-                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                    <button type="submit" class="p-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 transition-colors" title="Keluar">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </form>
             </div>
         </div>
 
-        <!-- Sisi Tengah: Tab Menu Utama (Seragam, Rapi & Skalabel) -->
-        <nav class="flex items-center p-1 rounded-xl bg-white/[0.03] border border-white/10 w-full md:w-auto justify-center gap-1 overflow-x-auto">
+        <!-- Sisi Tengah: Tab Menu Navigasi (Pill Tabs tiket Partner Style) -->
+        <nav class="flex items-center p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/80 w-full md:w-auto justify-start md:justify-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth">
             @foreach($navMenus as $menu)
                 <a
                     href="{{ route($menu['route']) }}"
-                    class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap {{ $menu['active'] ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm font-semibold' : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent' }}"
+                    class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs transition-all whitespace-nowrap shrink-0 {{ $menu['active'] ? 'bg-[#0064D2] text-white font-bold shadow-sm shadow-blue-500/25' : 'text-slate-600 hover:text-slate-900 hover:bg-white/80 font-semibold' }}"
                 >
-                    <i data-lucide="{{ $menu['icon'] }}" class="w-3.5 h-3.5 {{ $menu['active'] ? 'text-amber-400' : 'text-slate-400' }}"></i>
-                    <span>{{ $menu['name'] }}</span>
+                    <i data-lucide="{{ $menu['icon'] }}" class="w-3.5 h-3.5 shrink-0 {{ $menu['active'] ? 'text-white' : 'text-slate-500' }}"></i>
+                    <span class="whitespace-nowrap">{{ $menu['name'] }}</span>
+                    @if (!empty($menu['badge']))
+                        <span class="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold shrink-0 {{ $menu['active'] ? 'bg-[#FEDD00] text-slate-900' : 'bg-slate-200 text-slate-700' }}">
+                            {{ $menu['badge'] }}
+                        </span>
+                    @endif
                 </a>
             @endforeach
         </nav>
 
-        <!-- Sisi Kanan: Aksi Cepat, Akun & Logout (Desktop) -->
+        <!-- Sisi Kanan: Web Publik, Profil Pengelola & Tombol Keluar (Desktop) -->
         <div class="hidden md:flex items-center gap-2.5">
+            <!-- Tombol Web Publik -->
             <a
                 href="{{ $webPreviewUrl }}"
                 target="_blank"
-                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:text-[#0064D2] bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-200 transition-all shadow-2xs"
                 title="Buka Website Publik di Tab Baru"
             >
                 <span>{{ $webPreviewLabel }}</span>
-                <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
+                <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-400"></i>
             </a>
 
-            <div class="h-4 w-px bg-white/10 mx-0.5"></div>
+            <div class="h-5 w-px bg-slate-200 mx-0.5"></div>
 
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs shadow-md {{ $rolePillClass }}" title="Akun Pengelola: {{ $user?->email }}">
-                <i data-lucide="{{ $roleIcon }}" class="w-3.5 h-3.5 shrink-0"></i>
-                <div class="leading-tight">
-                    <span class="font-black text-[10px] tracking-widest uppercase block">{{ $roleLabel }}</span>
-                    <span class="text-[10px] opacity-90 max-w-[130px] truncate block">{{ $user?->email }}</span>
+            <!-- Avatar & Info Role Akun -->
+            <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50/80 shadow-2xs" title="Akun Pengelola: {{ $user?->email }}">
+                <div class="w-7 h-7 rounded-full bg-[#0064D2] text-white flex items-center justify-center font-extrabold text-[11px] shadow-xs flex-shrink-0">
+                    {{ strtoupper(substr($user?->name ?? 'A', 0, 1)) }}
+                </div>
+                <div class="leading-tight text-left">
+                    <span class="font-black text-[9px] tracking-wider uppercase block text-[#0064D2]">{{ $roleLabel }}</span>
+                    <span class="text-[11px] font-semibold text-slate-800 max-w-[130px] truncate block">{{ $user?->name ?? $user?->email }}</span>
                 </div>
             </div>
 
+            <!-- Tombol Logout -->
             <form action="{{ route('logout') }}" method="POST" onsubmit="return window.confirmLogout ? window.confirmLogout(event) : confirm('Keluar dari sesi pengelola?');" class="m-0 p-0 flex items-center">
                 @csrf
                 <button
                     type="submit"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-300 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all duration-200 cursor-pointer shadow-sm shadow-rose-500/5 hover:shadow-rose-500/15"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 transition-all duration-200 cursor-pointer shadow-2xs"
                     title="Keluar dari sesi pengelola"
                 >
-                    <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
+                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
                     <span>Keluar</span>
                 </button>
             </form>
