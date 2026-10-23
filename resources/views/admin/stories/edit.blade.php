@@ -42,7 +42,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.stories.update', $story->id) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.stories.update', $story->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -189,22 +189,46 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                    <!-- URL Foto & Preview Box -->
+                    <!-- File Picker / Upload Box -->
                     <div class="md:col-span-7 space-y-4">
                         <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                                Ganti Foto Dari Perangkat
+                            </label>
+                            <div class="border-2 border-dashed border-slate-300 hover:border-[#0064D2] rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-blue-50/20 transition-all cursor-pointer relative group">
+                                <input
+                                    type="file"
+                                    id="image_file_input"
+                                    name="image_file"
+                                    accept="image/*"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                                <div class="space-y-2 pointer-events-none">
+                                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0064D2] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                                        <i data-lucide="cloud-upload" class="w-6 h-6"></i>
+                                    </div>
+                                    <div class="text-xs font-bold text-slate-800">
+                                        Klik atau seret file gambar baru ke sini
+                                    </div>
+                                    <p class="text-[11px] text-slate-400">Mendukung JPG, PNG, WebP (Maks 25MB, kompresi otomatis)</p>
+                                </div>
+                            </div>
+                            <div id="fileInfoText" class="text-xs font-medium text-slate-600 mt-1"></div>
+                        </div>
+
+                        <div>
                             <label for="image_url" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                URL Foto / Gambar Lanskap <span class="text-rose-500">*</span>
+                                Atau Tautkan URL Gambar
                             </label>
                             <input
                                 type="url"
                                 id="image_url"
                                 name="image_url"
                                 value="{{ old('image_url', $story->image_url) }}"
-                                placeholder="https://..."
-                                required
-                                class="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none transition-all"
+                                placeholder="https://images.unsplash.com/..."
+                                class="w-full p-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs font-mono focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none transition-all"
                             />
-                            <p class="text-[11px] text-slate-400 mt-1">Gunakan foto rasio 16:9 atau 4:3 beresolusi tinggi (Unsplash / CDN Dieng).</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Biarkan jika tidak ingin mengubah foto babak.</p>
                         </div>
 
                         <!-- Ikon Lucide -->
@@ -234,14 +258,17 @@
                     <!-- Live Image Preview Card -->
                     <div class="md:col-span-5 space-y-2">
                         <span class="block text-xs font-bold uppercase tracking-wider text-slate-700">Preview Visual Foto</span>
-                        <div class="h-44 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 relative shadow-inner">
+                        <div class="h-56 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 relative shadow-inner">
                             <img
                                 id="imagePreview"
                                 src="{{ old('image_url', $story->image_url) }}"
                                 alt="Preview Foto"
                                 class="w-full h-full object-cover"
-                                onerror="this.src='https://placehold.co/600x400/f1f5f9/94a3b8?text=Preview+Foto+Tidak+Tersedia'"
+                                onerror="this.src='https://placehold.co/800x500/f1f5f9/94a3b8?text=Preview+Foto+Tidak+Tersedia'"
                             />
+                            <span class="absolute bottom-2 right-2 bg-slate-900/75 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                                Live Preview
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -363,12 +390,82 @@
 <!-- Script Dynamic Repeater & Image Preview -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const imgInput = document.getElementById('image_url');
-    const imgPreview = document.getElementById('imagePreview');
+    const urlInput = document.getElementById('image_url');
+    const fileInput = document.getElementById('image_file_input');
+    const preview = document.getElementById('imagePreview');
+    const fileInfo = document.getElementById('fileInfoText');
 
-    if (imgInput && imgPreview) {
-        imgInput.addEventListener('input', function() {
-            imgPreview.src = this.value.trim() || 'https://placehold.co/600x400/f1f5f9/94a3b8?text=Preview+Foto';
+    if (urlInput && preview) {
+        urlInput.addEventListener('input', function() {
+            if (this.value.trim().length > 5) {
+                preview.src = this.value.trim();
+            }
+        });
+    }
+
+    if (fileInput) {
+        fileInput.addEventListener('change', async function () {
+            if (!this.files || !this.files[0]) return;
+            const file = this.files[0];
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (preview) preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            if (fileInfo) {
+                fileInfo.className = 'text-xs text-slate-600 font-medium block mt-1';
+                fileInfo.innerText = `File dipilih: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+            }
+
+            // Kompresi otomatis jika file > 1.5MB
+            if (file.size > 1.5 * 1024 * 1024 && file.type.startsWith('image/')) {
+                if (fileInfo) {
+                    fileInfo.className = 'text-xs text-amber-600 font-medium block mt-1';
+                    fileInfo.innerText = 'Mengoptimasi ukuran foto resolusi tinggi...';
+                }
+
+                const compressed = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            let width = img.width, height = img.height;
+                            const maxDim = 1920;
+                            if (width > maxDim || height > maxDim) {
+                                if (width > height) {
+                                    height = Math.round((height * maxDim) / width);
+                                    width = maxDim;
+                                } else {
+                                    width = Math.round((width * maxDim) / height);
+                                    height = maxDim;
+                                }
+                            }
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                if (compressed) {
+                    const dt = new DataTransfer();
+                    dt.items.add(new File([compressed], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: 'image/jpeg' }));
+                    fileInput.files = dt.files;
+                    if (fileInfo) {
+                        fileInfo.className = 'text-xs text-emerald-600 font-medium block mt-1';
+                        fileInfo.innerText = `Foto baru dioptimasi: ${(compressed.size / 1024).toFixed(0)} KB (siap unggah)`;
+                    }
+                }
+            }
         });
     }
 
