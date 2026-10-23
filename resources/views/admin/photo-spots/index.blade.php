@@ -43,33 +43,59 @@
 
         <!-- Filter & Search Toolbar -->
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
-            <!-- Tabs Filter Status -->
+            <!-- Tabs Filter Scope & Status -->
             <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
                 <a
-                    href="{{ route('admin.photo-spots.index', array_merge(request()->except('status', 'page'), ['status' => 'all'])) }}"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $status === 'all' ? 'bg-[#0064D2] text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}"
+                    href="{{ route('admin.photo-spots.index', array_merge(request()->except('scope', 'page'), ['scope' => 'all'])) }}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $currentScope === 'all' ? 'bg-[#0064D2] text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}"
                 >
-                    <span>Semua Spot</span>
+                    <span>Semua Brand</span>
+                </a>
+                <a
+                    href="{{ route('admin.photo-spots.index', array_merge(request()->except('scope', 'page'), ['scope' => 'lotus'])) }}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $currentScope === 'lotus' ? 'bg-sky-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}"
+                >
+                    <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                    <span>Lotus Creative</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full {{ $currentScope === 'lotus' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700' }}">{{ $totalLotus }}</span>
+                </a>
+                <a
+                    href="{{ route('admin.photo-spots.index', array_merge(request()->except('scope', 'page'), ['scope' => 'jeep'])) }}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $currentScope === 'jeep' ? 'bg-red-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}"
+                >
+                    <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                    <span>Ready Jeep</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full {{ $currentScope === 'jeep' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700' }}">{{ $totalJeep }}</span>
+                </a>
+
+                <div class="h-4 w-px bg-slate-200 mx-1 shrink-0"></div>
+
+                <a
+                    href="{{ route('admin.photo-spots.index', array_merge(request()->except('status', 'page'), ['status' => 'all'])) }}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $status === 'all' ? 'bg-slate-800 text-white' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}"
+                >
+                    <span>Semua Status</span>
                     <span class="text-[10px] px-1.5 py-0.2 rounded-full {{ $status === 'all' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700' }}">{{ $totalAll }}</span>
                 </a>
                 <a
                     href="{{ route('admin.photo-spots.index', array_merge(request()->except('status', 'page'), ['status' => 'active'])) }}"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $status === 'active' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $status === 'active' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}"
                 >
-                    <span>Aktif Publik</span>
+                    <span>Aktif</span>
                     <span class="text-[10px] px-1.5 py-0.2 rounded-full {{ $status === 'active' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700' }}">{{ $totalActive }}</span>
                 </a>
                 <a
                     href="{{ route('admin.photo-spots.index', array_merge(request()->except('status', 'page'), ['status' => 'inactive'])) }}"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $status === 'inactive' ? 'bg-slate-700 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 {{ $status === 'inactive' ? 'bg-slate-700 text-white shadow-xs' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}"
                 >
-                    <span>Nonaktif / Draf</span>
+                    <span>Draf</span>
                     <span class="text-[10px] px-1.5 py-0.2 rounded-full {{ $status === 'inactive' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700' }}">{{ $totalInactive }}</span>
                 </a>
             </div>
 
             <!-- Search Form -->
             <form id="spotFilterForm" action="{{ route('admin.photo-spots.index') }}" method="GET" class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <input type="hidden" name="scope" value="{{ $currentScope }}">
                 <input type="hidden" name="status" value="{{ $status }}">
                 <div class="relative flex-1 md:w-72">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
@@ -139,8 +165,11 @@
                         <!-- Content info -->
                         <div class="p-5 space-y-2">
                             <div class="flex items-center justify-between gap-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full {{ $spot->site_scope === 'jeep' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-sky-50 text-sky-700 border border-sky-200' }}">
+                                    {{ $spot->site_scope === 'jeep' ? 'Ready Jeep' : 'Lotus Creative' }}
+                                </span>
                                 <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full {{ $spot->is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200' }}">
-                                    {{ $spot->is_active ? 'Aktif Publik' : 'Nonaktif' }}
+                                    {{ $spot->is_active ? 'Aktif' : 'Nonaktif' }}
                                 </span>
                             </div>
                             <h3 class="font-bold text-base text-slate-900 leading-snug group-hover:text-[#0064D2] transition-colors">

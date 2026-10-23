@@ -49,6 +49,7 @@ class AdminPhotoSpotTest extends TestCase
     public function test_admin_can_create_photo_spot_via_url(): void
     {
         $response = $this->actingAs($this->adminUser)->post(route('admin.photo-spots.store'), [
+            'site_scope' => 'lotus',
             'name' => 'Gunung Prau Sunrise Point',
             'best_time_tag' => '04.30 WIB',
             'description' => 'Bukit teletubbies dan bunga daisy dengan panorama Sindoro Sumbing.',
@@ -59,6 +60,7 @@ class AdminPhotoSpotTest extends TestCase
 
         $response->assertRedirect(route('admin.photo-spots.index'));
         $this->assertDatabaseHas('photo_spots', [
+            'site_scope' => 'lotus',
             'name' => 'Gunung Prau Sunrise Point',
             'best_time_tag' => '04.30 WIB',
             'sort_order' => 5,
@@ -73,6 +75,7 @@ class AdminPhotoSpotTest extends TestCase
         $file = UploadedFile::fake()->image('spot_test.jpg', 800, 600);
 
         $response = $this->actingAs($this->adminUser)->post(route('admin.photo-spots.store'), [
+            'site_scope' => 'jeep',
             'name' => 'Telaga Dringo Oase Tersembunyi',
             'best_time_tag' => 'Landscape',
             'description' => 'Ranu Kumbolo-nya Dieng dengan danau kawah alami.',
@@ -83,6 +86,7 @@ class AdminPhotoSpotTest extends TestCase
 
         $response->assertRedirect(route('admin.photo-spots.index'));
         $this->assertDatabaseHas('photo_spots', [
+            'site_scope' => 'jeep',
             'name' => 'Telaga Dringo Oase Tersembunyi',
         ]);
     }
@@ -92,6 +96,7 @@ class AdminPhotoSpotTest extends TestCase
         $spot = PhotoSpot::first();
 
         $response = $this->actingAs($this->adminUser)->put(route('admin.photo-spots.update', $spot->id), [
+            'site_scope' => $spot->site_scope,
             'name' => 'Puncak Sikunir Golden Sunrise VIP',
             'best_time_tag' => '05.15 WIB',
             'description' => 'Deskripsi baru yang diperbarui oleh admin.',
