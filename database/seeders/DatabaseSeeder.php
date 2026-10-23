@@ -67,7 +67,11 @@ class DatabaseSeeder extends Seeder
         SiteSetting::getSettings();
 
         // 3. Paket Wisata & Itinerary Tour Dieng
-        $this->call(TourPackageSeeder::class);
+        $this->call([
+            TourPackageSeeder::class,
+            PickupLocationSeeder::class,
+            DestinationStorySeeder::class,
+        ]);
 
         // 3. Statistik Pengunjung Awal
         $today = Carbon::today()->toDateString();
