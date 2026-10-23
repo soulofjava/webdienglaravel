@@ -33,19 +33,19 @@
 
             <a
                 href="{{ route('admin.packages.create') }}"
-                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0064D2] hover:bg-[#0051ab] transition-all shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/30 shrink-0 cursor-pointer"
+                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0064D2] hover:bg-[#0051ab] transition-all shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/30 shrink-0 cursor-pointer w-full sm:w-auto"
             >
                 <i data-lucide="plus-circle" class="w-4 h-4"></i>
                 <span>Tambah Paket Baru</span>
             </a>
         </div>
 
-        <!-- Bar Atas: Pencarian, Filter & Status Pills -->
+        <!-- Bar Atas: Pencarian, Filter & Status -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-            <form id="filterForm" action="{{ route('admin.packages.index') }}" method="GET" class="flex flex-wrap items-center gap-3 w-full">
+            <form id="filterForm" action="{{ route('admin.packages.index') }}" method="GET" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full">
                 <!-- Search Input with Debounce & Clear Button -->
-                <div class="relative flex-1 min-w-[220px]">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                <div class="relative flex-1 min-w-0">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     <input
                         type="text"
                         id="packageSearchInput"
@@ -56,8 +56,8 @@
                     />
                     @if(request('search'))
                         <a
-                            href="{{ route('admin.packages.index', array_merge(request()->except('search'), ['category' => request('category')])) }}"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
+                            href="{{ route('admin.packages.index', request()->except('search')) }}"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-200 transition-colors"
                             title="Hapus pencarian"
                         >
                             <i data-lucide="x" class="w-3.5 h-3.5"></i>
@@ -65,44 +65,49 @@
                     @endif
                 </div>
 
-                <!-- Dropdown Kategori -->
-                <div class="relative min-w-[160px]">
-                    <select
-                        name="category"
-                        onchange="this.form.submit()"
-                        class="w-full appearance-none py-2.5 pl-3.5 pr-8 rounded-xl bg-slate-50 border border-slate-300 text-slate-700 text-xs sm:text-sm font-medium focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none cursor-pointer transition-all"
+                <!-- Kontrol Filter Dropdown & Aksi Form -->
+                <div class="flex items-center gap-2">
+                    <!-- Dropdown Kategori -->
+                    <div class="relative flex-1 sm:w-48 min-w-[140px]">
+                        <select
+                            name="category"
+                            onchange="this.form.submit()"
+                            class="w-full appearance-none py-2.5 pl-3.5 pr-8 rounded-xl bg-slate-50 border border-slate-300 text-slate-700 text-xs sm:text-sm font-medium focus:bg-white focus:border-[#0064D2] focus:ring-2 focus:ring-[#0064D2]/20 focus:outline-none cursor-pointer transition-all"
+                        >
+                            <option value="">Semua Kategori</option>
+                            @foreach ($categories as $cat)
+                                <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
+                                    {{ $cat }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                        title="Terapkan filter"
                     >
-                        <option value="">Semua Kategori</option>
-                        @foreach ($categories as $cat)
-                            <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
-                                {{ $cat }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <i data-lucide="filter" class="w-3.5 h-3.5 text-slate-500"></i>
+                        <span class="hidden sm:inline">Terapkan</span>
+                    </button>
+
+                    @if(request('search') || request('category'))
+                        <a
+                            href="{{ route('admin.packages.index') }}"
+                            class="px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center justify-center gap-1 shrink-0"
+                            title="Reset filter"
+                        >
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                            <span class="hidden sm:inline">Reset</span>
+                        </a>
+                    @endif
                 </div>
-
-                <button
-                    type="submit"
-                    class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                    <i data-lucide="filter" class="w-3.5 h-3.5 text-slate-500"></i>
-                    <span>Terapkan</span>
-                </button>
-
-                @if(request('search') || request('category'))
-                    <a
-                        href="{{ route('admin.packages.index') }}"
-                        class="px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-1"
-                    >
-                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-                        <span>Reset Filter</span>
-                    </a>
-                @endif
             </form>
         </div>
 
-        <!-- DESKTOP TABLE VIEW (Zero Horizontal Scroll on Desktop) -->
+        <!-- DESKTOP TABLE VIEW (Visible on >= md, hidden on mobile) -->
         <div class="hidden md:block bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs text-slate-600">
@@ -138,7 +143,7 @@
                                                         {{ $pkg->badge }}
                                                     </span>
                                                 @endif
-                                                <span class="text-[10px] font-mono font-medium text-slate-400 bg-slate-100 px-1.5 py-0.2 rounded">#{{ $pkg->sort_order ?? 0 }}</span>
+                                                <span class="text-[10px] font-mono font-medium text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">#{{ $pkg->sort_order ?? 0 }}</span>
                                             </div>
                                             <a
                                                 href="{{ route('admin.packages.edit', $pkg->id) }}"
@@ -297,73 +302,126 @@
             @endif
         </div>
 
-        <!-- MOBILE CARD VIEW (Responsive Zero Horizontal Scroll) -->
-        <div class="block md:hidden space-y-3">
+        <!-- MOBILE CARD VIEW (Strictly Mobile-First, Zero Horizontal Scroll on < md) -->
+        <div class="block md:hidden space-y-3.5">
             @forelse ($packages as $pkg)
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 space-y-3">
+                @php
+                    $routes = $pkg->itinerary_options ?? [];
+                    $countRoutes = count($routes);
+                @endphp
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all p-4 space-y-3">
+                    <!-- Header Card: Thumbnail + Info Pokok -->
                     <div class="flex items-start gap-3">
-                        <div class="w-18 h-16 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                        <!-- Thumbnail dengan Fallback & Badge Urutan -->
+                        <div class="relative w-20 h-20 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-2xs">
                             <img
                                 src="{{ $pkg->image_url }}"
                                 alt="{{ $pkg->title }}"
                                 class="w-full h-full object-cover"
                                 onerror="this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80'"
                             />
+                            <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-slate-900/80 backdrop-blur-xs text-[9px] font-mono font-bold text-white leading-none">
+                                #{{ $pkg->sort_order ?? 0 }}
+                            </span>
                         </div>
+
+                        <!-- Info Judul, Badges & Tarif -->
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center gap-1.5 mb-1 flex-wrap">
                                 @if ($pkg->badge)
-                                    <span class="px-2 py-0.2 rounded-full text-[9px] font-extrabold uppercase bg-[#FEDD00] text-slate-900 border border-amber-300">
+                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide bg-[#FEDD00] text-slate-900 border border-amber-300 shadow-2xs">
                                         {{ $pkg->badge }}
                                     </span>
                                 @endif
-                                <span class="px-2 py-0.2 rounded-full text-[9px] font-semibold bg-blue-50 text-[#0064D2] border border-blue-100">
+                                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-[#0064D2] border border-blue-100">
                                     {{ $pkg->category }}
                                 </span>
                                 @if ($pkg->is_active)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.2 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                         Aktif
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.2 rounded-full text-[9px] font-semibold bg-slate-100 text-slate-500">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-slate-100 text-slate-500 border border-slate-200">
                                         Nonaktif
                                     </span>
                                 @endif
                             </div>
-                            <h3 class="font-bold text-slate-900 text-sm line-clamp-2 leading-snug">
+
+                            <a
+                                href="{{ route('admin.packages.edit', $pkg->id) }}"
+                                class="font-bold text-slate-900 hover:text-[#0064D2] transition-colors text-sm line-clamp-2 leading-snug block"
+                                title="{{ $pkg->title }}"
+                            >
                                 {{ $pkg->title }}
-                            </h3>
-                            <div class="text-[11px] font-extrabold text-[#0064D2] mt-1">
-                                {{ $pkg->formatted_price }} <span class="text-[10px] font-normal text-slate-400">{{ $pkg->price_note }}</span>
+                            </a>
+
+                            <div class="mt-1 flex items-baseline gap-1.5 flex-wrap">
+                                <span class="text-sm font-extrabold text-[#0064D2]">
+                                    {{ $pkg->formatted_price }}
+                                </span>
+                                <span class="text-[10px] font-medium text-slate-400">
+                                    {{ $pkg->price_note }}
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="text-[11px] text-slate-500 space-y-1 pt-2 border-t border-slate-100">
-                        <div class="flex items-center gap-1.5">
-                            <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                            <span>{{ $pkg->duration }}</span>
+                    <!-- Spesifikasi Paket: Durasi, Titik Jemput, & Opsi Rute -->
+                    <div class="pt-2.5 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+                        <div class="flex items-center justify-between gap-2 text-[11px]">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                <span class="truncate font-medium">{{ $pkg->duration }}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 min-w-0 text-slate-500">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#0064D2] shrink-0"></i>
+                                <span class="truncate font-medium" title="{{ $pkg->pickup_location }}">{{ $pkg->pickup_location }}</span>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                            <span class="truncate">{{ $pkg->pickup_location }}</span>
-                        </div>
+
+                        <!-- Pilihan Rute Itinerary -->
+                        @if ($countRoutes > 0)
+                            <div class="flex items-center gap-1.5 text-[11px] pt-0.5">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold shrink-0">
+                                    <i data-lucide="compass" class="w-3 h-3 text-indigo-500"></i>
+                                    <span>{{ $countRoutes }} Rute</span>
+                                </span>
+                                <span class="truncate text-slate-500 text-[11px]">
+                                    {{ collect($routes)->pluck('name')->implode(', ') }}
+                                </span>
+                            </div>
+                        @else
+                            <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                                <i data-lucide="minus" class="w-3 h-3 text-slate-300"></i>
+                                <span>Rute Tunggal Standar</span>
+                            </div>
+                        @endif
+
+                        @if ($pkg->summary)
+                            <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed pt-1">
+                                {{ $pkg->summary }}
+                            </p>
+                        @endif
                     </div>
 
-                    <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                    <!-- Action Bar (Thumb-Friendly, min 38px target) -->
+                    <div class="flex items-center justify-between gap-2 pt-2.5 border-t border-slate-100">
                         <a
                             href="{{ route('package.detail', $pkg->slug) }}"
                             target="_blank"
-                            class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-medium flex items-center gap-1.5 hover:bg-slate-200"
+                            class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors min-h-[38px] cursor-pointer"
+                            title="Pratinjau Halaman Publik"
                         >
-                            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                            <span>Lihat</span>
+                            <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>Pratinjau</span>
                         </a>
 
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-2">
                             <a
                                 href="{{ route('admin.packages.edit', $pkg->id) }}"
-                                class="px-3.5 py-1.5 rounded-xl bg-blue-50 text-[#0064D2] text-xs font-bold flex items-center gap-1.5 border border-blue-200 hover:bg-blue-100"
+                                class="px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0064D2] text-xs font-bold flex items-center gap-1.5 border border-blue-200 transition-colors min-h-[38px] cursor-pointer"
+                                title="Ubah Paket"
                             >
                                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                                 <span>Ubah</span>
@@ -372,28 +430,41 @@
                             <form
                                 action="{{ route('admin.packages.destroy', $pkg->id) }}"
                                 method="POST"
-                                onsubmit="return window.confirmDelete ? window.confirmDelete(event, '{{ addslashes($pkg->title) }}', 'Paket ini akan dihapus permanen.') : confirm('Hapus paket?');"
+                                onsubmit="return window.confirmDelete ? window.confirmDelete(event, '{{ addslashes($pkg->title) }}', 'Seluruh data jadwal itinerary dan foto paket ini akan dihapus permanen.') : confirm('Hapus paket?');"
                                 class="inline"
                             >
                                 @csrf
                                 @method('DELETE')
                                 <button
                                     type="submit"
-                                    class="p-2 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition-colors cursor-pointer"
-                                    title="Hapus"
+                                    class="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors cursor-pointer min-h-[38px] min-w-[38px] flex items-center justify-center"
+                                    title="Hapus Paket"
                                 >
-                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-slate-500">
-                    <p class="text-sm font-bold text-slate-800">Tidak ada paket wisata.</p>
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-slate-500 space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2">
+                        <i data-lucide="package-search" class="w-6 h-6"></i>
+                    </div>
+                    <p class="text-sm font-bold text-slate-800">Tidak ada paket wisata yang sesuai.</p>
+                    <p class="text-xs text-slate-400">Coba sesuaikan kata kunci pencarian atau reset filter.</p>
+                    @if(request('search') || request('category'))
+                        <div class="pt-2">
+                            <a href="{{ route('admin.packages.index') }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#0064D2] bg-blue-50 border border-blue-200 hover:bg-blue-100">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                <span>Reset Semua Filter</span>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @endforelse
 
+            <!-- Paginasi Mobile -->
             @if ($packages->hasPages())
                 <div class="pt-2">
                     {{ $packages->links() }}
