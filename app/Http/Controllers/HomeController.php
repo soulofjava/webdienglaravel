@@ -60,13 +60,11 @@ class HomeController extends Controller
                 ->toArray();
         });
 
-        // Mengambil destinasi cerita sinematik 5 babak Dieng aktif (di-cache 10 menit)
-        $stories = Cache::remember('home_destination_stories', 600, function () {
-            return DestinationStory::where('is_active', true)
-                ->orderBy('sort_order', 'asc')
-                ->orderBy('id', 'asc')
-                ->get();
-        });
+        // Mengambil destinasi cerita sinematik 5 babak Dieng aktif (query langsung cepat & bebas resiko serialisasi serverless)
+        $stories = DestinationStory::where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
 
         $themeView = "themes.{$activeTheme}.home";
         if (!view()->exists($themeView)) {
