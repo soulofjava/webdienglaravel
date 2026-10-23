@@ -19,6 +19,11 @@ class AdminDestinationStoryController extends Controller
         $user = Auth::user();
         $userScope = $user ? $user->getSiteScope() : null;
 
+        // Admin cabang/unit bisnis dilarang mengakses Cerita Babak TiketDieng
+        if ($userScope && $userScope !== 'tiketdieng') {
+            abort(403, 'Anda tidak memiliki hak akses ke modul Cerita Babak.');
+        }
+
         $baseQuery = DestinationStory::query();
         if ($userScope) {
             $baseQuery->where('site_scope', $userScope);
@@ -70,6 +75,13 @@ class AdminDestinationStoryController extends Controller
 
     public function create()
     {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $userScope = $user ? $user->getSiteScope() : null;
+        if ($userScope && $userScope !== 'tiketdieng') {
+            abort(403, 'Anda tidak memiliki hak akses ke modul Cerita Babak.');
+        }
+
         $settings = SiteSetting::getSettings();
         $nextSortOrder = (DestinationStory::max('sort_order') ?? 0) + 1;
 

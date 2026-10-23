@@ -10,6 +10,15 @@ class AdminPickupLocationController extends Controller
 {
     public function index(Request $request)
     {
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $userScope = $user ? $user->getSiteScope() : null;
+
+        // Admin Lotus dan Jeep tidak mengelola titik jemput (kalkulator surcharge tiketdieng)
+        if ($userScope && !in_array($userScope, ['tiketdieng', 'shuttle'], true)) {
+            abort(403, 'Modul titik jemput tidak tersedia untuk unit bisnis Anda.');
+        }
+
         $settings = SiteSetting::getSettings();
         $query = PickupLocation::query()->orderBy('sort_order', 'asc')->orderBy('id', 'asc');
 
