@@ -555,10 +555,10 @@
                         </label>
 
                         <!-- Area Pratinjau & Tombol Unggah Berkas -->
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
                             <!-- Pratinjau Ikon Aktif -->
-                            <div class="flex items-center gap-3">
-                                <div class="w-14 h-14 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden p-2 flex-shrink-0 shadow-2xs">
+                            <div class="flex items-center gap-3 min-w-0 flex-1">
+                                <div class="w-12 sm:w-14 h-12 sm:h-14 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden p-2 shrink-0 shadow-2xs">
                                     <img
                                         id="faviconPreview"
                                         src="{{ $settings->favicon_url ?: asset('favicon.ico') }}"
@@ -567,17 +567,17 @@
                                         onerror="this.src='{{ asset('favicon.ico') }}'"
                                     />
                                 </div>
-                                <div>
+                                <div class="min-w-0 flex-1">
                                     <p class="text-xs font-bold text-slate-800">Pratinjau Ikon Tab Aktif</p>
-                                    <p class="text-[11px] text-slate-500 truncate max-w-[220px]" id="faviconText">
+                                    <p class="text-[11px] text-slate-500 truncate" id="faviconText">
                                         {{ $settings->favicon_url ?: 'Ikon bawaan aktif' }}
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Tombol Pemilih Berkas Ajax -->
-                            <div class="sm:ml-auto w-full sm:w-auto">
-                                <label class="relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#0064D2] bg-blue-50 hover:bg-blue-100 border border-blue-200 cursor-pointer transition-all">
+                            <div class="w-full sm:w-auto shrink-0">
+                                <label class="w-full sm:w-auto relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#0064D2] bg-blue-50 hover:bg-blue-100 border border-blue-200 cursor-pointer transition-all">
                                     <i data-lucide="upload" class="w-3.5 h-3.5"></i>
                                     <span id="faviconBtnText">Unggah Berkas Baru</span>
                                     <input
@@ -1008,22 +1008,24 @@
                             </span>
                         </label>
 
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                            <div class="w-28 h-16 rounded-xl bg-slate-200 border border-slate-300 overflow-hidden flex items-center justify-center flex-shrink-0 shadow-2xs">
-                                <img
-                                    id="ogPreview"
-                                    src="{{ $settings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop' }}"
-                                    alt="Pratinjau Banner Medsos"
-                                    class="w-full h-full object-cover"
-                                />
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                            <div class="flex items-center gap-3 min-w-0 flex-1">
+                                <div class="w-24 sm:w-28 h-14 sm:h-16 rounded-xl bg-slate-200 border border-slate-300 overflow-hidden flex items-center justify-center shrink-0 shadow-2xs">
+                                    <img
+                                        id="ogPreview"
+                                        src="{{ $settings->og_image_url ?: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1200&auto=format&fit=crop' }}"
+                                        alt="Pratinjau Banner Medsos"
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-xs font-bold text-slate-800">Banner Media Sosial Aktif</p>
+                                    <p class="text-[11px] text-slate-500 truncate" id="ogText">
+                                        {{ $settings->og_image_url ?: 'Banner standar aktif' }}
+                                    </p>
+                                </div>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs font-bold text-slate-800">Banner Media Sosial Aktif</p>
-                                <p class="text-[11px] text-slate-500 truncate" id="ogText">
-                                    {{ $settings->og_image_url ?: 'Banner standar aktif' }}
-                                </p>
-                            </div>
-                            <label class="relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#0064D2] bg-blue-50 hover:bg-blue-100 border border-blue-200 cursor-pointer transition-all flex-shrink-0">
+                            <label class="w-full sm:w-auto relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#0064D2] bg-blue-50 hover:bg-blue-100 border border-blue-200 cursor-pointer transition-all shrink-0">
                                 <i data-lucide="upload" class="w-3.5 h-3.5"></i>
                                 <span id="ogBtnText">Unggah Banner Baru</span>
                                 <input
