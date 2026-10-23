@@ -72,6 +72,7 @@
     $packageCount = \Illuminate\Support\Facades\Schema::hasTable('tour_packages') ? \App\Models\TourPackage::count() : null;
     $pickupCount = \Illuminate\Support\Facades\Schema::hasTable('pickup_locations') ? \App\Models\PickupLocation::count() : null;
     $storyCount = \Illuminate\Support\Facades\Schema::hasTable('destination_stories') ? \App\Models\DestinationStory::count() : null;
+    $photoSpotCount = \Illuminate\Support\Facades\Schema::hasTable('photo_spots') ? \App\Models\PhotoSpot::count() : null;
 
     // Menu navigasi admin terpusat
     $navMenus = [
@@ -95,6 +96,13 @@
             'active' => request()->routeIs('admin.stories.*') || request()->routeIs('admin.destination-stories.*'),
             'icon' => 'book-open',
             'badge' => $storyCount,
+        ],
+        [
+            'name' => 'Spot Foto',
+            'route' => 'admin.photo-spots.index',
+            'active' => request()->routeIs('admin.photo-spots.*'),
+            'icon' => 'camera',
+            'badge' => $photoSpotCount,
         ],
         [
             'name' => 'Titik Jemput',

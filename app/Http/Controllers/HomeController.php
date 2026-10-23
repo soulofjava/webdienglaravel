@@ -66,13 +66,19 @@ class HomeController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
+        // Mengambil spot foto favorit Lotus Creative aktif (query langsung bebas resiko serialisasi serverless)
+        $photoSpots = \App\Models\PhotoSpot::where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+
         $themeView = "themes.{$activeTheme}.home";
         if (!view()->exists($themeView)) {
             $themeView = view()->exists('home') ? 'home' : 'themes.tiketdieng.home';
         }
 
         return response()
-            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme', 'pickupLocations', 'stories'))
+            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme', 'pickupLocations', 'stories', 'photoSpots'))
             ->header('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     }
 

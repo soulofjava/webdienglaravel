@@ -120,6 +120,20 @@ Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(functi
         'destroy' => 'admin.destination-stories.destroy',
     ]);
 
+    // CRUD Spot Foto Favorit Lotus Creative
+    Route::patch('photo-spots/{photoSpot}/toggle', [\App\Http\Controllers\AdminPhotoSpotController::class, 'toggleStatus'])->name('admin.photo-spots.toggle');
+    Route::resource('photo-spots', \App\Http\Controllers\AdminPhotoSpotController::class)->parameters([
+        'photo-spots' => 'photoSpot'
+    ])->names([
+        'index' => 'admin.photo-spots.index',
+        'create' => 'admin.photo-spots.create',
+        'store' => 'admin.photo-spots.store',
+        'show' => 'admin.photo-spots.show',
+        'edit' => 'admin.photo-spots.edit',
+        'update' => 'admin.photo-spots.update',
+        'destroy' => 'admin.photo-spots.destroy',
+    ]);
+
     // Kembali dari mode Impersonate (dapat diakses saat sedang impersonate sebagai admin biasa)
     Route::post('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate'])->name('admin.users.leave-impersonate');
     Route::get('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate']);
