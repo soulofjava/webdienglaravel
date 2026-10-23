@@ -68,13 +68,40 @@
         $roleIcon = 'user';
     }
 
-    // Hitung badge cepat jika tersedia
-    $packageCount = \Illuminate\Support\Facades\Schema::hasTable('tour_packages') ? \App\Models\TourPackage::count() : null;
-    $pickupCount = \Illuminate\Support\Facades\Schema::hasTable('pickup_locations') ? \App\Models\PickupLocation::count() : null;
-    $storyCount = \Illuminate\Support\Facades\Schema::hasTable('destination_stories') ? \App\Models\DestinationStory::count() : null;
-    $photoSpotCount = \Illuminate\Support\Facades\Schema::hasTable('photo_spots') ? \App\Models\PhotoSpot::count() : null;
+    // Hitung badge cepat spesifik scope akun aktif
+    $packageCount = null;
+    $pickupCount = null;
+    $storyCount = null;
+    $photoSpotCount = null;
 
-    // Menu navigasi admin terpusat
+    if (\Illuminate\Support\Facades\Schema::hasTable('tour_packages')) {
+        $pkgQ = \App\Models\TourPackage::query();
+        if ($user && method_exists($user, 'getAllowedPackageCategories')) {
+            $allowedCats = $user->getAllowedPackageCategories();
+            if ($allowedCats !== null) {
+                $pkgQ->whereIn('category', $allowedCats);
+            }
+        }
+        $packageCount = $pkgQ->count();
+    }
+
+    if (\Illuminate\Support\Facades\Schema::hasTable('pickup_locations')) {
+        $pickupCount = \App\Models\PickupLocation::count();
+    }
+
+    if (\Illuminate\Support\Facades\Schema::hasTable('destination_stories')) {
+        $storyCount = \App\Models\DestinationStory::where('site_scope', $userScope ?: 'tiketdieng')->count();
+    }
+
+    if (\Illuminate\Support\Facades\Schema::hasTable('photo_spots')) {
+        $spotQ = \App\Models\PhotoSpot::query();
+        if ($userScope) {
+            $spotQ->where('site_scope', $userScope);
+        }
+        $photoSpotCount = $spotQ->count();
+    }
+
+    // Bangun daftar menu yang terisolasi 100% per identitas brand pengelola
     $navMenus = [
         [
             'name' => 'Pengaturan',
@@ -84,42 +111,62 @@
             'badge' => null,
         ],
         [
-            'name' => 'Paket Wisata',
+            'name' => $userScope === 'jeep' ? 'Paket Jeep 4x4' : ($userScope === 'lotus' ? 'Paket Dokumentasi' : ($userScope === 'shuttle' ? 'Paket Shuttle' : 'Paket Wisata')),
             'route' => 'admin.packages.index',
             'active' => request()->routeIs('admin.packages.*'),
-            'icon' => 'compass',
+            'icon' => $userScope === 'jeep' ? 'compass' : ($userScope === 'lotus' ? 'camera' : ($userScope === 'shuttle' ? 'bus' : 'compass')),
             'badge' => $packageCount,
         ],
-        [
+    ];
+
+    // Menu Cerita Babak HANYA untuk Superadmin dan Admin TiketDieng (karena ini fitur eksklusif scrollytelling TiketDieng)
+    if ($isSuper || $userScope === 'tiketdieng') {
+        $navMenus[] = [
             'name' => 'Cerita Babak',
             'route' => 'admin.stories.index',
             'active' => request()->routeIs('admin.stories.*') || request()->routeIs('admin.destination-stories.*'),
             'icon' => 'book-open',
             'badge' => $storyCount,
-        ],
-        [
-            'name' => 'Spot Foto',
+        ];
+    }
+
+    // Menu Spot / Rute: Tampil untuk Superadmin, Admin Lotus (Spot Foto), dan Admin Jeep (Destinasi Rute 4x4)
+    if ($isSuper || in_array($userScope, ['lotus', 'jeep'])) {
+        $spotLabel = $userScope === 'jeep' ? 'Rute Destinasi 4x4' : ($userScope === 'lotus' ? 'Spot Foto' : 'Spot & Rute');
+        $spotIcon = $userScope === 'jeep' ? 'map' : 'camera';
+
+        $navMenus[] = [
+            'name' => $spotLabel,
             'route' => 'admin.photo-spots.index',
             'active' => request()->routeIs('admin.photo-spots.*'),
-            'icon' => 'camera',
+            'icon' => $spotIcon,
             'badge' => $photoSpotCount,
-        ],
-        [
+        ];
+    }
+
+    // Menu Titik Jemput: HANYA untuk Superadmin dan Admin TiketDieng / Shuttle (karena punya kalkulator surcharge penjemputan)
+    if ($isSuper || in_array($userScope, ['tiketdieng', 'shuttle'])) {
+        $navMenus[] = [
             'name' => 'Titik Jemput',
             'route' => 'admin.pickup-locations.index',
             'active' => request()->routeIs('admin.pickup-locations.*'),
             'icon' => 'map-pin',
             'badge' => $pickupCount,
-        ],
-        [
+        ];
+    }
+
+    // Menu Master Kode: HANYA untuk Superadmin (agar admin mitra tidak melihat konfigurasi sistem multi-tenant)
+    if ($isSuper) {
+        $navMenus[] = [
             'name' => 'Master Kode',
             'route' => 'admin.comcodes.index',
             'active' => request()->routeIs('admin.comcodes.*'),
             'icon' => 'database',
             'badge' => null,
-        ],
-    ];
+        ];
+    }
 
+    // Menu Kelola Pengelola: HANYA untuk Superadmin
     if ($isSuper) {
         $navMenus[] = [
             'name' => 'Kelola Pengelola',

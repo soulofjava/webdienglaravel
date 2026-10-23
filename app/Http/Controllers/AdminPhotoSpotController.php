@@ -18,10 +18,17 @@ class AdminPhotoSpotController extends Controller
         $user = Auth::user();
         $userScope = $user ? $user->getSiteScope() : null;
 
-        // Tentukan site scope aktif (lotus / jeep / global)
-        $currentScope = $request->input('scope');
-        if (!$currentScope) {
-            $currentScope = $userScope ?: 'all';
+        if ($request->filled('scope')) {
+            $currentScope = $request->input('scope');
+        } elseif ($userScope && $userScope !== 'tiketdieng') {
+            $currentScope = $userScope;
+        } else {
+            $currentScope = 'all';
+        }
+
+        // Jika user admin scoped (bukan superadmin), paksa hanya melihat scope unit miliknya
+        if ($userScope && $userScope !== 'tiketdieng') {
+            $currentScope = $userScope;
         }
 
         $settings = SiteSetting::getSettings($currentScope !== 'all' ? $currentScope : 'lotus');
@@ -93,8 +100,11 @@ class AdminPhotoSpotController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'site_scope' => 'required|string|in:lotus,jeep,tiketdieng',
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $userScope = $user ? $user->getSiteScope() : null;
+
+        $rules = [
             'name' => 'required|string|max:255',
             'best_time_tag' => 'nullable|string|max:50',
             'description' => 'required|string',
@@ -102,9 +112,18 @@ class AdminPhotoSpotController extends Controller
             'image_url' => 'nullable|string|max:2000',
             'sort_order' => 'required|integer|min:0',
             'is_active' => 'nullable|boolean',
-        ]);
+        ];
+
+        if ($user && $user->isSuperAdmin()) {
+            $rules['site_scope'] = 'required|string|in:lotus,jeep,tiketdieng';
+        }
+
+        $validated = $request->validate($rules);
 
         $validated['is_active'] = $request->has('is_active');
+        if (!($user && $user->isSuperAdmin())) {
+            $validated['site_scope'] = $userScope ?: 'lotus';
+        }
 
         // Penanganan file upload foto spot
         if ($request->hasFile('image_file')) {
@@ -143,8 +162,11 @@ class AdminPhotoSpotController extends Controller
 
     public function update(Request $request, PhotoSpot $photoSpot)
     {
-        $validated = $request->validate([
-            'site_scope' => 'required|string|in:lotus,jeep,tiketdieng',
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $userScope = $user ? $user->getSiteScope() : null;
+
+        $rules = [
             'name' => 'required|string|max:255',
             'best_time_tag' => 'nullable|string|max:50',
             'description' => 'required|string',
@@ -152,9 +174,18 @@ class AdminPhotoSpotController extends Controller
             'image_url' => 'nullable|string|max:2000',
             'sort_order' => 'required|integer|min:0',
             'is_active' => 'nullable|boolean',
-        ]);
+        ];
+
+        if ($user && $user->isSuperAdmin()) {
+            $rules['site_scope'] = 'required|string|in:lotus,jeep,tiketdieng';
+        }
+
+        $validated = $request->validate($rules);
 
         $validated['is_active'] = $request->has('is_active');
+        if (!($user && $user->isSuperAdmin())) {
+            $validated['site_scope'] = $photoSpot->site_scope;
+        }
 
         if ($request->hasFile('image_file')) {
             try {
