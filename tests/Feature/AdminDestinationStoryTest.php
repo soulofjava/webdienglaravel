@@ -6,6 +6,8 @@ use App\Models\DestinationStory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminDestinationStoryTest extends TestCase
@@ -105,5 +107,32 @@ class AdminDestinationStoryTest extends TestCase
         $destroyResponse = $this->actingAs($this->admin)->delete(route('admin.stories.destroy', $story->id));
         $destroyResponse->assertRedirect(route('admin.stories.index'));
         $this->assertNull(DestinationStory::find($story->id));
+    }
+
+    public function test_admin_can_store_story_with_file_upload(): void
+    {
+        Storage::fake('public');
+
+        $file = UploadedFile::fake()->image('dringo.jpg', 800, 600);
+
+        $payload = [
+            'chapter_badge' => 'BAB 07 • 2.100 MDPL',
+            'title' => 'Lembah Pangonan Sabana',
+            'quote' => '“Sabana hijau di jantung Dieng.”',
+            'description' => 'Padang rumput eksotis tersembunyi.',
+            'highlights' => ['Jalur trekking alami'],
+            'image_file' => $file,
+            'accent_color' => 'blue',
+            'icon' => 'compass',
+            'sort_order' => 7,
+            'is_active' => '1',
+        ];
+
+        $response = $this->actingAs($this->admin)->post(route('admin.stories.store'), $payload);
+        $response->assertRedirect(route('admin.stories.index'));
+
+        $story = DestinationStory::where('title', 'Lembah Pangonan Sabana')->first();
+        $this->assertNotNull($story);
+        $this->assertNotEmpty($story->image_url);
     }
 }

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\DestinationStory;
 use App\Models\SiteSetting;
+use App\Services\ImageOptimizerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AdminDestinationStoryController extends Controller
 {
@@ -84,12 +87,33 @@ class AdminDestinationStoryController extends Controller
             'highlights' => 'nullable|array',
             'highlights.*' => 'nullable|string|max:500',
             'highlights_text' => 'nullable|string',
-            'image_url' => 'required|string|max:2000',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
+            'image_url' => 'nullable|string|max:2000',
             'accent_color' => 'required|string|in:amber,emerald,indigo,blue,rose,purple',
             'icon' => 'nullable|string|max:50',
             'sort_order' => 'required|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
+
+        if (!$request->hasFile('image_file') && empty($validated['image_url'])) {
+            return back()->withInput()->withErrors(['image_file' => 'Harap unggah berkas foto atau masukkan tautan URL gambar.']);
+        }
+
+        if ($request->hasFile('image_file')) {
+            try {
+                $opt = ImageOptimizerService::optimizeAndStore(
+                    $request->file('image_file'),
+                    'uploads/stories',
+                    'story_' . Str::slug($validated['title']) . '_' . time(),
+                    1920,
+                    82
+                );
+                $validated['image_url'] = $opt['url'];
+            } catch (\Throwable $e) {
+                Log::error('Story image upload error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                return back()->withInput()->withErrors(['image_file' => 'Gagal mengoptimasi dan mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
+            }
+        }
 
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
@@ -124,12 +148,32 @@ class AdminDestinationStoryController extends Controller
             'highlights' => 'nullable|array',
             'highlights.*' => 'nullable|string|max:500',
             'highlights_text' => 'nullable|string',
-            'image_url' => 'required|string|max:2000',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:25600',
+            'image_url' => 'nullable|string|max:2000',
             'accent_color' => 'required|string|in:amber,emerald,indigo,blue,rose,purple',
             'icon' => 'nullable|string|max:50',
             'sort_order' => 'required|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
+
+        if ($request->hasFile('image_file')) {
+            try {
+                ImageOptimizerService::deleteOldImage($story->image_url, 'uploads/stories');
+                $opt = ImageOptimizerService::optimizeAndStore(
+                    $request->file('image_file'),
+                    'uploads/stories',
+                    'story_' . Str::slug($validated['title']) . '_' . time(),
+                    1920,
+                    82
+                );
+                $validated['image_url'] = $opt['url'];
+            } catch (\Throwable $e) {
+                Log::error('Story image upload update error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                return back()->withInput()->withErrors(['image_file' => 'Gagal mengoptimasi dan mengunggah foto ke penyimpanan cloud: ' . $e->getMessage()]);
+            }
+        } elseif (empty($validated['image_url'])) {
+            $validated['image_url'] = $story->image_url;
+        }
 
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
@@ -149,6 +193,7 @@ class AdminDestinationStoryController extends Controller
     public function destroy(DestinationStory $story)
     {
         $title = $story->title;
+        ImageOptimizerService::deleteOldImage($story->image_url, 'uploads/stories');
         $story->delete();
 
         return redirect()->route('admin.stories.index')
