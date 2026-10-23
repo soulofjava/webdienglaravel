@@ -49,6 +49,21 @@
 
             <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6">
 
+                <!-- 0. Brand Scope -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                        Brand / Kategori Tampil <span class="text-rose-500">*</span>
+                    </label>
+                    <select
+                        name="site_scope"
+                        class="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0064D2]/20 focus:border-[#0064D2] font-semibold bg-white"
+                        required
+                    >
+                        <option value="lotus" {{ old('site_scope', $defaultScope ?? 'lotus') === 'lotus' ? 'selected' : '' }}>Lotus Creative (Spot Foto Terindah)</option>
+                        <option value="jeep" {{ old('site_scope', $defaultScope ?? 'lotus') === 'jeep' ? 'selected' : '' }}>Ready Jeep Dieng (Destinasi Rute 4x4)</option>
+                    </select>
+                </div>
+
                 <!-- 1. Nama Spot & Best Time Tag -->
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-5">
                     <div class="sm:col-span-8 space-y-1.5">

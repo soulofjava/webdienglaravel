@@ -694,69 +694,39 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Spot 1 -->
-                <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
-                    <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" alt="Puncak Sikunir Golden Sunrise" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
-                            2.463 MDPL
-                        </span>
+                @forelse($photoSpots as $spot)
+                    <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group flex flex-col justify-between">
+                        <div>
+                            <div class="h-44 bg-slate-200 relative overflow-hidden">
+                                <img
+                                    src="{{ $spot->image_url }}"
+                                    alt="{{ $spot->name }}"
+                                    width="800"
+                                    height="450"
+                                    loading="lazy"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                >
+                                @if($spot->best_time_tag)
+                                    <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
+                                        {{ $spot->best_time_tag }}
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <h3 class="text-base font-extrabold text-slate-900 group-hover:text-red-600 transition-colors">
+                                    {{ $spot->name }}
+                                </h3>
+                                <p class="text-xs text-slate-600 font-medium leading-relaxed">
+                                    {{ $spot->description }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="text-base font-extrabold text-slate-900">Puncak Sikunir</h3>
-                        <p class="text-xs text-slate-600 font-medium leading-relaxed">
-                            Spot berburu Golden Sunrise terbaik di Asia Tenggara dengan latar belakang Gunung Sindoro, Sumbing, Merbabu, dan Merapi.
-                        </p>
+                @empty
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        Belum ada destinasi unggulan jeep yang dipublikasikan.
                     </div>
-                </div>
-
-                <!-- Spot 2 -->
-                <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
-                    <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop" alt="Kawah Sikidang Vulkanik" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
-                            VULKANIK AKTIF
-                        </span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="text-base font-extrabold text-slate-900">Kawah Sikidang</h3>
-                        <p class="text-xs text-slate-600 font-medium leading-relaxed">
-                            Kawah belerang vulkanik aktif yang dapat didekati langsung melalui jembatan kayu estetik dan spot foto mobil jeep.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Spot 3 -->
-                <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
-                    <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop" alt="Batu Ratapan Angin & Telaga Warna" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
-                            VIEW DARI ATAS
-                        </span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="text-base font-extrabold text-slate-900">Batu Ratapan Angin</h3>
-                        <p class="text-xs text-slate-600 font-medium leading-relaxed">
-                            Dua tebing batu tinggi di atas bukit dengan pemandangan magis gradasi warna hijau toska Telaga Warna dan Telaga Pengilon.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Spot 4 -->
-                <div class="rounded-3xl bg-white border border-slate-200/90 overflow-hidden jeep-card-shadow jeep-card-hover group">
-                    <div class="h-44 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" alt="Telaga Menjer Danau Alami" width="800" height="450" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/60 text-white font-mono text-[10px] font-bold backdrop-blur-md">
-                            DANAU VULKANIK
-                        </span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="text-base font-extrabold text-slate-900">Telaga Menjer & Kahyangan</h3>
-                        <p class="text-xs text-slate-600 font-medium leading-relaxed">
-                            Danau alami terluas di kaki pegunungan Dieng dengan air tenang dan spot dermaga bambu berlatar tebing hijau berkabut.
-                        </p>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>

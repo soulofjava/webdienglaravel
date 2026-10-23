@@ -66,8 +66,9 @@ class HomeController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
-        // Mengambil spot foto favorit Lotus Creative aktif (query langsung bebas resiko serialisasi serverless)
+        // Mengambil spot foto favorit Lotus Creative & destinasi unggulan Jeep aktif
         $photoSpots = \App\Models\PhotoSpot::where('is_active', true)
+            ->where('site_scope', $activeTheme === 'jeep' ? 'jeep' : 'lotus')
             ->orderBy('sort_order', 'asc')
             ->orderBy('id', 'asc')
             ->get();

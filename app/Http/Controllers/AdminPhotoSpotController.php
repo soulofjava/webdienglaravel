@@ -14,19 +14,32 @@ class AdminPhotoSpotController extends Controller
 {
     public function index(Request $request)
     {
-        $settings = SiteSetting::getSettings('lotus');
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
         $userScope = $user ? $user->getSiteScope() : null;
 
+        // Tentukan site scope aktif (lotus / jeep / global)
+        $currentScope = $request->input('scope');
+        if (!$currentScope) {
+            $currentScope = $userScope ?: 'all';
+        }
+
+        $settings = SiteSetting::getSettings($currentScope !== 'all' ? $currentScope : 'lotus');
+
         $baseQuery = PhotoSpot::query();
-        if ($userScope && $userScope === 'lotus') {
-            $baseQuery->where('site_scope', 'lotus');
+        if ($currentScope !== 'all') {
+            $baseQuery->where('site_scope', $currentScope);
+        } elseif ($userScope) {
+            $baseQuery->where('site_scope', $userScope);
         }
 
         $totalAll = (clone $baseQuery)->count();
         $totalActive = (clone $baseQuery)->where('is_active', true)->count();
         $totalInactive = (clone $baseQuery)->where('is_active', false)->count();
+
+        // Hitung total per scope untuk badge filter
+        $totalLotus = PhotoSpot::where('site_scope', 'lotus')->count();
+        $totalJeep = PhotoSpot::where('site_scope', 'jeep')->count();
 
         $query = clone $baseQuery;
 
@@ -57,22 +70,31 @@ class AdminPhotoSpotController extends Controller
             'totalAll',
             'totalActive',
             'totalInactive',
+            'totalLotus',
+            'totalJeep',
+            'currentScope',
             'status',
             'perPage'
         ));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $settings = SiteSetting::getSettings('lotus');
-        $nextSortOrder = (PhotoSpot::max('sort_order') ?? 0) + 1;
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $userScope = $user ? $user->getSiteScope() : null;
 
-        return view('admin.photo-spots.create', compact('settings', 'nextSortOrder'));
+        $defaultScope = $request->input('scope', $userScope ?: 'lotus');
+        $settings = SiteSetting::getSettings($defaultScope);
+        $nextSortOrder = (PhotoSpot::where('site_scope', $defaultScope)->max('sort_order') ?? 0) + 1;
+
+        return view('admin.photo-spots.create', compact('settings', 'nextSortOrder', 'defaultScope'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'site_scope' => 'required|string|in:lotus,jeep,tiketdieng',
             'name' => 'required|string|max:255',
             'best_time_tag' => 'nullable|string|max:50',
             'description' => 'required|string',
@@ -83,7 +105,6 @@ class AdminPhotoSpotController extends Controller
         ]);
 
         $validated['is_active'] = $request->has('is_active');
-        $validated['site_scope'] = 'lotus';
 
         // Penanganan file upload foto spot
         if ($request->hasFile('image_file')) {
@@ -115,7 +136,7 @@ class AdminPhotoSpotController extends Controller
 
     public function edit(PhotoSpot $photoSpot)
     {
-        $settings = SiteSetting::getSettings('lotus');
+        $settings = SiteSetting::getSettings($photoSpot->site_scope ?: 'lotus');
 
         return view('admin.photo-spots.edit', compact('photoSpot', 'settings'));
     }
@@ -123,6 +144,7 @@ class AdminPhotoSpotController extends Controller
     public function update(Request $request, PhotoSpot $photoSpot)
     {
         $validated = $request->validate([
+            'site_scope' => 'required|string|in:lotus,jeep,tiketdieng',
             'name' => 'required|string|max:255',
             'best_time_tag' => 'nullable|string|max:50',
             'description' => 'required|string',
