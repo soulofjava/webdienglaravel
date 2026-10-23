@@ -96,6 +96,30 @@ Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(functi
         'destroy' => 'admin.pickup-locations.destroy',
     ]);
 
+    // CRUD Cerita Babak Keajaiban Dieng (Scrollytelling Destination Stories)
+    Route::patch('stories/{story}/toggle', [\App\Http\Controllers\AdminDestinationStoryController::class, 'toggleStatus'])->name('admin.stories.toggle');
+    Route::resource('stories', \App\Http\Controllers\AdminDestinationStoryController::class)->names([
+        'index' => 'admin.stories.index',
+        'create' => 'admin.stories.create',
+        'store' => 'admin.stories.store',
+        'show' => 'admin.stories.show',
+        'edit' => 'admin.stories.edit',
+        'update' => 'admin.stories.update',
+        'destroy' => 'admin.stories.destroy',
+    ]);
+    Route::patch('destination-stories/{story}/toggle', [\App\Http\Controllers\AdminDestinationStoryController::class, 'toggleStatus'])->name('admin.destination-stories.toggle');
+    Route::resource('destination-stories', \App\Http\Controllers\AdminDestinationStoryController::class)->parameters([
+        'destination-stories' => 'story'
+    ])->names([
+        'index' => 'admin.destination-stories.index',
+        'create' => 'admin.destination-stories.create',
+        'store' => 'admin.destination-stories.store',
+        'show' => 'admin.destination-stories.show',
+        'edit' => 'admin.destination-stories.edit',
+        'update' => 'admin.destination-stories.update',
+        'destroy' => 'admin.destination-stories.destroy',
+    ]);
+
     // Kembali dari mode Impersonate (dapat diakses saat sedang impersonate sebagai admin biasa)
     Route::post('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate'])->name('admin.users.leave-impersonate');
     Route::get('/leave-impersonate', [\App\Http\Controllers\AdminUserController::class, 'leaveImpersonate']);

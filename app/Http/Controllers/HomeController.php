@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DestinationStory;
 use App\Models\PickupLocation;
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
@@ -59,13 +60,21 @@ class HomeController extends Controller
                 ->toArray();
         });
 
+        // Mengambil destinasi cerita sinematik 5 babak Dieng aktif (di-cache 10 menit)
+        $stories = Cache::remember('home_destination_stories', 600, function () {
+            return DestinationStory::where('is_active', true)
+                ->orderBy('sort_order', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+        });
+
         $themeView = "themes.{$activeTheme}.home";
         if (!view()->exists($themeView)) {
             $themeView = view()->exists('home') ? 'home' : 'themes.tiketdieng.home';
         }
 
         return response()
-            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme', 'pickupLocations'))
+            ->view($themeView, compact('settings', 'visitorStats', 'packages', 'docPackages', 'activeTheme', 'pickupLocations', 'stories'))
             ->header('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     }
 

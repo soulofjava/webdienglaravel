@@ -78,6 +78,10 @@
     <script src="https://unpkg.com/lucide@latest" defer></script>
 
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
         body {
             background-color: #F4F7FB;
             color: #1A202C;

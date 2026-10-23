@@ -71,6 +71,7 @@
     // Hitung badge cepat jika tersedia
     $packageCount = \Illuminate\Support\Facades\Schema::hasTable('tour_packages') ? \App\Models\TourPackage::count() : null;
     $pickupCount = \Illuminate\Support\Facades\Schema::hasTable('pickup_locations') ? \App\Models\PickupLocation::count() : null;
+    $storyCount = \Illuminate\Support\Facades\Schema::hasTable('destination_stories') ? \App\Models\DestinationStory::count() : null;
 
     // Menu navigasi admin terpusat
     $navMenus = [
@@ -87,6 +88,13 @@
             'active' => request()->routeIs('admin.packages.*'),
             'icon' => 'compass',
             'badge' => $packageCount,
+        ],
+        [
+            'name' => 'Cerita Babak',
+            'route' => 'admin.stories.index',
+            'active' => request()->routeIs('admin.stories.*') || request()->routeIs('admin.destination-stories.*'),
+            'icon' => 'book-open',
+            'badge' => $storyCount,
         ],
         [
             'name' => 'Titik Jemput',
