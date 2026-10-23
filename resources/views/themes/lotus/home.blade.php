@@ -290,69 +290,37 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Spot 1 -->
-                <div class="group rounded-3xl overflow-hidden bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div class="aspect-[4/3] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=600&auto=format&fit=crop" alt="Puncak Sikunir" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-slate-800">
-                            05.00 WIB
-                        </span>
+                @forelse($photoSpots as $spot)
+                    <div class="group rounded-3xl overflow-hidden bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="aspect-[4/3] overflow-hidden relative bg-slate-100">
+                                <img
+                                    src="{{ $spot->image_url }}"
+                                    alt="{{ $spot->name }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    loading="lazy"
+                                >
+                                @if($spot->best_time_tag)
+                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-slate-800">
+                                        {{ $spot->best_time_tag }}
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <h3 class="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors">
+                                    {{ $spot->name }}
+                                </h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    {{ $spot->description }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors">Bukit Sikunir Golden Sunrise</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Matahari terbit keemasan berlatar 8 gunung Jawa Tengah. Momen siluet dan kabut awan yang dramatis.
-                        </p>
+                @empty
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        Belum ada lokasi pemotretan favorit yang dipublikasikan.
                     </div>
-                </div>
-
-                <!-- Spot 2 -->
-                <div class="group rounded-3xl overflow-hidden bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div class="aspect-[4/3] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=600&auto=format&fit=crop" alt="Telaga Warna & Pengilon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-slate-800">
-                            09.00 WIB
-                        </span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors">Telaga Warna & Batu Pandang</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Gradasi warna danau vulkanik toska zamrud dari ketinggian tebing Ratapan Angin. Spot wajib drone 4K.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Spot 3 -->
-                <div class="group rounded-3xl overflow-hidden bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div class="aspect-[4/3] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=600&auto=format&fit=crop" alt="Kompleks Candi Arjuna" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-slate-800">
-                            Heritage
-                        </span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors">Kompleks Candi Arjuna</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Candi tertua di Pulau Jawa bernuansa mistis berselimut kabut tipis dan taman cemara yang estetik.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Spot 4 -->
-                <div class="group rounded-3xl overflow-hidden bg-slate-50 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div class="aspect-[4/3] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=600&auto=format&fit=crop" alt="Kawah Sikidang" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-slate-800">
-                            Geothermal
-                        </span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h3 class="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors">Kawah Sikidang & Jembatan Kayu</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Jembatan kayu panjang melayang di atas asap kawah vulkanik aktif. Vibe edgy, modern, dan sangat sinematik.
-                        </p>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
