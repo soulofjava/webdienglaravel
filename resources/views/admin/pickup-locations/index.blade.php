@@ -33,7 +33,7 @@
 
             <a
                 href="{{ route('admin.pickup-locations.create') }}"
-                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0064D2] hover:bg-[#0051ab] transition-all shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/30 shrink-0 cursor-pointer"
+                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0064D2] hover:bg-[#0051ab] transition-all shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/30 shrink-0 cursor-pointer w-full sm:w-auto"
             >
                 <i data-lucide="plus-circle" class="w-4 h-4"></i>
                 <span>Tambah Titik Jemput</span>
@@ -42,9 +42,9 @@
 
         <!-- Bar Atas: Pencarian & Filter -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-            <form id="pickupSearchForm" action="{{ route('admin.pickup-locations.index') }}" method="GET" class="flex flex-wrap items-center gap-3 w-full sm:w-auto flex-1 max-w-lg">
-                <div class="relative flex-1 min-w-[240px]">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <form id="pickupSearchForm" action="{{ route('admin.pickup-locations.index') }}" method="GET" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto flex-1 max-w-lg">
+                <div class="relative flex-1 min-w-0">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     <input
                         type="text"
                         id="pickupSearchInput"
@@ -56,7 +56,7 @@
                     @if(request('search'))
                         <a
                             href="{{ route('admin.pickup-locations.index') }}"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-200 transition-colors"
                             title="Hapus pencarian"
                         >
                             <i data-lucide="x" class="w-3.5 h-3.5"></i>
@@ -64,27 +64,30 @@
                     @endif
                 </div>
 
-                <button
-                    type="submit"
-                    class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500"></i>
-                    <span>Cari</span>
-                </button>
-
-                @if(request('search'))
-                    <a
-                        href="{{ route('admin.pickup-locations.index') }}"
-                        class="px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-1"
+                <div class="flex items-center gap-2">
+                    <button
+                        type="submit"
+                        class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                     >
-                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-                        <span>Reset</span>
-                    </a>
-                @endif
+                        <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500"></i>
+                        <span>Cari</span>
+                    </button>
+
+                    @if(request('search'))
+                        <a
+                            href="{{ route('admin.pickup-locations.index') }}"
+                            class="px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center justify-center gap-1 shrink-0"
+                            title="Reset pencarian"
+                        >
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                            <span>Reset</span>
+                        </a>
+                    @endif
+                </div>
             </form>
         </div>
 
-        <!-- DESKTOP TABLE VIEW -->
+        <!-- DESKTOP TABLE VIEW (Visible on >= md, hidden on mobile) -->
         <div class="hidden md:block bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs text-slate-600">
@@ -191,7 +194,7 @@
                 </table>
             </div>
 
-            <!-- Pagination Desktop -->
+            <!-- Paginasi Desktop -->
             @if ($locations->hasPages())
                 <div class="p-4 sm:px-6 border-t border-slate-200/80 bg-slate-50/50">
                     {{ $locations->links() }}
@@ -199,59 +202,73 @@
             @endif
         </div>
 
-        <!-- MOBILE CARD VIEW -->
-        <div class="block md:hidden space-y-3">
+        <!-- MOBILE CARD VIEW (Strictly Mobile-First, Zero Horizontal Scroll on < md) -->
+        <div class="block md:hidden space-y-3.5">
             @forelse ($locations as $loc)
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 space-y-3">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="flex items-start gap-2.5">
-                            <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0064D2] flex items-center justify-center shrink-0 mt-0.5">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all p-4 space-y-3">
+                    <!-- Top Section: Header, Pin, Urutan & Status Toggle -->
+                    <div class="flex items-start justify-between gap-2.5">
+                        <div class="flex items-start gap-2.5 min-w-0 flex-1">
+                            <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0064D2] border border-blue-100/60 flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
                                 <i data-lucide="map-pin" class="w-4 h-4"></i>
                             </div>
-                            <div>
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold block">#{{ $loc->sort_order }}</span>
-                                <h3 class="font-bold text-slate-900 text-sm leading-snug">
+                            <div class="min-w-0 flex-1">
+                                <span class="text-[10px] font-mono font-bold text-slate-400 block">
+                                    #{{ $loc->sort_order }}
+                                </span>
+                                <h3 class="font-bold text-slate-900 text-sm leading-snug line-clamp-2">
                                     {{ $loc->name }}
                                 </h3>
                             </div>
                         </div>
 
-                        <form action="{{ route('admin.pickup-locations.toggle', $loc) }}" method="POST">
+                        <!-- Status Toggle Button -->
+                        <form action="{{ route('admin.pickup-locations.toggle', $loc) }}" method="POST" class="shrink-0">
                             @csrf
                             @method('PATCH')
                             <button
                                 type="submit"
-                                class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase transition-colors {{ $loc->is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500 border border-slate-200' }}"
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer {{ $loc->is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100' : 'bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200' }}"
+                                title="Klik untuk ubah status aktif"
                             >
-                                <span class="w-1.5 h-1.5 rounded-full {{ $loc->is_active ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                                <span class="w-1.5 h-1.5 rounded-full {{ $loc->is_active ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400' }}"></span>
                                 <span>{{ $loc->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                             </button>
                         </form>
                     </div>
 
+                    <!-- Keterangan / Landmark Box -->
                     @if($loc->detail)
-                        <p class="text-xs text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                            {{ $loc->detail }}
-                        </p>
+                        <div class="text-xs text-slate-600 leading-relaxed bg-slate-50/80 p-3 rounded-xl border border-slate-200/60 flex items-start gap-2">
+                            <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5"></i>
+                            <span>{{ $loc->detail }}</span>
+                        </div>
                     @endif
 
-                    <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
-                        <div>
+                    <!-- Bottom Section: Tarif Surcharge & Action Buttons -->
+                    <div class="flex items-center justify-between gap-2 pt-2.5 border-t border-slate-100">
+                        <div class="min-w-0">
+                            <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">
+                                Surcharge
+                            </div>
                             @if ($loc->surcharge == 0)
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                    GRATIS
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i>
+                                    <span>GRATIS</span>
                                 </span>
                             @else
-                                <div class="text-xs font-extrabold text-[#0064D2]">
-                                    +Rp {{ number_format($loc->surcharge, 0, ',', '.') }} <span class="text-[10px] font-normal text-slate-400">/org</span>
+                                <div class="text-sm font-extrabold text-[#0064D2]">
+                                    +Rp {{ number_format($loc->surcharge, 0, ',', '.') }}
+                                    <span class="text-[10px] font-normal text-slate-400">/org</span>
                                 </div>
                             @endif
                         </div>
 
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-2 shrink-0">
                             <a
                                 href="{{ route('admin.pickup-locations.edit', $loc) }}"
-                                class="px-3.5 py-1.5 rounded-xl bg-blue-50 text-[#0064D2] text-xs font-bold border border-blue-200 hover:bg-blue-100 flex items-center gap-1.5"
+                                class="px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0064D2] text-xs font-bold border border-blue-200 flex items-center gap-1.5 transition-colors min-h-[38px] cursor-pointer"
+                                title="Ubah Titik Jemput"
                             >
                                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                                 <span>Ubah</span>
@@ -260,28 +277,41 @@
                             <form
                                 action="{{ route('admin.pickup-locations.destroy', $loc) }}"
                                 method="POST"
-                                onsubmit="return window.confirmDelete ? window.confirmDelete(event, 'Titik Jemput {{ addslashes($loc->name) }}', 'Data meeting point ini akan dihapus.') : confirm('Hapus titik penjemputan?');"
+                                onsubmit="return window.confirmDelete ? window.confirmDelete(event, 'Titik Jemput {{ addslashes($loc->name) }}', 'Data lokasi ini akan dihapus dari pilihan kalkulator.') : confirm('Hapus titik penjemputan {{ addslashes($loc->name) }}?');"
                                 class="inline"
                             >
                                 @csrf
                                 @method('DELETE')
                                 <button
                                     type="submit"
-                                    class="p-2 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition-colors cursor-pointer"
-                                    title="Hapus"
+                                    class="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors cursor-pointer min-h-[38px] min-w-[38px] flex items-center justify-center"
+                                    title="Hapus Titik Jemput"
                                 >
-                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-slate-500">
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-slate-500 space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2">
+                        <i data-lucide="map-pin-off" class="w-6 h-6"></i>
+                    </div>
                     <p class="text-sm font-bold text-slate-800">Belum ada titik penjemputan.</p>
+                    <p class="text-xs text-slate-400">Gunakan tombol "Tambah Titik Jemput" untuk mendaftarkan meeting point baru.</p>
+                    @if(request('search'))
+                        <div class="pt-2">
+                            <a href="{{ route('admin.pickup-locations.index') }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#0064D2] bg-blue-50 border border-blue-200 hover:bg-blue-100">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                <span>Reset Pencarian</span>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @endforelse
 
+            <!-- Paginasi Mobile -->
             @if ($locations->hasPages())
                 <div class="pt-2">
                     {{ $locations->links() }}
@@ -308,6 +338,12 @@
                     }
                 }, 450);
             });
+
+            if (searchInput.value.length > 0 && new URLSearchParams(window.location.search).has('search')) {
+                searchInput.focus();
+                const len = searchInput.value.length;
+                searchInput.setSelectionRange(len, len);
+            }
         }
     });
 </script>
