@@ -90,13 +90,24 @@
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
                             A. Palet Warna Utama & Aksen
                         </label>
-                        <!-- Quick Palette Presets -->
+                        <!-- Quick Palette Presets (Hanya Tampil Jika Sesuai Scope Admin) -->
+                        @php
+                            $userScope = auth()->user()?->getSiteScope();
+                        @endphp
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Preset Cepat:</span>
-                            <button type="button" @click="applyPreset('#0064D2', '#FEDD00', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors">Tiketdieng</button>
-                            <button type="button" @click="applyPreset('#7C3AED', '#FBBF24', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors">Lotus</button>
-                            <button type="button" @click="applyPreset('#059669', '#F59E0B', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">Jeep</button>
-                            <button type="button" @click="applyPreset('#0284C7', '#FDE047', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition-colors">Shuttle</button>
+                            <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Preset:</span>
+                            @if(is_null($userScope) || $userScope === 'tiketdieng')
+                                <button type="button" @click="applyPreset('#0064D2', '#FEDD00', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors">Tiketdieng</button>
+                            @endif
+                            @if(is_null($userScope) || $userScope === 'lotus')
+                                <button type="button" @click="applyPreset('#7C3AED', '#FBBF24', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors">Lotus</button>
+                            @endif
+                            @if(is_null($userScope) || $userScope === 'jeep')
+                                <button type="button" @click="applyPreset('#059669', '#F59E0B', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">Jeep</button>
+                            @endif
+                            @if(is_null($userScope) || $userScope === 'shuttle')
+                                <button type="button" @click="applyPreset('#0284C7', '#FDE047', '#25D366')" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition-colors">Shuttle</button>
+                            @endif
                         </div>
                     </div>
 
