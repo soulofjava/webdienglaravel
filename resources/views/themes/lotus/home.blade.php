@@ -144,18 +144,18 @@
                         <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
                         <span class="font-mono text-[11px] font-bold text-rose-600 uppercase">● LIVE CAPTURE</span>
                         <span class="text-slate-300">|</span>
-                        <span>Official Studio PT. GoTrip Asia Travelindo</span>
+                        <span>{{ $settings->hero_badge_text ?: 'Official Studio PT. GoTrip Asia Travelindo' }}</span>
                     </div>
 
                     <!-- Main Title -->
                     <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.12]">
-                        Abadikan Momen <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 font-serif italic">Magis Dieng</span>
+                        {{ $settings->hero_title ?: 'Abadikan Momen' }} <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-sky-500 to-rose-600 font-serif italic">{{ $settings->hero_title_accent ?: 'Magis Dieng' }}</span>
                         Menjadi Karya Sinematik.
                     </h1>
 
                     <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-                        Bebas canggung, dipandu pose dari awal sampai selesai. Abadikan liburan Anda dengan fotografer lokal ramah, video reels 4K estetik, dan pilot drone bersertifikasi.
+                        {{ $settings->hero_subtitle ?: 'Bebas canggung, dipandu pose dari awal sampai selesai. Abadikan liburan Anda dengan fotografer lokal ramah, video reels 4K estetik, dan pilot drone bersertifikasi.' }}
                     </p>
 
                     <!-- Camera Meta Specs Strip (Photography Thematic Element) -->

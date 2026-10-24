@@ -36,15 +36,15 @@
     <section class="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 text-xs font-semibold uppercase tracking-wider mb-6">
             <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-            <span>Armada Mikrobus Ber-AC & Nyaman 15 Seat</span>
+            <span>{{ $settings->hero_badge_text ?: 'Armada Mikrobus Ber-AC & Nyaman 15 Seat' }}</span>
         </div>
 
         <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight max-w-4xl">
-            Transportasi Aman & Cepat Menuju <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-blue-400">Dataran Tinggi Dieng</span>
+            {{ $settings->hero_title ?: 'Transportasi Aman & Cepat Menuju' }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-blue-400">{{ $settings->hero_title_accent ?: 'Dataran Tinggi Dieng' }}</span>
         </h1>
 
         <p class="mt-5 text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
-            Layanan shuttle antar-jemput resmi dari Stasiun Purwokerto, Bandara YIA Yogyakarta, Semarang, hingga drop-off langsung ke pintu penginapan Anda di Dieng Plateau tanpa repot berganti kendaraan.
+            {{ $settings->hero_subtitle ?: 'Layanan shuttle antar-jemput resmi dari Stasiun Purwokerto, Bandara YIA Yogyakarta, Semarang, hingga drop-off langsung ke pintu penginapan Anda di Dieng Plateau tanpa repot berganti kendaraan.' }}
         </p>
 
         <!-- CTA Buttons -->
