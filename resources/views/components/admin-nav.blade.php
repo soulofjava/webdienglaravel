@@ -111,6 +111,13 @@
             'badge' => null,
         ],
         [
+            'name' => 'Hero',
+            'route' => 'admin.hero.index',
+            'active' => request()->routeIs('admin.hero.*'),
+            'icon' => 'sparkles',
+            'badge' => null,
+        ],
+        [
             'name' => $userScope === 'jeep' ? 'Paket Jeep 4x4' : ($userScope === 'lotus' ? 'Paket Dokumentasi' : ($userScope === 'shuttle' ? 'Paket Shuttle' : 'Paket Wisata')),
             'route' => 'admin.packages.index',
             'active' => request()->routeIs('admin.packages.*'),
