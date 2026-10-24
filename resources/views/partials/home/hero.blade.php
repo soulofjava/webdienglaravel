@@ -22,7 +22,7 @@
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wide shadow-sm">
                 <i data-lucide="building-2" class="w-3.5 h-3.5 text-[#FEDD00]"></i>
                 <span>{{ $settings->company_name ?? 'PT. GOTRIP ASIA TRAVELINDO' }}</span>
-                <span class="text-[10px] text-blue-100 border-l border-white/25 pl-2 font-normal hidden sm:inline">Biro Perjalanan Resmi</span>
+                <span class="text-[10px] text-blue-100 border-l border-white/25 pl-2 font-normal hidden sm:inline">{{ $settings->hero_badge_text ?: 'Biro Perjalanan Resmi' }}</span>
             </div>
 
             <!-- Badge Lisensi HPI -->
@@ -47,32 +47,32 @@
 
         <!-- Main Headline -->
         <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] max-w-4xl drop-shadow-sm">
-            Eksplorasi Keajaiban Dieng <br class="hidden sm:inline" />
-            <span class="text-[#FEDD00]">Fajar Emas di Atas Awan</span>
+            {{ $settings->hero_title ?: 'Eksplorasi Keajaiban Dieng' }} <br class="hidden sm:inline" />
+            <span class="text-[#FEDD00]">{{ $settings->hero_title_accent ?: 'Fajar Emas di Atas Awan' }}</span>
         </h1>
 
         <!-- Subheading -->
         <p class="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-blue-50 max-w-2xl font-normal leading-relaxed">
-            Jelajahi samudra awan Sikunir, kawah vulkanik Sikidang, telaga warna berkilau, dan petualangan jip offroad dengan kenyamanan VIP dan pemandu lokal berlisensi.
+            {{ $settings->hero_subtitle ?: 'Jelajahi samudra awan Sikunir, kawah vulkanik Sikidang, telaga warna berkilau, dan petualangan jip offroad dengan kenyamanan VIP dan pemandu lokal berlisensi.' }}
         </p>
 
         <!-- Trust Features Mini Bar -->
         <div class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs font-medium text-blue-100">
             <div class="flex items-center gap-1.5">
                 <i data-lucide="award" class="w-4 h-4 text-[#FEDD00]"></i>
-                <span>Biro Berizin Resmi</span>
+                <span>{{ $settings->hero_feature_1 ?: 'Biro Berizin Resmi' }}</span>
             </div>
             <div class="flex items-center gap-1.5">
                 <i data-lucide="sun" class="w-4 h-4 text-[#FEDD00]"></i>
-                <span>Golden Sunrise Sikunir</span>
+                <span>{{ $settings->hero_feature_2 ?: 'Golden Sunrise Sikunir' }}</span>
             </div>
             <div class="flex items-center gap-1.5">
                 <i data-lucide="car" class="w-4 h-4 text-[#FEDD00]"></i>
-                <span>Armada Antar-Jemput VIP</span>
+                <span>{{ $settings->hero_feature_3 ?: 'Armada Antar-Jemput VIP' }}</span>
             </div>
             <div class="flex items-center gap-1.5">
                 <i data-lucide="shield-check" class="w-4 h-4 text-[#FEDD00]"></i>
-                <span>Jaminan Reschedule Aman</span>
+                <span>{{ $settings->hero_feature_4 ?: 'Jaminan Reschedule Aman' }}</span>
             </div>
         </div>
     </div>

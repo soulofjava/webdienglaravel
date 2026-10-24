@@ -63,6 +63,10 @@ Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(functi
     Route::post('/upload/og-image', [AdminSettingController::class, 'uploadOgImage'])->name('admin.upload.og');
     Route::post('/settings/reset', [AdminSettingController::class, 'resetDefault'])->name('admin.settings.reset');
 
+    // Kelola Teks Hero Section
+    Route::get('/hero', [\App\Http\Controllers\AdminHeroController::class, 'index'])->name('admin.hero.index');
+    Route::post('/hero', [\App\Http\Controllers\AdminHeroController::class, 'update'])->name('admin.hero.update');
+
     // CRUD Paket Wisata & Itinerary
     Route::resource('packages', \App\Http\Controllers\AdminPackageController::class)->names([
         'index' => 'admin.packages.index',
