@@ -42,7 +42,13 @@ class AdminHeroController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
+        // Kunci siteKey sesuai hak akses user jika bukan superadmin
+        if ($user && !$user->isSuperAdmin()) {
+            $siteKey = $user->getSiteScope() ?: 'tiketdieng';
+        } else {
+            $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+        }
 
         if ($user && !$user->canManageSite($siteKey)) {
             abort(403, 'Akses ditolak: Anda tidak memiliki wewenang untuk mengubah pengaturan hero ini.');

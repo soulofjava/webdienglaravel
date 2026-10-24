@@ -262,30 +262,30 @@
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-700 text-[10px] sm:text-xs font-bold shadow-sm max-w-full">
                         <span class="w-2 h-2 rounded-full bg-red-600 animate-ping shrink-0"></span>
-                        <span class="uppercase tracking-wider leading-snug">UNIT RESMI 4X4 DAIHATSU FEROZA & SUZUKI KATANA</span>
+                        <span class="uppercase tracking-wider leading-snug">{{ $settings->hero_badge_text ?: 'UNIT RESMI 4X4 DAIHATSU FEROZA & SUZUKI KATANA' }}</span>
                     </div>
 
                     <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.15]">
-                        Taklukkan Puncak Dieng Bersama <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-600 to-amber-600">Ready Jeep Dieng</span>
+                        {{ $settings->hero_title ?: 'Taklukkan Puncak Dieng Bersama' }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-600 to-amber-600">{{ $settings->hero_title_accent ?: 'Ready Jeep Dieng' }}</span>
                     </h1>
 
                     <p class="text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
-                        Rasakan serunya sensasi off-road menembus kabut dingin pegunungan vulkanik Dieng Plateau. Berburu Golden Sunrise Sikunir, menjelajahi Kawah Sikidang, Candi Arjuna, hingga panorama magis Telaga Menjer dengan sistem tarif <strong class="text-slate-900 font-extrabold underline decoration-red-500 underline-offset-4">100% ALL IN Transparan</strong> tanpa biaya tersembunyi.
+                        {{ $settings->hero_subtitle ?: 'Rasakan serunya sensasi off-road menembus kabut dingin pegunungan vulkanik Dieng Plateau. Berburu Golden Sunrise Sikunir, menjelajahi Kawah Sikidang, Candi Arjuna, hingga panorama magis Telaga Menjer dengan sistem tarif 100% ALL IN Transparan tanpa biaya tersembunyi.' }}
                     </p>
 
                     <!-- Feature Badges -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
                         <div class="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm flex items-center gap-2.5">
                             <i data-lucide="check-circle-2" class="w-5 h-5 text-red-600 shrink-0"></i>
-                            <span class="text-xs font-bold text-slate-800">Tiket Objek Masuk (Included)</span>
+                            <span class="text-xs font-bold text-slate-800">{{ $settings->hero_feature_1 ?: 'Tiket Objek Masuk (Included)' }}</span>
                         </div>
                         <div class="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm flex items-center gap-2.5">
                             <i data-lucide="users" class="w-5 h-5 text-red-600 shrink-0"></i>
-                            <span class="text-xs font-bold text-slate-800">Kapasitas 4 Pax + 1 Driver</span>
+                            <span class="text-xs font-bold text-slate-800">{{ $settings->hero_feature_2 ?: 'Kapasitas 4 Pax + 1 Driver' }}</span>
                         </div>
                         <div class="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm flex items-center gap-2.5 col-span-2 sm:col-span-1">
                             <i data-lucide="camera" class="w-5 h-5 text-red-600 shrink-0"></i>
-                            <span class="text-xs font-bold text-slate-800">Free Foto HP oleh Driver</span>
+                            <span class="text-xs font-bold text-slate-800">{{ $settings->hero_feature_3 ?: 'Free Foto HP oleh Driver' }}</span>
                         </div>
                     </div>
 
