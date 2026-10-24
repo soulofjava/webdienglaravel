@@ -756,18 +756,5 @@
             <span>Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-indigo-600 font-medium underline underline-offset-2 decoration-indigo-500/30 hover:decoration-indigo-600 transition-colors">soulofjava labs</a></span>
         </div>
     </footer>
-
-    <!-- FLOATING WHATSAPP BUTTON (CERAH & MENONJOL) -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <a 
-            href="https://wa.me/{{ $lotusWa }}?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20jasa%20fotografer%20wisata%20Dieng" 
-            target="_blank" 
-            class="flex items-center gap-2.5 px-5 py-3.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-2xl shadow-emerald-500/40 hover:scale-105 transition-all duration-300"
-            title="Chat WhatsApp Studio Lotus Creative"
-        >
-            <i data-lucide="message-circle" class="w-5 h-5"></i>
-            <span class="hidden sm:inline">Booking Fotografer</span>
-        </a>
-    </div>
 </div>
 @endsection

@@ -733,20 +733,6 @@
             © {{ date('Y') }} PT. GOTRIP ASIA TRAVELINDO. All rights reserved. • Dikembangkan oleh <a href="https://soulofjava.github.io/myportofolio/" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-amber-400 underline underline-offset-2 transition-colors">soulofjava labs</a>
         </p>
     </footer>
-
-    <!-- FLOATING WHATSAPP BUTTON KHUSUS LOTUS CREATIVE -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <a 
-            href="https://wa.me/628164211196?text=Halo%20Lotus%20Creative%2C%20saya%20tertarik%20dengan%20layanan%20dokumentasi%20foto%2Fvideo%20di%20Dieng" 
-            target="_blank" 
-            class="flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-2xl shadow-emerald-500/40 hover:scale-105 transition-all duration-300 group"
-            title="Chat WhatsApp Studio Lotus Creative"
-        >
-            <i data-lucide="message-circle" class="w-5 h-5 fill-white text-[#25D366]"></i>
-            <span class="hidden sm:inline">Tanya Jadwal Lotus Creative</span>
-        </a>
-    </div>
-
 </main>
 @endsection
 

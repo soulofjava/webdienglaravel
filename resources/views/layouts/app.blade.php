@@ -239,6 +239,11 @@
         @yield('content')
     @endif
 
+    <!-- Global Floating WhatsApp CTA Button (Kecuali Halaman Admin) -->
+    @if(!request()->is('admin*') && !request()->is('dashboard*'))
+        <x-floating-whatsapp :settings="$siteSettings" :activeTheme="$activeTheme ?? null" />
+    @endif
+
     <!-- Global Spotlight Search Modal -->
     @include('components.spotlight-search')
 
