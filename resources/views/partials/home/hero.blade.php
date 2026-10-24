@@ -1,5 +1,8 @@
 <!-- 2. HERO BANNER TIKET.COM STYLE: VIBRANT TIKET BLUE CURVED HERO -->
-<section class="relative bg-gradient-to-r from-[#0064D2] via-[#0052B4] to-[#00408F] text-white rounded-b-[2.5rem] pt-32 pb-24 sm:pb-28 relative overflow-hidden shadow-xl">
+<section 
+    class="relative bg-gradient-to-r from-[#0064D2] via-[#0052B4] to-[#00408F] text-white rounded-b-[2.5rem] pt-32 pb-24 sm:pb-28 relative overflow-hidden shadow-xl"
+    style="background: linear-gradient(135deg, var(--primary-color, #0064D2) 0%, color-mix(in srgb, var(--primary-color, #0064D2) 85%, #001f4d) 60%, color-mix(in srgb, var(--primary-color, #0064D2) 70%, #000f2e) 100%);"
+>
     <!-- Decorative Ambient Glow & Geometric Wave (tiket.com Passport Design) -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
         <!-- Soft Golden Accent Glow (tiket Yellow) -->
@@ -48,7 +51,7 @@
         <!-- Main Headline -->
         <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] max-w-4xl drop-shadow-sm">
             {{ $settings->hero_title ?: 'Eksplorasi Keajaiban Dieng' }} <br class="hidden sm:inline" />
-            <span class="text-[#FEDD00]">{{ $settings->hero_title_accent ?: 'Fajar Emas di Atas Awan' }}</span>
+            <span class="text-[#FEDD00]" style="color: var(--accent-color, #FEDD00);">{{ $settings->hero_title_accent ?: 'Fajar Emas di Atas Awan' }}</span>
         </h1>
 
         <!-- Subheading -->
@@ -79,10 +82,18 @@
 </section>
 
 <!-- 3. FLOATING SEARCH & FILTER BOOKING WIDGET (TIKET.COM PASSPORT STYLE) -->
+@php
+    $heroOverlap = $settings->hero_widget_overlap ?? true;
+    $radiusClass = match($settings->border_radius_style ?? 'rounded-3xl') {
+        'rounded-xl' => 'rounded-xl',
+        'rounded-lg' => 'rounded-lg',
+        default => 'rounded-3xl',
+    };
+@endphp
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
     <div
         id="heroBookingWidget"
-        class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 sm:p-7 -mt-16 sm:-mt-18 relative text-slate-800"
+        class="bg-white {{ $radiusClass }} shadow-xl border border-slate-100 p-5 sm:p-7 {{ $heroOverlap ? '-mt-16 sm:-mt-18' : 'mt-6 sm:mt-8' }} relative text-slate-800"
         x-data="{
             activeTab: 'all',
             filterText: '',

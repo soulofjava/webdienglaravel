@@ -59,6 +59,7 @@ Route::middleware(['auth', 'inactivity.timeout'])->prefix('admin')->group(functi
 
     Route::get('/', [AdminSettingController::class, 'index'])->name('admin.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('admin.settings.update');
+    Route::post('/settings/appearance', [AdminSettingController::class, 'updateAppearance'])->name('admin.settings.appearance');
     Route::post('/upload/favicon', [AdminSettingController::class, 'uploadFavicon'])->name('admin.upload.favicon');
     Route::post('/upload/og-image', [AdminSettingController::class, 'uploadOgImage'])->name('admin.upload.og');
     Route::post('/settings/reset', [AdminSettingController::class, 'resetDefault'])->name('admin.settings.reset');

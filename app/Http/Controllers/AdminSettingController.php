@@ -72,7 +72,13 @@ class AdminSettingController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
-        $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+
+        // Kunci siteKey sesuai hak akses user jika bukan superadmin
+        if ($user && !$user->isSuperAdmin()) {
+            $siteKey = $user->getSiteScope() ?: 'tiketdieng';
+        } else {
+            $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+        }
 
         if ($user && !$user->canManageSite($siteKey)) {
             abort(403, 'Akses ditolak: Anda tidak memiliki wewenang untuk mengubah pengaturan sub-web ini.');
@@ -90,6 +96,13 @@ class AdminSettingController extends Controller
             'phone_number' => 'required|string|max:30',
             'email' => 'required|email|max:100',
             'address' => 'required|string|max:500',
+            'primary_color' => 'nullable|string|max:20',
+            'accent_color' => 'nullable|string|max:20',
+            'whatsapp_color' => 'nullable|string|max:20',
+            'font_family' => 'nullable|string|in:Plus Jakarta Sans,Inter,Outfit,Poppins,Playfair Display',
+            'font_size_scale' => 'nullable|string|in:compact,normal,relaxed',
+            'border_radius_style' => 'nullable|string|in:rounded-3xl,rounded-xl,rounded-lg',
+            'hero_widget_overlap' => 'nullable',
             'hpi_badge' => 'nullable|string|max:100',
             'favicon_url' => 'nullable|string|max:255',
             'seo_title' => 'nullable|string|max:200',
@@ -111,6 +124,10 @@ class AdminSettingController extends Controller
         }
 
         $validated = $request->validate($rules);
+
+        if ($request->has('hero_widget_overlap')) {
+            $validated['hero_widget_overlap'] = $request->boolean('hero_widget_overlap');
+        }
 
         if (!($request->user() && $request->user()->hasRole('superadmin'))) {
             unset(
@@ -142,6 +159,62 @@ class AdminSettingController extends Controller
 
         return redirect()->route('admin.index', ['site' => $siteKey])
             ->with('success', "Konfigurasi sub-web '" . strtoupper($siteKey) . "' berhasil disimpan dan diperbarui!");
+    }
+
+    /**
+     * Khusus pembaruan pengaturan desain & tema tampilan
+     */
+    public function updateAppearance(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user && !$user->isSuperAdmin()) {
+            $siteKey = $user->getSiteScope() ?: 'tiketdieng';
+        } else {
+            $siteKey = SiteSetting::normalizeSiteKey($request->input('site_key'));
+        }
+
+        if ($user && !$user->canManageSite($siteKey)) {
+            abort(403, 'Akses ditolak: Anda tidak memiliki wewenang untuk mengubah pengaturan desain sub-web ini.');
+        }
+
+        $validated = $request->validate([
+            'primary_color' => 'required|string|max:20',
+            'accent_color' => 'required|string|max:20',
+            'whatsapp_color' => 'required|string|max:20',
+            'font_family' => 'required|string|in:Plus Jakarta Sans,Inter,Outfit,Poppins,Playfair Display',
+            'font_size_scale' => 'required|string|in:compact,normal,relaxed',
+            'border_radius_style' => 'required|string|in:rounded-3xl,rounded-xl,rounded-lg',
+            'hero_widget_overlap' => 'nullable',
+        ]);
+
+        $validated['hero_widget_overlap'] = $request->boolean('hero_widget_overlap');
+
+        $settingRecord = SiteSetting::find($siteKey);
+        if (!$settingRecord) {
+            $settingRecord = SiteSetting::create(array_merge(
+                SiteSetting::getDefaultConfig($siteKey),
+                ['id' => $siteKey]
+            ));
+        }
+
+        $settingRecord->update($validated);
+
+        SiteSetting::clearCache($siteKey);
+        Cache::forget("site_settings_{$siteKey}");
+        Cache::forget('site_settings_attributes');
+        Cache::forget('home_settings');
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Pengaturan desain berhasil diperbarui!',
+                'data' => $settingRecord,
+            ]);
+        }
+
+        return redirect()->route('admin.index', ['site' => $siteKey])
+            ->with('success', "Pengaturan desain tampilan sub-web '" . strtoupper($siteKey) . "' berhasil disimpan!");
     }
 
     public function uploadFavicon(Request $request)

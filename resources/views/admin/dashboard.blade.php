@@ -63,6 +63,9 @@
             <!-- Kartu 5: Optimasi SEO & Social Media Share -->
             @include('admin.dashboard.partials.seo-card')
 
+            <!-- Kartu 6: Pengaturan Tampilan & Desain Tema -->
+            @include('admin.dashboard.partials.appearance-card')
+
             <!-- Tombol Aksi Simpan & Reset -->
             @include('admin.dashboard.partials.save-actions')
         </form>
