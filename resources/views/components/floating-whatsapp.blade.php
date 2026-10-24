@@ -29,9 +29,10 @@
         rel="noopener noreferrer"
         aria-label="Hubungi Kami via WhatsApp"
         class="relative flex items-center gap-2.5 px-4 py-3 sm:px-5 sm:py-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-extrabold text-xs sm:text-sm shadow-2xl shadow-emerald-600/40 hover:shadow-emerald-600/60 hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-400/50"
+        style="background-color: var(--wa-color, #25D366);"
     >
         <!-- Pulse Glow Ring Effect di belakang tombol -->
-        <span class="absolute -inset-1 rounded-full bg-[#25D366] opacity-30 animate-ping group-hover:opacity-0 pointer-events-none"></span>
+        <span class="absolute -inset-1 rounded-full bg-[#25D366] opacity-30 animate-ping group-hover:opacity-0 pointer-events-none" style="background-color: var(--wa-color, #25D366);"></span>
 
         <!-- SVG Icon Asli WhatsApp (Lebih tajam & presisi daripada icon font) -->
         <svg class="w-6 h-6 sm:w-6 sm:h-6 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">

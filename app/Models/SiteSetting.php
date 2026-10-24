@@ -17,6 +17,13 @@ class SiteSetting extends Model
         'site_name',
         'site_tagline',
         'active_theme',
+        'primary_color',
+        'accent_color',
+        'whatsapp_color',
+        'font_family',
+        'font_size_scale',
+        'border_radius_style',
+        'hero_widget_overlap',
         'company_name',
         'about_us',
         'company_history',
@@ -47,6 +54,10 @@ class SiteSetting extends Model
         'instagram_url',
         'tiktok_url',
         'facebook_url',
+    ];
+
+    protected $casts = [
+        'hero_widget_overlap' => 'boolean',
     ];
 
     protected static function boot()
@@ -352,7 +363,17 @@ class SiteSetting extends Model
             ],
         ];
 
-        return $configs[$key] ?? $configs['tiketdieng'];
+        $config = $configs[$key] ?? $configs['tiketdieng'];
+
+        return array_merge([
+            'primary_color' => '#0064D2',
+            'accent_color' => '#FEDD00',
+            'whatsapp_color' => '#25D366',
+            'font_family' => 'Plus Jakarta Sans',
+            'font_size_scale' => 'normal',
+            'border_radius_style' => 'rounded-3xl',
+            'hero_widget_overlap' => true,
+        ], $config);
     }
 
     /**

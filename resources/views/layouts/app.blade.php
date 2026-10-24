@@ -66,10 +66,39 @@
     <link rel="shortcut icon" href="{{ $favAsset }}">
     <link rel="apple-touch-icon" href="{{ $favAsset }}">
 
-    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+    @php
+        $primaryColor = $siteSettings->primary_color ?? '#0064D2';
+        $accentColor = $siteSettings->accent_color ?? '#FEDD00';
+        $whatsappColor = $siteSettings->whatsapp_color ?? '#25D366';
+        $currentFont = $siteSettings->font_family ?? 'Plus Jakarta Sans';
+        $fontSizeScale = $siteSettings->font_size_scale ?? 'normal';
+        $borderRadiusStyle = $siteSettings->border_radius_style ?? 'rounded-3xl';
+
+        $fontFamilyCss = match($currentFont) {
+            'Inter' => "'Inter', sans-serif",
+            'Outfit' => "'Outfit', sans-serif",
+            'Poppins' => "'Poppins', sans-serif",
+            'Playfair Display' => "'Playfair Display', serif",
+            default => "'Plus Jakarta Sans', sans-serif",
+        };
+
+        $rootFontSize = match($fontSizeScale) {
+            'compact' => '15px',
+            'relaxed' => '17px',
+            default => '16px',
+        };
+
+        $themeRadiusVal = match($borderRadiusStyle) {
+            'rounded-xl' => '0.75rem',
+            'rounded-lg' => '0.5rem',
+            default => '1.5rem',
+        };
+    @endphp
+
+    <!-- Google Fonts Dinamis Sesuai Konfigurasi Font Family ($siteSettings->font_family) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Production Compiled Vite Assets (Super Fast, No Runtime Compiler) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -78,6 +107,20 @@
     <script src="https://unpkg.com/lucide@latest" defer></script>
 
     <style>
+        :root {
+            --primary-color: {{ $primaryColor }};
+            --accent-color: {{ $accentColor }};
+            --whatsapp-color: {{ $whatsappColor }};
+            --wa-color: {{ $whatsappColor }};
+            --font-family: {!! $fontFamilyCss !!};
+            --font-size-scale: {{ $rootFontSize }};
+            --theme-radius: {{ $themeRadiusVal }};
+        }
+
+        html {
+            font-size: var(--font-size-scale, 16px);
+        }
+
         [x-cloak] {
             display: none !important;
         }
@@ -85,9 +128,44 @@
         body {
             background-color: #F4F7FB;
             color: #1A202C;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--font-family), 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
+
+        /* Utility classes utilizing dynamic theme CSS variables */
+        .theme-primary-bg { background-color: var(--primary-color) !important; }
+        .theme-primary-text { color: var(--primary-color) !important; }
+        .theme-primary-border { border-color: var(--primary-color) !important; }
+        .theme-accent-bg { background-color: var(--accent-color) !important; }
+        .theme-accent-text { color: var(--accent-color) !important; }
+        .theme-accent-border { border-color: var(--accent-color) !important; }
+        .theme-wa-bg { background-color: var(--wa-color) !important; }
+        .theme-radius { border-radius: var(--theme-radius) !important; }
+
+        @if(!request()->is('admin*'))
+        /* Dynamic Theme Overrides for public elements */
+        .bg-\[\#0064D2\] {
+            background-color: var(--primary-color, #0064D2) !important;
+        }
+        .text-\[\#0064D2\] {
+            color: var(--primary-color, #0064D2) !important;
+        }
+        .border-\[\#0064D2\] {
+            border-color: var(--primary-color, #0064D2) !important;
+        }
+        .text-\[\#FEDD00\] {
+            color: var(--accent-color, #FEDD00) !important;
+        }
+        .bg-\[\#FEDD00\] {
+            background-color: var(--accent-color, #FEDD00) !important;
+        }
+        .border-\[\#FEDD00\] {
+            border-color: var(--accent-color, #FEDD00) !important;
+        }
+        .bg-\[\#25D366\] {
+            background-color: var(--wa-color, #25D366) !important;
+        }
+        @endif
 
         .glass-panel {
             background: #ffffff !important;
